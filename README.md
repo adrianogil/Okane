@@ -16,7 +16,7 @@ okane -l
 ```
 
 
-Show a balance
+TODO: Show a balance
 ```
-okane -l
+okane -b
 ```

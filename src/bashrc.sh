@@ -1,0 +1,1 @@
+alias okane='python2 "'$OKANE_DIR'"/src/okane.py'

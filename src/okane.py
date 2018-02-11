@@ -66,9 +66,27 @@ def show_registers(args):
                        bcolors.OKBLUE + 'Description:' + bcolors.ENDC + ' %s'
             print(row_text % row_data )
 
+def show_balance(args):
+    if len(args) == 0:
+        c.execute("SELECT * from FinancialRegisters ORDER BY date(register_dt)")
+        income = 0
+        outcome = 0
+        balance = 0
+        for row in c:
+            amount = float(row[2])
+            if amount >= 0:
+                income = income + amount
+            else:
+                outcome = outcome + (-1) * amount
+            balance = balance + amount
+        print('Income: %s' % (income))
+        print('Outcome: %s' % (outcome))
+        print('Balance: %s' % (balance))
+
 commands_parse = {
     '-s' : save_register,
-    '-l' : show_registers
+    '-l' : show_registers,
+    '-b' : show_balance
 }
 
 def parse_arguments():

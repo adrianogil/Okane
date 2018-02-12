@@ -1,18 +1,10 @@
 #!/usr/bin/env python
 import sys, sqlite3, os, datetime
 from dateutil.parser import parse as dtparse
-import utils
 
+import utils, importutils
 
-__file__ = os.path.normpath(os.path.abspath(__file__))
-__path__ = os.path.dirname(__file__)
-__dao_path__ = os.path.join(__path__, 'dao')
-
-if __path__ not in sys.path:
-    sys.path.insert(0, __path__)
-print(__dao_path__)
-if __dao_path__ not in sys.path:
-    sys.path.insert(0, __dao_path__)
+importutils.addpath(__file__, 'dao')
 from dao.moneyregisterdao import MoneyRegisterDAO
 
 list_args = '--save -s --list -l'

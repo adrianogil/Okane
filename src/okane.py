@@ -3,6 +3,18 @@ import sys, sqlite3, os, datetime
 from dateutil.parser import parse as dtparse
 import utils
 
+
+__file__ = os.path.normpath(os.path.abspath(__file__))
+__path__ = os.path.dirname(__file__)
+__dao_path__ = os.path.join(__path__, 'dao')
+
+if __path__ not in sys.path:
+    sys.path.insert(0, __path__)
+print(__dao_path__)
+if __dao_path__ not in sys.path:
+    sys.path.insert(0, __dao_path__)
+from dao.moneyregisterdao import MoneyRegisterDAO
+
 list_args = '--save -s --list -l'
 
 # Open Connection
@@ -11,6 +23,8 @@ conn = sqlite3.connect(okane_directory + 'okane.sqlite');
 
 # Creating cursor
 c = conn.cursor()
+
+moneyDAO = MoneyRegisterDAO(c)
 
 class bcolors:
     HEADER = '\033[95m'
@@ -31,15 +45,7 @@ def create_tables():
             PRIMARY KEY (id_category)
         )
     ''')
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS FinancialRegisters (
-            id_register INTEGER,
-            description TEXT,
-            amount REAL,
-            register_dt TEXT,
-            PRIMARY KEY (id_register)
-        )
-    ''')
+    
 
 def save_register(args):
     if len(args) == 2:

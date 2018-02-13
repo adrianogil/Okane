@@ -6,6 +6,9 @@ import utils, importutils
 
 importutils.addpath(__file__, 'dao')
 from dao.moneyregisterdao import MoneyRegisterDAO
+importutils.addpath(__file__, 'entity')
+from entity.entityfactory import EntityFactory
+
 
 list_args = '--save -s --list -l'
 
@@ -16,7 +19,9 @@ conn = sqlite3.connect(okane_directory + 'okane.sqlite');
 # Creating cursor
 c = conn.cursor()
 
-moneyDAO = MoneyRegisterDAO(c)
+
+entityFactory = EntityFactory()
+moneyDAO = MoneyRegisterDAO(conn, c, entityFactory)
 
 class bcolors:
     HEADER = '\033[95m'
@@ -37,20 +42,18 @@ def create_tables():
             PRIMARY KEY (id_category)
         )
     ''')
+    moneyDAO.createTables()
     
 
 def save_register(args):
     if len(args) == 2:
-        # Save current register
-        sql_query_save = "INSERT INTO FinancialRegisters (description, amount, register_dt)" + \
-                        " VALUES (:description,:amount,:register_dt)"
-        
-        now = datetime.datetime.now()
-        save_data = (args[0], float(args[1]), now.strftime("%Y-%m-%d %H:%M:%S")) # YYYY-MM-DD HH:MM:SS.SSS
-
-        c.execute(sql_query_save, save_data)
-        conn.commit()
-        print '.'
+        moneyArgs = {
+            "amount"      : float(args[1]),
+            "description" : args[0],
+            'register_dt' : datetime.datetime.now()
+        }
+        moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
+        moneyDAO.save(moneyRegister)
 
 def show_registers(args):
     if len(args) == 0:

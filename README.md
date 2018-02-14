@@ -22,6 +22,10 @@ okane -b
 ```
 
 ## Planned features
+- Save categories
+- Update registers
+- Delete registers
+- Load data from XLS
 - Plot charts
 
 ## Installation

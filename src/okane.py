@@ -45,7 +45,7 @@ def create_tables():
     moneyDAO.createTables()
     
 
-def save_register(args):
+def save_register(args, extra_args):
     if len(args) == 2:
         moneyArgs = {
             "amount"      : float(args[1]),
@@ -55,7 +55,7 @@ def save_register(args):
         moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
         moneyDAO.save(moneyRegister)
 
-def show_registers(args):
+def show_registers(args, extra_args):
     if len(args) == 0:
         register_list = moneyDAO.getAll()
         for money in register_list:
@@ -66,19 +66,18 @@ def show_registers(args):
                        bcolors.OKBLUE + 'Description:' + bcolors.ENDC + ' %s'
             print(row_text % row_data )
 
-def show_balance(args):
+def show_balance(args, extra_args):
     if len(args) == 0:
-        c.execute("SELECT * from FinancialRegisters ORDER BY date(register_dt)")
+        register_list = moneyDAO.getAll()
         income = 0
         outcome = 0
         balance = 0
-        for row in c:
-            amount = float(row[2])
-            if amount >= 0:
-                income = income + amount
+        for money in register_list:
+            if money.amount >= 0:
+                income = income + money.amount
             else:
-                outcome = outcome + (-1) * amount
-            balance = balance + amount
+                outcome = outcome + (-1) * money.amount
+            balance = balance + money.amount
         print('Income: %s' % (income))
         print('Outcome: %s' % (outcome))
         print('Balance: %s' % (balance))
@@ -110,7 +109,7 @@ def parse_arguments():
 def parse_commands(args):
     for a in args:
         if a in commands_parse:
-            commands_parse[a](args[a])
+            commands_parse[a](args[a], args)
 
 create_tables()
 args = parse_arguments()

@@ -57,10 +57,9 @@ def save_register(args):
 
 def show_registers(args):
     if len(args) == 0:
-        c.execute("SELECT * from FinancialRegisters ORDER BY date(register_dt)")
-        for row in c:
-            reg_date = str(row[3])
-            row_data = (str(row[0]), reg_date, str(row[1]), str(row[2]))
+        register_list = moneyDAO.getAll()
+        for money in register_list:
+            row_data = (money.id, money.register_dt, money.amount, money.description)
             row_text = bcolors.OKBLUE + 'Id:' + bcolors.ENDC + ' %s\t' + \
                        bcolors.OKBLUE + 'Date:' + bcolors.ENDC + ' %s\t' + \
                        bcolors.OKBLUE + 'Amount:' + bcolors.ENDC + ' %s\t' + \

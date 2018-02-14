@@ -2,6 +2,7 @@ import datetime
 
 class MoneyRegister:
     def __init__(self, args):
+        self.id = -1
         if 'amount' in args:
             self.amount = args['amount']
         else:

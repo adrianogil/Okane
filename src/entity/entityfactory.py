@@ -4,5 +4,5 @@ from category import Category
 class EntityFactory:
     def createMoneyRegister(self,args):
         return MoneyRegister(args)
-    def createCategory(self):
-        return Category()
+    def createCategory(self, name):
+        return Category(name)

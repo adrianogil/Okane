@@ -6,6 +6,7 @@ import utils, importutils
 
 importutils.addpath(__file__, 'dao')
 from dao.moneyregisterdao import MoneyRegisterDAO
+from dao.categorydao import CategoryDAO
 importutils.addpath(__file__, 'entity')
 from entity.entityfactory import EntityFactory
 
@@ -19,9 +20,12 @@ conn = sqlite3.connect(okane_directory + 'okane.sqlite');
 # Creating cursor
 c = conn.cursor()
 
-
 entityFactory = EntityFactory()
-moneyDAO = MoneyRegisterDAO(conn, c, entityFactory)
+categoryDAO = CategoryDAO(conn, c, entityFactory)
+moneyDAO = MoneyRegisterDAO(conn, c, entityFactory, categoryDAO)
+
+class ARGS:
+    category = '-cs'
 
 class bcolors:
     HEADER = '\033[95m'
@@ -35,22 +39,30 @@ class bcolors:
 
 def create_tables():
     # Create table
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS Categories (
-            id_category INTEGER,
-            category_name TEXT,
-            PRIMARY KEY (id_category)
-        )
-    ''')
+    categoryDAO.createTables()
     moneyDAO.createTables()
-    
+
+def get_category_from(extra_args):
+    if ARGS.category in extra_args and len(extra_args[ARGS.category]) > 0:
+        category_name = extra_args[ARGS.category][0]
+        if category_name is not '':
+            category = categoryDAO.getCategory(category_name)
+            if category is not None and category.id > -1:
+                return category
+            else:
+                categoryDAO.saveCategory(category_name)
+                category = categoryDAO.getCategory(category_name)
+                return category
+    return categoryDAO.noCategory
 
 def save_register(args, extra_args):
+    # print('DEBUG: save_register with args: ' + str(args) + ' and extra_args: ' + str(extra_args))
     if len(args) == 2:
         moneyArgs = {
             "amount"      : float(args[1]),
             "description" : args[0],
-            'register_dt' : datetime.datetime.now()
+            'register_dt' : datetime.datetime.now(),
+            'category'    : get_category_from(extra_args)
         }
         moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
         moneyDAO.save(moneyRegister)
@@ -59,11 +71,12 @@ def show_registers(args, extra_args):
     if len(args) == 0:
         register_list = moneyDAO.getAll()
         for money in register_list:
-            row_data = (money.id, money.register_dt, money.amount, money.description)
+            row_data = (money.id, money.register_dt, money.amount, money.description, money.category.name)
             row_text = bcolors.OKBLUE + 'Id:' + bcolors.ENDC + ' %s\t' + \
                        bcolors.OKBLUE + 'Date:' + bcolors.ENDC + ' %s\t' + \
                        bcolors.OKBLUE + 'Amount:' + bcolors.ENDC + ' %s\t' + \
-                       bcolors.OKBLUE + 'Description:' + bcolors.ENDC + ' %s'
+                       bcolors.OKBLUE + 'Description:' + bcolors.ENDC + ' %s\t' + \
+                       bcolors.OKBLUE + 'Categories:' + bcolors.ENDC + ' %s'
             print(row_text % row_data )
 
 def show_balance(args, extra_args):
@@ -107,6 +120,7 @@ def parse_arguments():
     return args
 
 def parse_commands(args):
+    # print('DEBUG: Parsing args: ' + str(args))
     for a in args:
         if a in commands_parse:
             commands_parse[a](args[a], args)

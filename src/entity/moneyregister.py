@@ -18,6 +18,9 @@ class MoneyRegister:
         else:
             self.register_dt = datetime.datetime.now()
 
+        if 'category' in args:
+            self.category = args['category']
+
     def get_register_dt(self):
         return self.register_dt.strftime("%Y-%m-%d %H:%M:%S")
 

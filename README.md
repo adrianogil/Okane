@@ -24,11 +24,6 @@ okane -b
 ## Planned features
 - Plot charts
 
-## Screenshot:
-
-![screenshot](https://raw.github.com/adrianogil/SublimeUnityIntel/master/screenshot_1.png)
-![screenshot](https://raw.github.com/adrianogil/SublimeUnityIntel/master/screenshot_2.png)
-
 ## Installation
 
 Add the following lines to your bashrc:

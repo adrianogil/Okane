@@ -36,7 +36,7 @@ class CategoryDAO:
         return category
 
     def getAll(self):
-        sql_query_get = "SELECT * from Categories ORDER BY category_name"
+        sql_query_get = "SELECT * from Categories ORDER BY id_category"
         self.cursor.execute(sql_query_get)
         category_list = []
         for row in self.cursor:
@@ -65,4 +65,10 @@ class CategoryDAO:
         save_data = (name, )
         self.cursor.execute(sql_query_save, save_data)
         self.conn.commit()
-        
+
+    def updateCategory(self, category):
+        sql_query_update = "UPDATE Categories SET category_name = ? WHERE id_category = ?"
+        update_data = (category.name, category.id)
+        self.cursor.execute(sql_query_update, update_data)
+        self.conn.commit()
+

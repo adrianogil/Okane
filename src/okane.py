@@ -109,7 +109,17 @@ def list_categories(args, extra_args):
                        bcolors.OKBLUE + 'Category:' + bcolors.ENDC + ' %s'
             print(row_text % row_data )
 
+def update_category(args, extra_args):
+    if len(args) == 2:
+        cat_id = int(args[0])
+        category = categoryDAO.getCategoryFromId(cat_id)
+        if category is None or category.id < 0:
+            print("It couldn't find category with the given id: " + str(cat_id))
+        category.name = args[1]
+        categoryDAO.updateCategory(category)
+
 commands_parse = {
+    '-uc': update_category,
     '-lc': list_categories,
     '-sc': save_category,
     '-s' : save_register,

@@ -15,6 +15,11 @@ Save a category
 okane -sc <category>
 ```
 
+Update a category
+```
+okane -uc <category-id> <new-category-name>
+```
+
 List categories
 ```
 okane -lc
@@ -32,7 +37,6 @@ okane -b
 ```
 
 ## Planned features
-- Save categories
 - Update registers
 - Delete registers
 - Load data from XLS

@@ -67,10 +67,32 @@ class MoneyRegisterDAO:
 
         return moneyRegister
 
-    def getAll(self):
-        sql_query_get = "SELECT * from FinancialRegisters ORDER BY date(register_dt)"
+    def addToConditions(self, conditions, added_term):
+        if conditions == '':
+            return 'WHERE ' + added_term
+        else:
+            return conditions + ' AND ' + added_term
+
+    def getAll(self, extra_args):
+        sql_query_get = "SELECT * from FinancialRegisters "
+        order_by = " ORDER BY date(register_dt)"
+        conditions_data = ()
+        conditions = ''
+        if '-since' in extra_args:
+            conditions = self.addToConditions(conditions, "date(register_dt) > date( ? )")
+            dt = dtparse(extra_args['-since'][0]).strftime("%Y-%m-%d %H:%M:%S")
+            conditions_data = conditions_data + (dt,)
+            # print('Debug: moneyregisterdao - added since ' + dt)
+        if '-until' in extra_args:
+            conditions = self.addToConditions(conditions, "date(register_dt) < date( ? )")
+            dt = dtparse(extra_args['-until'][0]).strftime("%Y-%m-%d %H:%M:%S")
+            conditions_data = conditions_data + (dt,)
         # print('Debug: moneyregisterdao.getAll - sql_query_get: ' + sql_query_get)
-        self.cursor.execute(sql_query_get)
+        if conditions == '':
+            self.cursor.execute(sql_query_get + order_by)
+        else:
+            print(sql_query_get + conditions)
+            self.cursor.execute(sql_query_get + conditions + order_by, conditions_data)
         rows = self.cursor.fetchall()
         # print('Debug: moneyregisterdao.getAll - found ' + str(len(rows)) + ' entries')
         register_list = []

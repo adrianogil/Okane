@@ -48,6 +48,11 @@ okane -l
 ```
 
 
+List financial registers in a specific time interval
+```
+okane -l --since=<date1> --until=<date2>
+```
+
 Show a balance
 ```
 okane -b

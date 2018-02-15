@@ -114,7 +114,7 @@ def update_register(args, extra_args):
 
 def show_registers(args, extra_args):
     if len(args) == 0:
-        register_list = moneyDAO.getAll()
+        register_list = moneyDAO.getAll(extra_args)
         # print('Found %s registers' % (len(register_list),))
         for money in register_list:
             row_data = (money.id, money.register_dt, money.amount, money.description, money.category.name)
@@ -128,7 +128,7 @@ def show_registers(args, extra_args):
 
 def show_balance(args, extra_args):
     if len(args) == 0:
-        register_list = moneyDAO.getAll()
+        register_list = moneyDAO.getAll(extra_args)
         income = 0
         outcome = 0
         balance = 0

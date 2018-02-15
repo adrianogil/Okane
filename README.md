@@ -49,7 +49,7 @@ okane -b
 ```
 
 ## Planned features
-- Delete registers
+- Delete a category
 - Load data from XLS
 - Plot charts
 

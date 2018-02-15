@@ -10,13 +10,23 @@ Save a register
 okane -s <description> <amount> <date> -cs <category>
 ```
 
+Save a category
+```
+okane -sc <category>
+```
+
+List categories
+```
+okane -lc
+```
+
 List financial registers
 ```
 okane -l
 ```
 
 
-TODO: Show a balance
+Show a balance
 ```
 okane -b
 ```

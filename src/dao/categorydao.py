@@ -35,6 +35,18 @@ class CategoryDAO:
 
         return category
 
+    def getAll(self):
+        sql_query_get = "SELECT * from Categories ORDER BY category_name"
+        self.cursor.execute(sql_query_get)
+        category_list = []
+        for row in self.cursor:
+            category = self.entityFactory.createCategory(str(row[1]))
+            category.id = int(row[0])
+
+            category_list.append(category)
+
+        return category_list
+
     def getCategoryFromId(self, id):
         sql_query_get = "SELECT * from Categories WHERE id_category LIKE ?"
         sql_data = (id,)

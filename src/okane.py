@@ -95,7 +95,23 @@ def show_balance(args, extra_args):
         print('Outcome: %s' % (outcome))
         print('Balance: %s' % (balance))
 
+def save_category(args, extra_args):
+    if len(args) == 1:
+        categoryDAO.saveCategory(args[0])
+
+
+def list_categories(args, extra_args):
+    if len(args) == 0:
+        category_list = categoryDAO.getAll()
+        for category in category_list:
+            row_data = (category.id, category.name)
+            row_text = bcolors.OKBLUE + 'Id:' + bcolors.ENDC + ' %s\t' + \
+                       bcolors.OKBLUE + 'Category:' + bcolors.ENDC + ' %s'
+            print(row_text % row_data )
+
 commands_parse = {
+    '-lc': list_categories,
+    '-sc': save_category,
     '-s' : save_register,
     '-l' : show_registers,
     '-b' : show_balance

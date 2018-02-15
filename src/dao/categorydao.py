@@ -72,3 +72,9 @@ class CategoryDAO:
         self.cursor.execute(sql_query_update, update_data)
         self.conn.commit()
 
+    def delete(self, category):
+        sql_query_delete = "DELETE FROM Categories WHERE id_category = ?"
+        delete_data = (category.id,)
+        self.cursor.execute(sql_query_delete, delete_data)
+        self.conn.commit()
+

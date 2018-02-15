@@ -165,8 +165,17 @@ def update_category(args, extra_args):
         category.name = args[1]
         categoryDAO.updateCategory(category)
 
+def delete_category(args, extra_args):
+    if len(args) == 1:
+        cat_id = int(args[0])
+        category = categoryDAO.getCategoryFromId(cat_id)
+        if category is None or category.id < 0:
+            print("It couldn't find category with the given id: " + str(cat_id))
+        categoryDAO.delete(category)
+
 commands_parse = {
     '-uc': update_category,
+    '-dc': delete_category,
     '-lc': list_categories,
     '-sc': save_category,
     '-s' : save_register,

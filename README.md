@@ -32,6 +32,11 @@ Update a category
 okane -uc <category-id> <new-category-name>
 ```
 
+Delete a category
+```
+okane -dc <category-id>
+```
+
 List categories
 ```
 okane -lc
@@ -49,7 +54,7 @@ okane -b
 ```
 
 ## Planned features
-- Delete a category
+- List all registers in a specific time interval
 - Load data from XLS
 - Plot charts
 

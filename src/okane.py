@@ -26,6 +26,7 @@ moneyDAO = MoneyRegisterDAO(conn, c, entityFactory, categoryDAO)
 
 class ARGS:
     category = '-cs'
+    datetime = '-dt'
 
 class bcolors:
     HEADER = '\033[95m'
@@ -48,12 +49,23 @@ def get_category_from(extra_args):
         if category_name is not '':
             category = categoryDAO.getCategory(category_name)
             if category is not None and category.id > -1:
-                return category
+                return (True, category)
             else:
                 categoryDAO.saveCategory(category_name)
                 category = categoryDAO.getCategory(category_name)
-                return category
-    return categoryDAO.noCategory
+                return (True, category)
+    return (False, categoryDAO.noCategory)
+
+def get_datetime_from(extra_args):
+    if ARGS.datetime in extra_args and len(extra_args[ARGS.datetime]) > 0:
+        datetime_str = extra_args[ARGS.datetime][0]
+        if datetime_str is not '':
+            try:
+                datetime_value = dtparse(datetime_str)
+                return (True, datetime_value)
+            except:
+                pass
+    return (False, datetime.datetime.now())
 
 def save_register(args, extra_args):
     # print('DEBUG: save_register with args: ' + str(args) + ' and extra_args: ' + str(extra_args))
@@ -61,15 +73,34 @@ def save_register(args, extra_args):
         moneyArgs = {
             "amount"      : float(args[1]),
             "description" : args[0],
-            'register_dt' : datetime.datetime.now(),
-            'category'    : get_category_from(extra_args)
+            'register_dt' : get_datetime_from(extra_args)[1],
+            'category'    : get_category_from(extra_args)[1]
         }
         moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
         moneyDAO.save(moneyRegister)
 
+def update_register(args, extra_args):
+    money_id = int(args[0])
+    moneyRegister = moneyDAO.getFromId(money_id)
+    for i in xrange(1, len(args)):
+        if utils.is_float(args[i]):
+            moneyRegister.amount = float(args[i])
+        else:
+            moneyRegister.description = args[i]
+    new_cat = get_category_from(extra_args)
+    if new_cat[0]:
+        moneyRegister.category = new_cat[1]
+
+    new_dt = get_datetime_from(extra_args)
+    if new_dt[0]:
+        moneyRegister.register_dt = new_dt[1]
+    moneyDAO.update(moneyRegister)
+
+
 def show_registers(args, extra_args):
     if len(args) == 0:
         register_list = moneyDAO.getAll()
+        # print('Found %s registers' % (len(register_list),))
         for money in register_list:
             row_data = (money.id, money.register_dt, money.amount, money.description, money.category.name)
             row_text = bcolors.OKBLUE + 'Id:' + bcolors.ENDC + ' %s\t' + \
@@ -78,6 +109,7 @@ def show_registers(args, extra_args):
                        bcolors.OKBLUE + 'Description:' + bcolors.ENDC + ' %s\t' + \
                        bcolors.OKBLUE + 'Categories:' + bcolors.ENDC + ' %s'
             print(row_text % row_data )
+
 
 def show_balance(args, extra_args):
     if len(args) == 0:
@@ -119,6 +151,7 @@ def update_category(args, extra_args):
         categoryDAO.updateCategory(category)
 
 commands_parse = {
+    '-u' : update_register,
     '-uc': update_category,
     '-lc': list_categories,
     '-sc': save_category,

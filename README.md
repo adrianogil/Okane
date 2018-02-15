@@ -16,6 +16,12 @@ Update a register
 okane -u <register-id> <description> <amount> -dt <date> -cs <category>
 ```
 
+Delete a register
+
+```
+okane -d <register-id>
+```
+
 Save a category
 ```
 okane -sc <category>
@@ -43,7 +49,6 @@ okane -b
 ```
 
 ## Planned features
-- Update registers
 - Delete registers
 - Load data from XLS
 - Plot charts

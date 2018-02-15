@@ -45,6 +45,12 @@ class MoneyRegisterDAO:
         self.cursor.execute(sql_query_update, update_data)
         self.conn.commit()
 
+    def delete(self, moneyRegister):
+        sql_query_delete = "DELETE FROM FinancialRegisters WHERE id_register=?"
+        delete_data = (moneyRegister.id,)
+        self.cursor.execute(sql_query_delete, delete_data)
+        self.conn.commit()
+
     def getFromId(self, id):
         sql_query_get = "SELECT * from FinancialRegisters WHERE id_register = ?"
         get_data = (id,)

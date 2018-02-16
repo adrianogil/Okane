@@ -53,6 +53,11 @@ List financial registers in a specific time interval
 okane -l -since=<date1> -until=<date2>
 ```
 
+List financial registers with specific categories
+```
+okane -l -cs <category1> <category2>..<categoryN>
+```
+
 Show a balance
 ```
 okane -b

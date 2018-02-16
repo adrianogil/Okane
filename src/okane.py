@@ -46,6 +46,7 @@ def create_tables():
 def get_category_from(extra_args):
     if ARGS.category in extra_args and len(extra_args[ARGS.category]) > 0:
         category_name = extra_args[ARGS.category][0]
+        # print('DEBUG get_category_from ' + category_name)
         if category_name is not '':
             category = categoryDAO.getCategory(category_name)
             if category is not None and category.id > -1:
@@ -114,7 +115,13 @@ def update_register(args, extra_args):
 
 def show_registers(args, extra_args):
     if len(args) == 0:
-        register_list = moneyDAO.getAll(extra_args)
+        dao_args = extra_args.copy()
+        if ARGS.category in extra_args:
+            category_conditions = []
+            for c in extra_args[ARGS.category]:
+                category_conditions.append(get_category_from({ARGS.category : [c]})[1])
+            dao_args['categories'] = category_conditions
+        register_list = moneyDAO.getAll(dao_args)
         # print('Found %s registers' % (len(register_list),))
         for money in register_list:
             row_data = (money.id, money.register_dt, money.amount, money.description, money.category.name)

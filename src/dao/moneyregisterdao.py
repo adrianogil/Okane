@@ -87,11 +87,21 @@ class MoneyRegisterDAO:
             conditions = self.addToConditions(conditions, "date(register_dt) < date( ? )")
             dt = dtparse(extra_args['-until'][0]).strftime("%Y-%m-%d %H:%M:%S")
             conditions_data = conditions_data + (dt,)
-        # print('Debug: moneyregisterdao.getAll - sql_query_get: ' + sql_query_get)
+        if 'categories' in extra_args:
+            category_conditions = ''
+            for c in extra_args['categories']:
+                if category_conditions == '':
+                    category_conditions = 'id_category = ?'
+                else:
+                    category_conditions = category_conditions + 'OR id_category = ?'
+                conditions_data = conditions_data + (c.id,)
+            category_conditions = '(' + category_conditions + ')'
+            conditions = self.addToConditions(conditions, category_conditions)
+        # print('Debug: moneyregisterdao.getAll - sql_query_get: ' + (sql_query_get + conditions))
         if conditions == '':
             self.cursor.execute(sql_query_get + order_by)
         else:
-            print(sql_query_get + conditions)
+            # print('Debug: moneyregisterdao.getAll ' + (sql_query_get + conditions))
             self.cursor.execute(sql_query_get + conditions + order_by, conditions_data)
         rows = self.cursor.fetchall()
         # print('Debug: moneyregisterdao.getAll - found ' + str(len(rows)) + ' entries')

@@ -219,3 +219,14 @@ def parse_commands(args):
 create_tables()
 args = parse_arguments()
 parse_commands(args)
+
+# Load from XLS
+# from pandas import DataFrame, read_csv
+# import matplotlib.pyplot as plt
+# import pandas as pd 
+ 
+# file = r'/Users/gil/Dropbox/Documents/Bank/MinhasEconomias/Extrato_20180101_20180131.xls'
+# df = pd.read_excel(file)
+
+# for k in df:
+#         print df[k][0]

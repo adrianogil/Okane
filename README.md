@@ -64,6 +64,8 @@ okane -b
 ```
 
 ## Planned features
+- Manage accounts
+- Save financial registers with accounts
 - List all registers in a specific time interval
 - Load data from XLS
 - Plot charts

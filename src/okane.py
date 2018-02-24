@@ -7,6 +7,7 @@ import utils, importutils
 importutils.addpath(__file__, 'dao')
 from dao.moneyregisterdao import MoneyRegisterDAO
 from dao.categorydao import CategoryDAO
+from dao.accountdao import AccountDAO
 importutils.addpath(__file__, 'entity')
 from entity.entityfactory import EntityFactory
 
@@ -21,10 +22,12 @@ conn = sqlite3.connect(okane_directory + 'okane.sqlite');
 c = conn.cursor()
 
 entityFactory = EntityFactory()
+accountDAO = AccountDAO(conn, c, entityFactory)
 categoryDAO = CategoryDAO(conn, c, entityFactory)
-moneyDAO = MoneyRegisterDAO(conn, c, entityFactory, categoryDAO)
+moneyDAO = MoneyRegisterDAO(conn, c, entityFactory, categoryDAO, accountDAO)
 
 class ARGS:
+    account = '-ac'
     category = '-cs'
     datetime = '-dt'
 
@@ -40,6 +43,7 @@ class bcolors:
 
 def create_tables():
     # Create table
+    accountDAO.createTables()
     categoryDAO.createTables()
     moneyDAO.createTables()
 
@@ -180,10 +184,44 @@ def delete_category(args, extra_args):
             print("It couldn't find category with the given id: " + str(cat_id))
         categoryDAO.delete(category)
 
+def save_account(args, extra_args):
+    if len(args) == 1:
+        accountDAO.saveAccount(args[0])
+
+def list_accounts(args, extra_args):
+    if len(args) == 0:
+        account_list = accountDAO.getAll()
+        for account in account_list:
+            row_data = (account.id, account.name)
+            row_text = bcolors.OKBLUE + 'Id:' + bcolors.ENDC + ' %s\t' + \
+                       bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
+            print(row_text % row_data )
+
+def update_account(args, extra_args):
+    if len(args) == 2:
+        cat_id = int(args[0])
+        account = accountDAO.getAccountFromId(cat_id)
+        if account is None or account.id < 0:
+            print("It couldn't find account with the given id: " + str(cat_id))
+        account.name = args[1]
+        accountDAO.update(account)
+
+def delete_account(args, extra_args):
+    if len(args) == 1:
+        cat_id = int(args[0])
+        account = accountDAO.getAccountFromId(cat_id)
+        if account is None or account.id < 0:
+            print("It couldn't find account with the given id: " + str(cat_id))
+        accountDAO.delete(account)
+
 commands_parse = {
+    '-sa': save_account,
+    '-la': list_accounts,
+    '-ua': update_account,
+    '-da': delete_account,
+    '-lc': list_categories,
     '-uc': update_category,
     '-dc': delete_category,
-    '-lc': list_categories,
     '-sc': save_category,
     '-s' : save_register,
     '-l' : show_registers,

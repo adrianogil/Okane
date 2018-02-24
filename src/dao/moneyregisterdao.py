@@ -1,11 +1,12 @@
 from dateutil.parser import parse as dtparse
 
 class MoneyRegisterDAO:
-    def __init__(self, conn, cursor, entityFactory, categoryDAO):
+    def __init__(self, conn, cursor, entityFactory, categoryDAO, accountDAO):
         self.conn = conn
         self.cursor = cursor
         self.entityFactory = entityFactory
         self.categoryDAO = categoryDAO
+        self.accountDAO = accountDAO
 
     def createTables(self):
         self.cursor.execute('''

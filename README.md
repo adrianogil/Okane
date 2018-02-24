@@ -47,6 +47,30 @@ List financial registers
 okane -l
 ```
 
+Create an account
+```
+okane -sa <account-name>
+```
+
+List accounts
+```
+okane -lc
+```
+
+Update an account
+```
+okane -uc <account-id> <account-name>
+```
+
+Delete an account by id
+```
+okane -dc <account-id>
+```
+
+Delete an account by name
+```
+okane -dc <account-name>
+```
 
 List financial registers in a specific time interval
 ```

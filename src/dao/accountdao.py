@@ -16,10 +16,10 @@ class AccountDAO:
                 PRIMARY KEY (id_account)
             )
         ''')
-        self.defaultAccount = self.getCategory(AccountDAO.DEFAULT_Account)
+        self.defaultAccount = self.getAccount(AccountDAO.DEFAULT_Account)
         if self.defaultAccount is None:
-            self.saveCategory(CategoryDAO.NO_CATEGORY)
-            self.noCategory = self.getCategory(CategoryDAO.NO_CATEGORY)
+            self.saveAccount(AccountDAO.DEFAULT_Account)
+            self.defaultAccount = self.getAccount(AccountDAO.DEFAULT_Account)
         # print('No Category with id: ' + str(self.noCategory.id))
 
     def getAccount(self, name):
@@ -66,7 +66,7 @@ class AccountDAO:
         self.cursor.execute(sql_query_save, save_data)
         self.conn.commit()
 
-    def updateCategory(self, account):
+    def update(self, account):
         sql_query_update = "UPDATE Accounts SET account_name = ? WHERE id_account = ?"
         update_data = (account.name, account.id)
         self.cursor.execute(sql_query_update, update_data)

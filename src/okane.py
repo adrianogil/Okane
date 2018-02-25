@@ -208,10 +208,16 @@ def update_account(args, extra_args):
 
 def delete_account(args, extra_args):
     if len(args) == 1:
-        cat_id = int(args[0])
-        account = accountDAO.getAccountFromId(cat_id)
+        if utils.is_int(args[0]):
+            cat_id = int(args[0])
+            account = accountDAO.getAccountFromId(cat_id)
+        else:
+            account_name = args[0]
+            account = accountDAO.getAccount(account_name)
         if account is None or account.id < 0:
-            print("It couldn't find account with the given id: " + str(cat_id))
+            print("It couldn't find account with the given parameter: " + args[0])
+            return
+        
         accountDAO.delete(account)
 
 commands_parse = {

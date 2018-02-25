@@ -54,22 +54,22 @@ okane -sa <account-name>
 
 List accounts
 ```
-okane -lc
+okane -la
 ```
 
 Update an account
 ```
-okane -uc <account-id> <account-name>
+okane -ua <account-id> <account-name>
 ```
 
 Delete an account by id
 ```
-okane -dc <account-id>
+okane -da <account-id>
 ```
 
 Delete an account by name
 ```
-okane -dc <account-name>
+okane -da <account-name>
 ```
 
 List financial registers in a specific time interval
@@ -88,7 +88,6 @@ okane -b
 ```
 
 ## Planned features
-- Manage accounts
 - Save financial registers with accounts
 - List all registers in a specific time interval
 - Load data from XLS

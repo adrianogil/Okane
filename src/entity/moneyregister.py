@@ -21,7 +21,18 @@ class MoneyRegister:
         if 'category' in args:
             self.category = args['category']
 
+        if 'account' in args:
+            self.account = args['account']
+
     def get_register_dt(self):
         return self.register_dt.strftime("%Y-%m-%d %H:%M:%S")
+
+    def get_data_tuple(self):
+        return  (self.description, \
+                     self.amount, \
+                     self.get_register_dt(),\
+                     self.category.id,\
+                     self.account.id)
+
 
 

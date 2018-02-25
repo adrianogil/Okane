@@ -7,7 +7,7 @@
 Save a register
 
 ```
-okane -s <description> <amount> -dt <date> -cs <category>
+okane -s <description> <amount> -dt <date> -cs <category> -ac <account>
 ```
 
 Update a register

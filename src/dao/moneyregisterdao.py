@@ -16,19 +16,18 @@ class MoneyRegisterDAO:
                 amount REAL,
                 register_dt TEXT,
                 id_category INTEGER,
+                id_account INTEGER,
                 FOREIGN KEY (id_category) REFERENCES Categories (id_category)
+                FOREIGN KEY (id_account) REFERENCES Accounts (id_account)
                 PRIMARY KEY (id_register)
                 )
         ''')
 
     def save(self, moneyRegister):
         # Save current register
-        sql_query_save = "INSERT INTO FinancialRegisters (description, amount, register_dt, id_category)" + \
-                        " VALUES (:description,:amount,:register_dt,:id_category)"
-        save_data = (moneyRegister.description, \
-                     moneyRegister.amount, \
-                     moneyRegister.get_register_dt(),\
-                     moneyRegister.category.id) # YYYY-MM-DD HH:MM:SS.SSS
+        sql_query_save = "INSERT INTO FinancialRegisters (description, amount, register_dt, id_category, id_account)" + \
+                        " VALUES (:description,:amount,:register_dt,:id_category,:id_account)"
+        save_data = moneyRegister.get_data_tuple()
         self.cursor.execute(sql_query_save, save_data)
         self.conn.commit()
 
@@ -37,12 +36,9 @@ class MoneyRegisterDAO:
                                                              " amount = ?," + \
                                                         " register_dt = ?," + \
                                                         " id_category = ? " + \
+                                                        " id_account = ? " + \
                                               " WHERE id_register = ?"
-        update_data = (moneyRegister.description, \
-                       moneyRegister.amount, \
-                       moneyRegister.get_register_dt(),\
-                       moneyRegister.category.id,\
-                       moneyRegister.id)
+        update_data = moneyRegister.get_data_tuple()
         self.cursor.execute(sql_query_update, update_data)
         self.conn.commit()
 
@@ -59,12 +55,7 @@ class MoneyRegisterDAO:
         row = self.cursor.fetchone()
         if row is None:
             return None
-        moneyRegister = self.entityFactory.createMoneyRegister({})
-        moneyRegister.id = int(row[0])
-        moneyRegister.register_dt = dtparse(str(row[3]))
-        moneyRegister.amount = int(row[2])
-        moneyRegister.description = str(row[1])
-        moneyRegister.category = self.categoryDAO.getCategoryFromId(int(row[4]))
+        moneyRegister = self.parseRegisterFromRow(row)
 
         return moneyRegister
 
@@ -109,13 +100,19 @@ class MoneyRegisterDAO:
         register_list = []
         for row in rows:
             # print('Debug: moneyregisterdao.getAll - parse register')
-            moneyRegister = self.entityFactory.createMoneyRegister({})
-            moneyRegister.id = int(row[0])
-            moneyRegister.register_dt = dtparse(str(row[3]))
-            moneyRegister.amount = int(row[2])
-            moneyRegister.description = str(row[1])
-            moneyRegister.category = self.categoryDAO.getCategoryFromId(int(row[4]))
+            moneyRegister = self.parseRegisterFromRow(row)
 
             register_list.append(moneyRegister)
 
         return register_list
+
+    def parseRegisterFromRow(self, row):
+        moneyRegister = self.entityFactory.createMoneyRegister({})
+        moneyRegister.id = int(row[0])
+        moneyRegister.register_dt = dtparse(str(row[3]))
+        moneyRegister.amount = int(row[2])
+        moneyRegister.description = str(row[1])
+        moneyRegister.category = self.categoryDAO.getCategoryFromId(int(row[4]))
+        moneyRegister.account = self.accountDAO.getAccountFromId(int(row[5]))
+
+        return moneyRegister

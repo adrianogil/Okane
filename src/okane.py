@@ -61,6 +61,20 @@ def get_category_from(extra_args):
                 return (True, category)
     return (False, categoryDAO.noCategory)
 
+def get_account_from(extra_args):
+    if ARGS.account in extra_args and len(extra_args[ARGS.account]) > 0:
+        account_name = extra_args[ARGS.account][0]
+        # print('DEBUG get_account_from ' + account_name)
+        if account_name is not '':
+            account = accountDAO.getAccount(account_name)
+            if account is not None and account.id > -1:
+                return (True, account)
+            else:
+                accountDAO.saveAccount(account_name)
+                account = accountDAO.getAccount(account_name)
+                return (True, account)
+    return (False, accountDAO.defaultAccount)
+
 def get_datetime_from(extra_args):
     if ARGS.datetime in extra_args and len(extra_args[ARGS.datetime]) > 0:
         datetime_str = extra_args[ARGS.datetime][0]
@@ -77,7 +91,8 @@ def save_register(args, extra_args):
     if len(args) == 2:
         moneyArgs = {
             'register_dt' : get_datetime_from(extra_args)[1],
-            'category'    : get_category_from(extra_args)[1]
+            'category'    : get_category_from(extra_args)[1],
+            'account'     : get_account_from(extra_args)[1],
         }
         for i in xrange(0, len(args)):
             if utils.is_float(args[i]):
@@ -128,12 +143,18 @@ def show_registers(args, extra_args):
         register_list = moneyDAO.getAll(dao_args)
         # print('Found %s registers' % (len(register_list),))
         for money in register_list:
-            row_data = (money.id, money.register_dt, money.amount, money.description, money.category.name)
+            row_data = (money.id, \
+                        money.register_dt, \
+                        money.amount, \
+                        money.description, \
+                        money.category.name,\
+                        money.account.name)
             row_text = bcolors.OKBLUE + 'Id:' + bcolors.ENDC + ' %s\t' + \
                        bcolors.OKBLUE + 'Date:' + bcolors.ENDC + ' %s\t' + \
                        bcolors.OKBLUE + 'Amount:' + bcolors.ENDC + ' %s\t' + \
                        bcolors.OKBLUE + 'Description:' + bcolors.ENDC + ' %s\t' + \
-                       bcolors.OKBLUE + 'Categories:' + bcolors.ENDC + ' %s'
+                       bcolors.OKBLUE + 'Category:' + bcolors.ENDC + ' %s\t' + \
+                       bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
             print(row_text % row_data )
 
 

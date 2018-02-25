@@ -88,7 +88,7 @@ okane -b
 ```
 
 ## Planned features
-- Save financial registers with accounts
+- List all registers that are in given accounts
 - List all registers in a specific time interval
 - Load data from XLS
 - Plot charts

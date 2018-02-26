@@ -28,6 +28,7 @@ class MoneyRegisterDAO:
         sql_query_save = "INSERT INTO FinancialRegisters (description, amount, register_dt, id_category, id_account)" + \
                         " VALUES (:description,:amount,:register_dt,:id_category,:id_account)"
         save_data = moneyRegister.get_data_tuple()
+        print(str(save_data))
         self.cursor.execute(sql_query_save, save_data)
         self.conn.commit()
 
@@ -111,7 +112,7 @@ class MoneyRegisterDAO:
         moneyRegister.id = int(row[0])
         moneyRegister.register_dt = dtparse(str(row[3]))
         moneyRegister.amount = int(row[2])
-        moneyRegister.description = str(row[1])
+        moneyRegister.description = row[1]
         moneyRegister.category = self.categoryDAO.getCategoryFromId(int(row[4]))
         moneyRegister.account = self.accountDAO.getAccountFromId(int(row[5]))
 

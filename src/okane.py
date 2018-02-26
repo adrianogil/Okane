@@ -4,6 +4,8 @@ from dateutil.parser import parse as dtparse
 
 import utils, importutils
 
+import pandas as pd
+
 importutils.addpath(__file__, 'dao')
 from dao.moneyregisterdao import MoneyRegisterDAO
 from dao.categorydao import CategoryDAO
@@ -241,20 +243,47 @@ def delete_account(args, extra_args):
         
         accountDAO.delete(account)
 
+def load_from_xls(args, extra_args):
+    if len(args) == 1:
+        xls_path = args[0]
+        if os.path.isfile(xls_path):
+            df = pd.read_excel(xls_path)
+
+            total_registers = len(df)
+
+            keys = df.keys()
+
+            # import pdb; pdb.set_trace() # Start debugger
+
+            for i in xrange(0, total_registers):
+                moneyArgs = {
+                    'register_dt' : get_datetime_from({ARGS.datetime:[df[keys[0]][i]]})[1],
+                    'category'    : get_category_from({ARGS.category:[df[keys[3]][i].strip()]})[1],
+                    'account'     : get_account_from({ARGS.category:[df[keys[4]][i].strip()]})[1],
+                    'amount'      : float(df[keys[2]][i]),
+                    'description' : df[keys[1]][i].strip()
+                }
+                moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
+                moneyDAO.save(moneyRegister)
+                # print(k)
+                # print(df[k][0].decode('utf-8', 'ignore'))
+
+
 commands_parse = {
-    '-sa': save_account,
-    '-la': list_accounts,
-    '-ua': update_account,
-    '-da': delete_account,
-    '-lc': list_categories,
-    '-uc': update_category,
-    '-dc': delete_category,
-    '-sc': save_category,
-    '-s' : save_register,
-    '-l' : show_registers,
-    '-d' : delete_register,
-    '-u' : update_register,
-    '-b' : show_balance
+    '-xls': load_from_xls,
+    '-sa' : save_account,
+    '-la' : list_accounts,
+    '-ua' : update_account,
+    '-da' : delete_account,
+    '-lc' : list_categories,
+    '-uc' : update_category,
+    '-dc' : delete_category,
+    '-sc' : save_category,
+    '-s'  : save_register,
+    '-l'  : show_registers,
+    '-d'  : delete_register,
+    '-u'  : update_register,
+    '-b'  : show_balance
 }
 
 def parse_arguments():

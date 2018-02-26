@@ -87,10 +87,20 @@ Show a balance
 okane -b
 ```
 
+Load data from xls. Mapping fields according to:
+- "Data Ocorrência" as "register date"
+- "Descrição" as "description"
+- "Valor" as "amount"
+- "Categoria" as category
+- "Conta" as "account"
+```
+okane -xls
+```
+
 ## Planned features
+- Load data from XLS
 - List all registers that are in given accounts
 - List all registers in a specific time interval
-- Load data from XLS
 - Plot charts
 
 ## Installation

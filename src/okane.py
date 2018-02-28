@@ -135,29 +135,37 @@ def update_register(args, extra_args):
         moneyDAO.update(moneyRegister)
 
 def show_registers(args, extra_args):
-    if len(args) == 0:
-        dao_args = extra_args.copy()
-        if ARGS.category in extra_args:
-            category_conditions = []
-            for c in extra_args[ARGS.category]:
-                category_conditions.append(get_category_from({ARGS.category : [c]})[1])
-            dao_args['categories'] = category_conditions
-        register_list = moneyDAO.getAll(dao_args)
-        # print('Found %s registers' % (len(register_list),))
-        for money in register_list:
-            row_data = (money.id, \
-                        money.register_dt, \
-                        money.amount, \
-                        money.description, \
-                        money.category.name,\
-                        money.account.name)
-            row_text = bcolors.OKBLUE + 'Id:' + bcolors.ENDC + ' %s\t' + \
-                       bcolors.OKBLUE + 'Date:' + bcolors.ENDC + ' %s\t' + \
-                       bcolors.OKBLUE + 'Amount:' + bcolors.ENDC + ' %s\t' + \
-                       bcolors.OKBLUE + 'Description:' + bcolors.ENDC + ' %s\t' + \
-                       bcolors.OKBLUE + 'Category:' + bcolors.ENDC + ' %s\t' + \
-                       bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
-            print(row_text % row_data )
+    dao_args = extra_args.copy()
+
+    for a in args:
+        if utils.is_int(a):
+            number = int(a)
+            if number < 0:
+                dao_args['limit'] = str((-1) * number)
+            else:
+                dao_args['offset'] = str(number)
+    
+    if ARGS.category in extra_args:
+        category_conditions = []
+        for c in extra_args[ARGS.category]:
+            category_conditions.append(get_category_from({ARGS.category : [c]})[1])
+        dao_args['categories'] = category_conditions
+    register_list = moneyDAO.getAll(dao_args)
+    # print('Found %s registers' % (len(register_list),))
+    for money in register_list:
+        row_data = (money.id, \
+                    money.register_dt, \
+                    money.amount, \
+                    money.description, \
+                    money.category.name,\
+                    money.account.name)
+        row_text = bcolors.OKBLUE + 'Id:' + bcolors.ENDC + ' %s\t' + \
+                   bcolors.OKBLUE + 'Date:' + bcolors.ENDC + ' %s\t' + \
+                   bcolors.OKBLUE + 'Amount:' + bcolors.ENDC + ' %s\t' + \
+                   bcolors.OKBLUE + 'Description:' + bcolors.ENDC + ' %s\t' + \
+                   bcolors.OKBLUE + 'Category:' + bcolors.ENDC + ' %s\t' + \
+                   bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
+        print(row_text % row_data )
 
 
 def show_balance(args, extra_args):

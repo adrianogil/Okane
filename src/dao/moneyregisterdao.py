@@ -90,6 +90,10 @@ class MoneyRegisterDAO:
                 conditions_data = conditions_data + (c.id,)
             category_conditions = '(' + category_conditions + ')'
             conditions = self.addToConditions(conditions, category_conditions)
+        if 'limit' in extra_args:
+            order_by = order_by + " LIMIT " + extra_args['limit'] + " " 
+        if 'offset' in extra_args:
+            order_by = order_by + " OFFSET " + extra_args['offset'] + " "
         # print('Debug: moneyregisterdao.getAll - sql_query_get: ' + (sql_query_get + conditions))
         if conditions == '':
             self.cursor.execute(sql_query_get + order_by)

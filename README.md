@@ -82,6 +82,11 @@ List financial registers with specific categories
 okane -l -cs <category1> <category2>..<categoryN>
 ```
 
+List financial registers with a offset <offset> and a limit <limit>. Very useful for paging content.
+```
+okane -l +<offset> and -<limit>
+```
+
 Show a balance
 ```
 okane -b
@@ -96,6 +101,7 @@ Load data from xls. Mapping fields according to:
 ```
 okane -xls
 ```
+
 
 ## Planned features
 - Load data from XLS

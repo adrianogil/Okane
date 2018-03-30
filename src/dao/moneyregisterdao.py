@@ -36,10 +36,10 @@ class MoneyRegisterDAO:
         sql_query_update = "UPDATE FinancialRegisters SET description = ?," + \
                                                              " amount = ?," + \
                                                         " register_dt = ?," + \
-                                                        " id_category = ? " + \
+                                                        " id_category = ?, " + \
                                                         " id_account = ? " + \
                                               " WHERE id_register = ?"
-        update_data = moneyRegister.get_data_tuple()
+        update_data = moneyRegister.get_data_tuple() + (moneyRegister.id,)
         self.cursor.execute(sql_query_update, update_data)
         self.conn.commit()
 

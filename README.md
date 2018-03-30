@@ -109,7 +109,10 @@ okane -e <file.csv>
 
 
 ## Planned features
-- Load data from XLS
+- Transfer between accounts
+```
+okane -t <description> <value> <account1> <account2>
+```
 - List all registers that are in given accounts
 - List all registers in a specific time interval
 - Plot charts

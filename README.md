@@ -102,6 +102,11 @@ Load data from xls. Mapping fields according to:
 okane -xls
 ```
 
+Export data as CSV 
+```
+okane -e <file.csv>
+```
+
 
 ## Planned features
 - Load data from XLS

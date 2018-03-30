@@ -6,6 +6,8 @@ import utils, importutils
 
 import pandas as pd
 
+import csv
+
 importutils.addpath(__file__, 'dao')
 from dao.moneyregisterdao import MoneyRegisterDAO
 from dao.categorydao import CategoryDAO
@@ -276,6 +278,39 @@ def load_from_xls(args, extra_args):
                 # print(k)
                 # print(df[k][0].decode('utf-8', 'ignore'))
 
+def export_csv(args, extra_args):
+    if len(args) > 0:
+        filename = args[0]
+    else:
+        filename = 'data.csv'
+
+    dao_args = extra_args.copy()
+
+    for a in args:
+        if utils.is_int(a):
+            number = int(a)
+            if number < 0:
+                dao_args['limit'] = str((-1) * number)
+            else:
+                dao_args['offset'] = str(number)
+    
+    if ARGS.category in extra_args:
+        category_conditions = []
+        for c in extra_args[ARGS.category]:
+            category_conditions.append(get_category_from({ARGS.category : [c]})[1])
+        dao_args['categories'] = category_conditions
+    register_list = moneyDAO.getAll(dao_args)
+
+    writer = csv.writer(open(filename, 'w'))
+    for money in register_list:
+        row_data = [money.id, \
+                    money.register_dt, \
+                    money.amount, \
+                    money.description, \
+                    money.category.name,\
+                    money.account.name]
+        writer.writerow([unicode(s).encode("utf-8") for s in row_data])
+
 
 commands_parse = {
     '-xls': load_from_xls,
@@ -289,6 +324,7 @@ commands_parse = {
     '-sc' : save_category,
     '-s'  : save_register,
     '-l'  : show_registers,
+    '-e'  : export_csv,
     '-d'  : delete_register,
     '-u'  : update_register,
     '-b'  : show_balance

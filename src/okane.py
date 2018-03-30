@@ -177,11 +177,12 @@ def show_balance(args, extra_args):
         outcome = 0
         balance = 0
         for money in register_list:
-            if money.amount >= 0:
-                income = income + money.amount
-            else:
-                outcome = outcome + (-1) * money.amount
-            balance = balance + money.amount
+            if not money.category.name == 'Transfer':
+                if money.amount >= 0:
+                    income = income + money.amount
+                else:
+                    outcome = outcome + (-1) * money.amount
+                balance = balance + money.amount
         print('Income: %s' % (income))
         print('Outcome: %s' % (outcome))
         print('Balance: %s' % (balance))

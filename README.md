@@ -107,6 +107,10 @@ Export data as CSV
 okane -e <file.csv>
 ```
 
+Balance per account
+```
+okane -bc
+```
 
 ## Planned features
 - Transfer between accounts

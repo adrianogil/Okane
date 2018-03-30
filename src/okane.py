@@ -187,6 +187,32 @@ def show_balance(args, extra_args):
         print('Outcome: %s' % (outcome))
         print('Balance: %s' % (balance))
 
+def show_balance_per_account(args, extra_args):
+    if len(args) == 0:
+        account_list = accountDAO.getAll()
+        register_list = moneyDAO.getAll(extra_args)
+
+        income = {}
+        outcome = {}
+        balance = {}
+
+        for account in account_list:
+            income[account.name] = 0
+            outcome[account.name] = 0
+            balance[account.name] = 0
+        for money in register_list:
+            if not money.category.name == 'Transfer':
+                if money.amount >= 0:
+                    income[money.account.name] = income[money.account.name] + money.amount
+                else:
+                    outcome[money.account.name] = outcome[money.account.name] + (-1) * money.amount
+                balance[money.account.name] = balance[money.account.name] + money.amount
+        for account in account_list:
+            print('\nBalance account: %s\n' % (account.name,))
+            print('Income: %s' % (income[account.name]))
+            print('Outcome: %s' % (outcome[account.name]))
+            print('Balance: %s' % (balance[account.name]))
+
 def save_category(args, extra_args):
     if len(args) == 1:
         categoryDAO.saveCategory(args[0])
@@ -323,6 +349,7 @@ commands_parse = {
     '-uc' : update_category,
     '-dc' : delete_category,
     '-sc' : save_category,
+    '-bc' : show_balance_per_account,
     '-s'  : save_register,
     '-l'  : show_registers,
     '-e'  : export_csv,

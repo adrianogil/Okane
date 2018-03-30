@@ -201,12 +201,11 @@ def show_balance_per_account(args, extra_args):
             outcome[account.name] = 0
             balance[account.name] = 0
         for money in register_list:
-            if not money.category.name == 'Transfer':
-                if money.amount >= 0:
-                    income[money.account.name] = income[money.account.name] + money.amount
-                else:
-                    outcome[money.account.name] = outcome[money.account.name] + (-1) * money.amount
-                balance[money.account.name] = balance[money.account.name] + money.amount
+            if money.amount >= 0:
+                income[money.account.name] = income[money.account.name] + money.amount
+            else:
+                outcome[money.account.name] = outcome[money.account.name] + (-1) * money.amount
+            balance[money.account.name] = balance[money.account.name] + money.amount
         for account in account_list:
             print('\nBalance account: %s\n' % (account.name,))
             print('Income: %s' % (income[account.name]))

@@ -279,6 +279,45 @@ def delete_account(args, extra_args):
         
         accountDAO.delete(account)
 
+def transfer_operation(args, extra_args):
+    if len(args) == 3:
+        amount = float(args[0])
+        account1_name = args[1]
+        account2_name = args[2]
+
+        account1_result = get_account_from({ARGS.account : [account1_name]})
+        if account1_result[0]:
+            account1 = account1_result[1]
+        else:
+            return
+        account2_result = get_account_from({ARGS.account : [account2_name]})
+        if account2_result[0]:
+            account2 = account2_result[1]
+        else:
+            return
+
+        moneyArgs = {
+            'register_dt' : get_datetime_from(extra_args)[1],
+            'category'    : get_category_from({ARGS.category:["Transfer"]})[1],
+            'account'     : account1,
+            'amount'      : -amount,
+            'description' : "Transferido para a conta '" + account2.name + "'"
+        }
+        moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
+        moneyDAO.save(moneyRegister)
+
+        moneyArgs = {
+            'register_dt' : get_datetime_from(extra_args)[1],
+            'category'    : get_category_from({ARGS.category:["Transfer"]})[1],
+            'account'     : account2,
+            'amount'      : amount,
+            'description' : "Transferido da conta '" + account1.name + "'"
+        }
+        moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
+        moneyDAO.save(moneyRegister)
+        
+
+
 def load_from_xls(args, extra_args):
     if len(args) == 1:
         xls_path = args[0]
@@ -349,6 +388,7 @@ commands_parse = {
     '-dc' : delete_category,
     '-sc' : save_category,
     '-bc' : show_balance_per_account,
+    '-t'  : transfer_operation,
     '-s'  : save_register,
     '-l'  : show_registers,
     '-e'  : export_csv,

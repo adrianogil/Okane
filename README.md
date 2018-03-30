@@ -112,11 +112,12 @@ Balance per account
 okane -bc
 ```
 
+Transfer between accounts
+```
+okane -t <value> <account1> <account2> -dt <date>
+```
+
 ## Planned features
-- Transfer between accounts
-```
-okane -t <description> <value> <account1> <account2>
-```
 - List all registers that are in given accounts
 - List all registers in a specific time interval
 - Plot charts

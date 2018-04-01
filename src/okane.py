@@ -163,7 +163,7 @@ def show_registers(args, extra_args):
                     money.account.name)
         row_text = bcolors.OKBLUE + '\nId:' + bcolors.ENDC + ' %s\t' + \
                    bcolors.OKBLUE + 'Date:' + bcolors.ENDC + ' %s\t' + \
-                   bcolors.OKBLUE + 'Amount:' + bcolors.ENDC + ' %s\t' + \
+                   bcolors.OKBLUE + 'Amount:' + bcolors.ENDC + ' %10.2f\t' + \
                    bcolors.OKBLUE + '\nDescription:' + bcolors.ENDC + ' %s\t' + \
                    bcolors.OKBLUE + '\nCategory:' + bcolors.ENDC + ' %s\t' + \
                    bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
@@ -183,9 +183,9 @@ def show_balance(args, extra_args):
                 else:
                     outcome = outcome + (-1) * money.amount
                 balance = balance + money.amount
-        print('Income: %s' % (income))
-        print('Outcome: %s' % (outcome))
-        print('Balance: %s' % (balance))
+        print('Income: %10.2f' % (income))
+        print('Outcome: %10.2f' % (outcome))
+        print('Balance: %10.2f' % (balance))
 
 def show_balance_per_account(args, extra_args):
     if len(args) == 0:
@@ -208,9 +208,9 @@ def show_balance_per_account(args, extra_args):
             balance[money.account.name] = balance[money.account.name] + money.amount
         for account in account_list:
             print('\nBalance account: %s\n' % (account.name,))
-            print('Income: %s' % (income[account.name]))
-            print('Outcome: %s' % (outcome[account.name]))
-            print('Balance: %s' % (balance[account.name]))
+            print('Income: %10.2f' % (income[account.name]))
+            print('Outcome: %10.2f' % (outcome[account.name]))
+            print('Balance: %10.2f' % (balance[account.name]))
 
 def save_category(args, extra_args):
     if len(args) == 1:

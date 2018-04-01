@@ -116,7 +116,7 @@ def delete_register(args, extra_args):
         moneyDAO.delete(moneyRegister)
 
 def update_register(args, extra_args):
-    if len(args) == 1:
+    if len(args) >= 1:
         money_id = int(args[0])
         moneyRegister = moneyDAO.getFromId(money_id)
         if moneyRegister is None or moneyRegister.id < 0:
@@ -134,6 +134,7 @@ def update_register(args, extra_args):
         new_dt = get_datetime_from(extra_args)
         if new_dt[0]:
             moneyRegister.register_dt = new_dt[1]
+        # print('Trying to update register: ' + str(moneyRegister) )
         moneyDAO.update(moneyRegister)
 
 def show_registers(args, extra_args):

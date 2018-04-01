@@ -24,6 +24,14 @@ class MoneyRegister:
         if 'account' in args:
             self.account = args['account']
 
+    def __str__(self):
+        return "(ID: " + str(self.id) + \
+                 ', ' + self.description + \
+                 ', amount: ' + str(self.amount) + \
+                 ', ' + self.category.name + \
+                 ', ' + self.account.name + ')'
+
+
     def get_register_dt(self):
         return self.register_dt.strftime("%Y-%m-%d %H:%M:%S")
 

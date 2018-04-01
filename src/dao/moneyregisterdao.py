@@ -115,7 +115,7 @@ class MoneyRegisterDAO:
         moneyRegister = self.entityFactory.createMoneyRegister({})
         moneyRegister.id = int(row[0])
         moneyRegister.register_dt = dtparse(str(row[3]))
-        moneyRegister.amount = int(row[2])
+        moneyRegister.amount = float(row[2])
         moneyRegister.description = row[1]
         moneyRegister.category = self.categoryDAO.getCategoryFromId(int(row[4]))
         moneyRegister.account = self.accountDAO.getAccountFromId(int(row[5]))

@@ -161,11 +161,11 @@ def show_registers(args, extra_args):
                     money.description, \
                     money.category.name,\
                     money.account.name)
-        row_text = bcolors.OKBLUE + 'Id:' + bcolors.ENDC + ' %s\t' + \
+        row_text = bcolors.OKBLUE + '\nId:' + bcolors.ENDC + ' %s\t' + \
                    bcolors.OKBLUE + 'Date:' + bcolors.ENDC + ' %s\t' + \
                    bcolors.OKBLUE + 'Amount:' + bcolors.ENDC + ' %s\t' + \
-                   bcolors.OKBLUE + 'Description:' + bcolors.ENDC + ' %s\t' + \
-                   bcolors.OKBLUE + 'Category:' + bcolors.ENDC + ' %s\t' + \
+                   bcolors.OKBLUE + '\nDescription:' + bcolors.ENDC + ' %s\t' + \
+                   bcolors.OKBLUE + '\nCategory:' + bcolors.ENDC + ' %s\t' + \
                    bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
         print(row_text % row_data )
 

@@ -213,6 +213,31 @@ def show_balance_per_account(args, extra_args):
             print('Outcome: %10.2f' % (outcome[account.name]))
             print('Balance: %10.2f' % (balance[account.name]))
 
+def show_balance_per_category(args, extra_args):
+    if len(args) == 0:
+        category_list = categoryDAO.getAll()
+        register_list = moneyDAO.getAll(extra_args)
+
+        income = {}
+        outcome = {}
+        balance = {}
+
+        for category in category_list:
+            income[category.name] = 0
+            outcome[category.name] = 0
+            balance[category.name] = 0
+        for money in register_list:
+            if money.amount >= 0:
+                income[money.category.name] = income[money.category.name] + money.amount
+            else:
+                outcome[money.category.name] = outcome[money.category.name] + (-1) * money.amount
+            balance[money.category.name] = balance[money.category.name] + money.amount
+        for category in category_list:
+            print('\nBalance category: %s\n' % (category.name,))
+            print('Income: %10.2f' % (income[category.name]))
+            print('Outcome: %10.2f' % (outcome[category.name]))
+            print('Balance: %10.2f' % (balance[category.name]))
+
 def save_category(args, extra_args):
     if len(args) == 1:
         categoryDAO.saveCategory(args[0])
@@ -419,7 +444,8 @@ commands_parse = {
     '-uc' : update_category,
     '-dc' : delete_category,
     '-sc' : save_category,
-    '-bc' : show_balance_per_account,
+    '-ba' : show_balance_per_account,
+    '-bc' : show_balance_per_category,
     '-t'  : transfer_operation,
     '-s'  : save_register,
     '-l'  : show_registers,

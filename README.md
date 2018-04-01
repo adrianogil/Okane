@@ -92,6 +92,16 @@ Show a balance
 okane -b
 ```
 
+Balance per account
+```
+okane -ba
+```
+
+Balance per category
+```
+okane -bc
+```
+
 Load data from xls. Mapping fields according to:
 - "Data Ocorrência" as "register date"
 - "Descrição" as "description"
@@ -110,11 +120,6 @@ okane -e <file.csv>
 - Load data from CSV
 ```
 okane -csv <file.csv>
-```
-
-Balance per account
-```
-okane -bc
 ```
 
 Transfer between accounts

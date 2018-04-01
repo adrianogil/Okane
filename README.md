@@ -107,6 +107,11 @@ Export data as CSV
 okane -e <file.csv>
 ```
 
+- Load data from CSV
+```
+okane -csv <file.csv>
+```
+
 Balance per account
 ```
 okane -bc

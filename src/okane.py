@@ -368,6 +368,14 @@ def export_csv(args, extra_args):
     register_list = moneyDAO.getAll(dao_args)
 
     writer = csv.writer(open(filename, 'w'))
+    fields_names = ['MoneyId', \
+                    'Date',\
+                    'Amount',\
+                    'Description',\
+                    'Category',\
+                    'Account'\
+    ]
+    writer.writerow([unicode(s).encode("utf-8") for s in fields_names])
     for money in register_list:
         row_data = [money.id, \
                     money.register_dt, \
@@ -378,7 +386,30 @@ def export_csv(args, extra_args):
         writer.writerow([unicode(s).encode("utf-8") for s in row_data])
 
 
+def import_csv(args, extra_args):
+    if len(args) > 0:
+        filename = args[0]
+    else:
+        filename = 'data.csv'
+
+    with open(filename) as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            # print(row['MoneyId'], row['Amount'], row['Date'])
+            moneyArgs = {
+                'register_dt' : get_datetime_from({ARGS.datetime:[row['Date']]})[1],
+                'category'    : get_category_from({ARGS.category:[row['Category']]})[1],
+                'account'     : get_account_from({ARGS.category:[row['Account']]})[1],
+                'amount'      : float(row['Amount']),
+                'description' : row['Description']
+            }
+            moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
+            moneyDAO.save(moneyRegister)
+
+
+
 commands_parse = {
+    '-csv': import_csv,
     '-xls': load_from_xls,
     '-sa' : save_account,
     '-la' : list_accounts,

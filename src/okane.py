@@ -15,8 +15,12 @@ from dao.accountdao import AccountDAO
 importutils.addpath(__file__, 'entity')
 from entity.entityfactory import EntityFactory
 
+import codecs
+import locale
 
-list_args = '--save -s --list -l'
+# Wrap sys.stdout into a StreamWriter to allow writing unicode.
+sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
+
 
 # Open Connection
 okane_directory = os.environ['OKANE_DIR'] + '/db/'
@@ -34,6 +38,7 @@ class ARGS:
     account = '-ac'
     category = '-cs'
     datetime = '-dt'
+    porcelain = '--porcelain'
 
 class bcolors:
     HEADER = '\033[95m'
@@ -162,12 +167,20 @@ def show_registers(args, extra_args):
                     money.description, \
                     money.category.name,\
                     money.account.name)
-        row_text = bcolors.OKBLUE + '\nId:' + bcolors.ENDC + ' %s\t' + \
-                   bcolors.OKBLUE + 'Date:' + bcolors.ENDC + ' %s\t' + \
-                   bcolors.OKBLUE + 'Amount:' + bcolors.ENDC + ' %10.2f\t' + \
-                   bcolors.OKBLUE + '\nDescription:' + bcolors.ENDC + ' %s\t' + \
-                   bcolors.OKBLUE + '\nCategory:' + bcolors.ENDC + ' %s\t' + \
-                   bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
+        if ARGS.porcelain in extra_args:
+            row_text =  '\nId:' +  ' %s\t' + \
+                    'Date:' +  ' %s\t' + \
+                    'Amount:' +  ' %10.2f\t' + \
+                    '\nDescription:' +  ' %s\t' + \
+                    '\nCategory:' +  ' %s\t' + \
+                    'Account:' +  ' %s'
+        else:
+            row_text = bcolors.OKBLUE + '\nId:' + bcolors.ENDC + ' %s\t' + \
+                       bcolors.OKBLUE + 'Date:' + bcolors.ENDC + ' %s\t' + \
+                       bcolors.OKBLUE + 'Amount:' + bcolors.ENDC + ' %10.2f\t' + \
+                       bcolors.OKBLUE + '\nDescription:' + bcolors.ENDC + ' %s\t' + \
+                       bcolors.OKBLUE + '\nCategory:' + bcolors.ENDC + ' %s\t' + \
+                       bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
         print(row_text % row_data )
 
 

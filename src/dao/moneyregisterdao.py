@@ -90,6 +90,16 @@ class MoneyRegisterDAO:
                 conditions_data = conditions_data + (c.id,)
             category_conditions = '(' + category_conditions + ')'
             conditions = self.addToConditions(conditions, category_conditions)
+        if 'accounts' in extra_args:
+            account_conditions = ''
+            for c in extra_args['accounts']:
+                if account_conditions == '':
+                    account_conditions = 'id_account = ?'
+                else:
+                    account_conditions = account_conditions + 'OR id_account = ?'
+                conditions_data = conditions_data + (c.id,)
+            account_conditions = '(' + account_conditions + ')'
+            conditions = self.addToConditions(conditions, account_conditions)
         if 'limit' in extra_args:
             order_by = order_by + " LIMIT " + extra_args['limit'] + " " 
         if 'offset' in extra_args:

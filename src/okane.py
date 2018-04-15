@@ -158,6 +158,11 @@ def show_registers(args, extra_args):
         for c in extra_args[ARGS.category]:
             category_conditions.append(get_category_from({ARGS.category : [c]})[1])
         dao_args['categories'] = category_conditions
+    if ARGS.account in extra_args:
+        account_conditions = []
+        for c in extra_args[ARGS.account]:
+            account_conditions.append(get_account_from({ARGS.account : [c]})[1])
+        dao_args['accounts'] = account_conditions
     register_list = moneyDAO.getAll(dao_args)
     # print('Found %s registers' % (len(register_list),))
     for money in register_list:

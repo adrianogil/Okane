@@ -82,6 +82,11 @@ List financial registers with specific categories
 okane -l -cs <category1> <category2>..<categoryN>
 ```
 
+List financial registers from specific accounts
+```
+okane -l -ac <account1> <account2>..<accountN>
+```
+
 List financial registers with a offset <offset> and a limit <limit>. Very useful for paging content.
 ```
 okane -l +<offset> and -<limit>

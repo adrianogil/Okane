@@ -19,7 +19,7 @@ import codecs
 import locale
 
 # Wrap sys.stdout into a StreamWriter to allow writing unicode.
-sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
+sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
 
 
 # Open Connection
@@ -152,7 +152,7 @@ def show_registers(args, extra_args):
                 dao_args['limit'] = str((-1) * number)
             else:
                 dao_args['offset'] = str(number)
-    
+
     if ARGS.category in extra_args:
         category_conditions = []
         for c in extra_args[ARGS.category]:
@@ -163,6 +163,8 @@ def show_registers(args, extra_args):
         for c in extra_args[ARGS.account]:
             account_conditions.append(get_account_from({ARGS.account : [c]})[1])
         dao_args['accounts'] = account_conditions
+    if len(args) > 0:
+        dao_args['description'] = args[0]
     register_list = moneyDAO.getAll(dao_args)
     # print('Found %s registers' % (len(register_list),))
     for money in register_list:
@@ -320,7 +322,7 @@ def delete_account(args, extra_args):
         if account is None or account.id < 0:
             print("It couldn't find account with the given parameter: " + args[0])
             return
-        
+
         accountDAO.delete(account)
 
 def transfer_operation(args, extra_args):
@@ -359,7 +361,7 @@ def transfer_operation(args, extra_args):
         }
         moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
         moneyDAO.save(moneyRegister)
-        
+
 
 
 def load_from_xls(args, extra_args):
@@ -402,7 +404,7 @@ def export_csv(args, extra_args):
                 dao_args['limit'] = str((-1) * number)
             else:
                 dao_args['offset'] = str(number)
-    
+
     if ARGS.category in extra_args:
         category_conditions = []
         for c in extra_args[ARGS.category]:
@@ -504,8 +506,8 @@ parse_commands(args)
 # Load from XLS
 # from pandas import DataFrame, read_csv
 # import matplotlib.pyplot as plt
-# import pandas as pd 
- 
+# import pandas as pd
+
 # file = r'/Users/gil/Dropbox/Documents/Bank/MinhasEconomias/Extrato_20180101_20180131.xls'
 # df = pd.read_excel(file)
 

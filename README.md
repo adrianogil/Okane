@@ -47,6 +47,11 @@ List financial registers
 okane -l
 ```
 
+List financial registers with some description
+```
+okane -l <description>
+```
+
 Create an account
 ```
 okane -sa <account-name>
@@ -117,7 +122,7 @@ Load data from xls. Mapping fields according to:
 okane -xls
 ```
 
-Export data as CSV 
+Export data as CSV
 ```
 okane -e <file.csv>
 ```

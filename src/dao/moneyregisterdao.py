@@ -100,8 +100,12 @@ class MoneyRegisterDAO:
                 conditions_data = conditions_data + (c.id,)
             account_conditions = '(' + account_conditions + ')'
             conditions = self.addToConditions(conditions, account_conditions)
+        if 'description' in extra_args:
+            description_condition = 'description LIKE ?'
+            conditions_data = conditions_data + ('%' + extra_args['description'] + '%',)
+            conditions = self.addToConditions(conditions, description_condition)
         if 'limit' in extra_args:
-            order_by = order_by + " LIMIT " + extra_args['limit'] + " " 
+            order_by = order_by + " LIMIT " + extra_args['limit'] + " "
         if 'offset' in extra_args:
             order_by = order_by + " OFFSET " + extra_args['offset'] + " "
         # print('Debug: moneyregisterdao.getAll - sql_query_get: ' + (sql_query_get + conditions))

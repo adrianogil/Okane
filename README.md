@@ -47,6 +47,11 @@ List financial registers
 okane -l
 ```
 
+List financial registers while showing balance of current selection
+```
+okane -l --format balance
+```
+
 List financial registers with some description
 ```
 okane -l <description>

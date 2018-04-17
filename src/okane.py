@@ -167,6 +167,7 @@ def show_registers(args, extra_args):
         dao_args['description'] = args[0]
     register_list = moneyDAO.getAll(dao_args)
     # print('Found %s registers' % (len(register_list),))
+    total_amount = 0
     for money in register_list:
         row_data = (money.id, \
                     money.register_dt, \
@@ -174,6 +175,7 @@ def show_registers(args, extra_args):
                     money.description, \
                     money.category.name,\
                     money.account.name)
+        total_amount = total_amount + money.amount
         if ARGS.porcelain in extra_args:
             row_text =  '\nId:' +  ' %s\t' + \
                     'Date:' +  ' %s\t' + \
@@ -189,6 +191,15 @@ def show_registers(args, extra_args):
                        bcolors.OKBLUE + '\nCategory:' + bcolors.ENDC + ' %s\t' + \
                        bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
         print(row_text % row_data )
+    if '--format' in extra_args or '-f' in extra_args:
+        if '--format' in extra_args:
+            format_args = extra_args['--format']
+        else:
+            format_args = extra_args['-f']
+
+        if 'b' in format_args:
+            print('\nBalance:\t%s' % (total_amount,))
+
 
 
 def show_balance(args, extra_args):

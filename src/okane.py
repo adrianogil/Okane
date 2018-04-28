@@ -103,7 +103,7 @@ def save_register(args, extra_args):
             'category'    : get_category_from(extra_args)[1],
             'account'     : get_account_from(extra_args)[1],
         }
-        for i in xrange(0, len(args)):
+        for i in xrange(0, 2):
             if utils.is_float(args[i]):
                 moneyArgs['amount'] = float(args[i])
             else:

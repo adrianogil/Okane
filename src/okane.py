@@ -97,7 +97,7 @@ def get_datetime_from(extra_args):
 
 def save_register(args, extra_args):
     # print('DEBUG: save_register with args: ' + str(args) + ' and extra_args: ' + str(extra_args))
-    if len(args) == 2:
+    if len(args) >= 2:
         moneyArgs = {
             'register_dt' : get_datetime_from(extra_args)[1],
             'category'    : get_category_from(extra_args)[1],
@@ -110,6 +110,13 @@ def save_register(args, extra_args):
                 moneyArgs['description'] = args[i]
         moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
         moneyDAO.save(moneyRegister)
+        if len(args) > 2:
+            for i in xrange(2, len(args)):
+                if utils.is_float(args[i]):
+                    moneyArgs['amount'] = float(args[i])
+                    moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
+                    moneyDAO.save(moneyRegister)
+
 
 def delete_register(args, extra_args):
     if len(args) == 1:

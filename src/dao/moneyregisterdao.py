@@ -73,6 +73,12 @@ class MoneyRegisterDAO:
         order_by = " ORDER BY date(register_dt)"
         conditions_data = ()
         conditions = ''
+        if '-i' in extra_args:
+            conditions = self.addToConditions(conditions, "amount >= 0")
+            # print('Debug: moneyregisterdao - added since ' + dt)
+        elif '-o' in extra_args:
+            conditions = self.addToConditions(conditions, "amount < 0")
+            # print('Debug: moneyregisterdao - added since ' + dt)
         if '-today' in extra_args:
             conditions = self.addToConditions(conditions, "register_dt LIKE ?")
             dt = datetime.datetime.now().strftime("%Y-%m-%d")

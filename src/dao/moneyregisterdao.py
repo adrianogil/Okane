@@ -1,5 +1,7 @@
 from dateutil.parser import parse as dtparse
 
+import datetime
+
 class MoneyRegisterDAO:
     def __init__(self, conn, cursor, entityFactory, categoryDAO, accountDAO):
         self.conn = conn
@@ -71,6 +73,11 @@ class MoneyRegisterDAO:
         order_by = " ORDER BY date(register_dt)"
         conditions_data = ()
         conditions = ''
+        if '-today' in extra_args:
+            conditions = self.addToConditions(conditions, "register_dt LIKE ?")
+            dt = datetime.datetime.now().strftime("%Y-%m-%d")
+            conditions_data = conditions_data + (dt + "%" ,)
+            # print('Debug: moneyregisterdao - added since ' + dt)
         if '-since' in extra_args:
             conditions = self.addToConditions(conditions, "date(register_dt) > date( ? )")
             dt = dtparse(extra_args['-since'][0]).strftime("%Y-%m-%d %H:%M:%S")

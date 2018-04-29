@@ -126,6 +126,7 @@ def delete_register(args, extra_args):
             print("It couldn't find a financial register with given id.")
             return
         moneyDAO.delete(moneyRegister)
+        print('Register deleted!')
 
 def update_register(args, extra_args):
     if len(args) >= 1:

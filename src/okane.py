@@ -144,6 +144,10 @@ def update_register(args, extra_args):
         if new_cat[0]:
             moneyRegister.category = new_cat[1]
 
+        new_account = get_account_from(extra_args)
+        if new_account[0]:
+            moneyRegister.account = new_account[1]
+
         new_dt = get_datetime_from(extra_args)
         if new_dt[0]:
             moneyRegister.register_dt = new_dt[1]

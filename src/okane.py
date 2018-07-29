@@ -35,10 +35,11 @@ categoryDAO = CategoryDAO(conn, c, entityFactory)
 moneyDAO = MoneyRegisterDAO(conn, c, entityFactory, categoryDAO, accountDAO)
 
 class ARGS:
-    account = '-ac'
-    category = '-cs'
-    datetime = '-dt'
-    porcelain = '--porcelain'
+    account     = '-ac'
+    category    = '-cs'
+    datetime    = '-dt'
+    porcelain   = '--porcelain'
+    oneline     = '-oneline'
 
 class bcolors:
     HEADER = '\033[95m'
@@ -195,6 +196,19 @@ def show_registers(args, extra_args):
                     '\nDescription:' +  ' %s\t' + \
                     '\nCategory:' +  ' %s\t' + \
                     'Account:' +  ' %s'
+        elif ARGS.oneline in extra_args:
+            row_text =  '(%s) ' + \
+                    '[%s] ' + \
+                    ' %7.2f: ' + \
+                    '%s: ' + \
+                    '[Cat] %s ' + \
+                    '[Acc] %s '
+            row_data = (money.id, \
+                    money.register_dt.strftime("%Y-%m-%d"), \
+                    money.amount, \
+                    money.description, \
+                    money.category.name,\
+                    money.account.name)
         else:
             row_text = bcolors.OKBLUE + '\nId:' + bcolors.ENDC + ' %s\t' + \
                        bcolors.OKBLUE + 'Date:' + bcolors.ENDC + ' %s\t' + \

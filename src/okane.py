@@ -12,6 +12,7 @@ importutils.addpath(__file__, 'dao')
 from dao.moneyregisterdao import MoneyRegisterDAO
 from dao.categorydao import CategoryDAO
 from dao.accountdao import AccountDAO
+
 importutils.addpath(__file__, 'entity')
 from entity.entityfactory import EntityFactory
 

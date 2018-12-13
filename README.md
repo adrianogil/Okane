@@ -147,14 +147,18 @@ okane -t <value> <account1> <account2> -dt <date>
 - List all registers in a specific time interval
 - Plot charts
 
-## Installation
+# How to Install
 
-Add the following lines to your bashrc:
+You can use [gil-install][https://github.com/adrianogil/gil-tools/blob/master/src/python/gil_install.py]:
+```
+gil-install -i
+```
+
+Or you can add the following lines to your bashrc:
 ```
 export OKANE_DIR=<path-to-okane>/Okane/
 source $OKANE_DIR/src/bashrc.sh
 ```
-(WIP I am going to create a better setup)
 
 ## Contributing
 

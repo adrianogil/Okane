@@ -11,7 +11,7 @@ function okane()
 {
     set-okane-python-path
 
-    python2 $OKANE_DIR/okane.py
+    python2 $OKANE_DIR/okane.py $*
 }
 
 function okanes()

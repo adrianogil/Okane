@@ -41,7 +41,7 @@ def execute(args, extra_args, controller):
     if len(args) > 0:
         dao_args['description'] = args[0]
     register_list = controller.moneyDAO.getAll(dao_args)
-    # print('Found %s registers' % (len(register_list),))
+    print('Found %s registers' % (len(register_list),))
     total_amount = 0
     for money in register_list:
         row_data = (money.id, \

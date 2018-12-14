@@ -12,7 +12,7 @@ from okanecontroller import OkaneController
 sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
 
 # Open Connection
-okane_directory = os.environ['OKANE_DIR'] + '/../db/'
+okane_directory = os.environ['OKANE_DIR']
 controller = OkaneController(okane_directory)
 
 def parse_arguments():

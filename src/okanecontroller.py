@@ -3,8 +3,6 @@ from dateutil.parser import parse as dtparse
 
 import utils, importutils
 
-import pandas as pd
-
 import csv
 
 importutils.addpath(__file__, 'dao')
@@ -14,6 +12,12 @@ from dao.accountdao import AccountDAO
 
 importutils.addpath(__file__, 'entity')
 from entity.entityfactory import EntityFactory
+
+importutils.addpath(__file__, 'commands')
+import commands.importcsv
+import commands.exportcsv
+import commands.xlsloading
+import commands.showregisters
 
 class ARGS:
     account     = '-ac'
@@ -150,77 +154,7 @@ class OkaneController:
             self.moneyDAO.update(moneyRegister)
 
     def show_registers(self, args, extra_args):
-        dao_args = extra_args.copy()
-
-        for a in args:
-            if utils.is_int(a):
-                number = int(a)
-                if number < 0:
-                    dao_args['limit'] = str((-1) * number)
-                else:
-                    dao_args['offset'] = str(number)
-
-        if ARGS.category in extra_args:
-            category_conditions = []
-            for c in extra_args[ARGS.category]:
-                category_conditions.append(get_category_from({ARGS.category : [c]})[1])
-            dao_args['categories'] = category_conditions
-        if ARGS.account in extra_args:
-            account_conditions = []
-            for c in extra_args[ARGS.account]:
-                account_conditions.append(get_account_from({ARGS.account : [c]})[1])
-            dao_args['accounts'] = account_conditions
-        if len(args) > 0:
-            dao_args['description'] = args[0]
-        register_list = self.moneyDAO.getAll(dao_args)
-        # print('Found %s registers' % (len(register_list),))
-        total_amount = 0
-        for money in register_list:
-            row_data = (money.id, \
-                        money.register_dt, \
-                        money.amount, \
-                        money.description, \
-                        money.category.name,\
-                        money.account.name)
-            total_amount = total_amount + money.amount
-            if ARGS.porcelain in extra_args:
-                row_text =  '\nId:' +  ' %s\t' + \
-                        'Date:' +  ' %s\t' + \
-                        'Amount:' +  ' %10.2f\t' + \
-                        '\nDescription:' +  ' %s\t' + \
-                        '\nCategory:' +  ' %s\t' + \
-                        'Account:' +  ' %s'
-            elif ARGS.oneline in extra_args:
-                row_text =  '(%s) ' + \
-                        '[%s] ' + \
-                        ' %7.2f: ' + \
-                        '%s: ' + \
-                        '[Cat] %s ' + \
-                        '[Acc] %s '
-                row_data = (money.id, \
-                        money.register_dt.strftime("%Y-%m-%d"), \
-                        money.amount, \
-                        money.description, \
-                        money.category.name,\
-                        money.account.name)
-            else:
-                row_text = bcolors.OKBLUE + '\nId:' + bcolors.ENDC + ' %s\t' + \
-                           bcolors.OKBLUE + 'Date:' + bcolors.ENDC + ' %s\t' + \
-                           bcolors.OKBLUE + 'Amount:' + bcolors.ENDC + ' %10.2f\t' + \
-                           bcolors.OKBLUE + '\nDescription:' + bcolors.ENDC + ' %s\t' + \
-                           bcolors.OKBLUE + '\nCategory:' + bcolors.ENDC + ' %s\t' + \
-                           bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
-            print(row_text % row_data )
-        if '--format' in extra_args or '-f' in extra_args:
-            if '--format' in extra_args:
-                format_args = extra_args['--format']
-            else:
-                format_args = extra_args['-f']
-
-            if 'b' in format_args:
-                print('\nBalance:\t%s' % (total_amount,))
-
-
+        showregisters.execute(args, extra_args, self)
 
     def show_balance(self, args, extra_args):
         if len(args) == 0:
@@ -404,91 +338,13 @@ class OkaneController:
 
 
     def load_from_xls(self, args, extra_args):
-        if len(args) == 1:
-            xls_path = args[0]
-            if os.path.isfile(xls_path):
-                df = pd.read_excel(xls_path)
-
-                total_registers = len(df)
-
-                keys = df.keys()
-
-                # import pdb; pdb.set_trace() # Start debugger
-
-                for i in xrange(0, total_registers):
-                    moneyArgs = {
-                        'register_dt' : get_datetime_from({ARGS.datetime:[df[keys[0]][i]]})[1],
-                        'category'    : get_category_from({ARGS.category:[df[keys[3]][i].strip()]})[1],
-                        'account'     : get_account_from({ARGS.category:[df[keys[4]][i].strip()]})[1],
-                        'amount'      : float(df[keys[2]][i]),
-                        'description' : df[keys[1]][i].strip()
-                    }
-                    moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
-                    self.moneyDAO.save(moneyRegister)
-                    # print(k)
-                    # print(df[k][0].decode('utf-8', 'ignore'))
+        xlsloading.execute(args, extra_args, self)
 
     def export_csv(self, args, extra_args):
-        if len(args) > 0:
-            filename = args[0]
-        else:
-            filename = 'data.csv'
-
-        dao_args = extra_args.copy()
-
-        for a in args:
-            if utils.is_int(a):
-                number = int(a)
-                if number < 0:
-                    dao_args['limit'] = str((-1) * number)
-                else:
-                    dao_args['offset'] = str(number)
-
-        if ARGS.category in extra_args:
-            category_conditions = []
-            for c in extra_args[ARGS.category]:
-                category_conditions.append(get_category_from({ARGS.category : [c]})[1])
-            dao_args['categories'] = category_conditions
-        register_list = self.moneyDAO.getAll(dao_args)
-
-        writer = csv.writer(open(filename, 'w'))
-        fields_names = ['MoneyId', \
-                        'Date',\
-                        'Amount',\
-                        'Description',\
-                        'Category',\
-                        'Account'\
-        ]
-        writer.writerow([unicode(s).encode("utf-8") for s in fields_names])
-        for money in register_list:
-            row_data = [money.id, \
-                        money.register_dt, \
-                        money.amount, \
-                        money.description, \
-                        money.category.name,\
-                        money.account.name]
-            writer.writerow([unicode(s).encode("utf-8") for s in row_data])
-
+        exportcsv.execute(args, extra_args, self)
 
     def import_csv(self, args, extra_args):
-        if len(args) > 0:
-            filename = args[0]
-        else:
-            filename = 'data.csv'
-
-        with open(filename) as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                # print(row['MoneyId'], row['Amount'], row['Date'])
-                moneyArgs = {
-                    'register_dt' : get_datetime_from({ARGS.datetime:[row['Date']]})[1],
-                    'category'    : get_category_from({ARGS.category:[row['Category']]})[1],
-                    'account'     : get_account_from({ARGS.category:[row['Account']]})[1],
-                    'amount'      : float(row['Amount']),
-                    'description' : row['Description']
-                }
-                moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
-                self.moneyDAO.save(moneyRegister)
+        importcsv.execute(args, extra_args, self)
 
     def get_commands(self):
         commands_parse = {

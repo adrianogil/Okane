@@ -149,7 +149,7 @@ okane -t <value> <account1> <account2> -dt <date>
 
 # How to Install
 
-You can use [gil-install][https://github.com/adrianogil/gil-tools/blob/master/src/python/gil_install.py]:
+You can use [gil-install](https://github.com/adrianogil/gil-tools/blob/master/src/python/gil_install.py):
 ```
 gil-install -i
 ```

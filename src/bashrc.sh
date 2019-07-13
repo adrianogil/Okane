@@ -11,12 +11,12 @@ function okane()
 {
     set-okane-python-path
 
-    python2 $OKANE_DIR/okane.py $*
+    python3 $OKANE_DIR/okane.py $*
 }
 
 function okanes()
 {
     set-okane-python-path
 
-    python2 $OKANE_DIR//okane.py $* --porcelain | less
+    python3 $OKANE_DIR//okane.py $* --porcelain | less
 }

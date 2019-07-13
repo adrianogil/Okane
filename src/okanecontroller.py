@@ -41,7 +41,7 @@ class bcolors:
 class OkaneController:
     def __init__(self, okane_directory):
         self.okane_directory = okane_directory
-        
+
         try:
             self.config_path = os.environ["OKANE_CONFIG_PATH"]
         except:
@@ -127,7 +127,7 @@ class OkaneController:
                 'category'    : get_category_from(extra_args)[1],
                 'account'     : get_account_from(extra_args)[1],
             }
-            for i in xrange(0, 2):
+            for i in range(0, 2):
                 if utils.is_float(args[i]):
                     moneyArgs['amount'] = float(args[i])
                 else:
@@ -135,7 +135,7 @@ class OkaneController:
             moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
             self.moneyDAO.save(moneyRegister)
             if len(args) > 2:
-                for i in xrange(2, len(args)):
+                for i in range(2, len(args)):
                     if utils.is_float(args[i]):
                         moneyArgs['amount'] = float(args[i])
                         moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
@@ -159,7 +159,7 @@ class OkaneController:
             if moneyRegister is None or moneyRegister.id < 0:
                 print("It couldn't find a financial register with given id.")
                 return
-            for i in xrange(1, len(args)):
+            for i in range(1, len(args)):
                 if utils.is_float(args[i]):
                     moneyRegister.amount = float(args[i])
                 else:
@@ -225,7 +225,7 @@ class OkaneController:
                                     outcome[account.name],\
                                     )
                     print('%s\t%10.2f [IN]%10.2f [OUT]%10.2f' % balance_data)
-                else:    
+                else:
                     print('\nBalance account: %s\n' % (account.name,))
                     print('Income: %10.2f' % (income[account.name]))
                     print('Outcome: %10.2f' % (outcome[account.name]))

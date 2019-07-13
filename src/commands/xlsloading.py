@@ -12,7 +12,7 @@ def execute(args, extra_args, controller):
 
             # import pdb; pdb.set_trace() # Start debugger
 
-            for i in xrange(0, total_registers):
+            for i in range(0, total_registers):
                 moneyArgs = {
                     'register_dt' : controller.get_datetime_from({ARGS.datetime:[df[keys[0]][i]]})[1],
                     'category'    : controller.get_category_from({ARGS.category:[df[keys[3]][i].strip()]})[1],

@@ -48,7 +48,10 @@ class OkaneController:
             self.config_path = self.okane_directory + "/../config/okane.config"
         self.load_config()
 
-        self.conn = sqlite3.connect(self.db_path);
+        db_folder = os.path.dirname(self.db_path)
+        if not os.path.exists(db_folder):
+            os.makedirs(db_folder)
+        self.conn = sqlite3.connect(self.db_path)
 
         # Creating cursor
         self.c = self.conn.cursor()

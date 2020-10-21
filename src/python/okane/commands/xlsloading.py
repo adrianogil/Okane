@@ -1,6 +1,7 @@
-import pandas as pd
+
 
 def execute(args, extra_args, controller):
+    import pandas as pd
     if len(args) == 1:
         xls_path = args[0]
         if os.path.isfile(xls_path):

@@ -85,7 +85,7 @@ class OkaneController:
         if ARGS.category in extra_args and len(extra_args[ARGS.category]) > 0:
             category_name = extra_args[ARGS.category][0]
             # print('DEBUG get_category_from ' + category_name)
-            if category_name is not '':
+            if category_name != '':
                 category = self.categoryDAO.getCategory(category_name)
                 if category is not None and category.id > -1:
                     return (True, category)
@@ -99,7 +99,7 @@ class OkaneController:
         if ARGS.account in extra_args and len(extra_args[ARGS.account]) > 0:
             account_name = extra_args[ARGS.account][0]
             # print('DEBUG get_account_from ' + account_name)
-            if account_name is not '':
+            if account_name != '':
                 account = self.accountDAO.getAccount(account_name)
                 if account is not None and account.id > -1:
                     return (True, account)
@@ -112,7 +112,7 @@ class OkaneController:
     def get_datetime_from(self, extra_args):
         if ARGS.datetime in extra_args and len(extra_args[ARGS.datetime]) > 0:
             datetime_str = extra_args[ARGS.datetime][0]
-            if datetime_str is not '':
+            if datetime_str != '':
                 try:
                     datetime_value = dtparse(datetime_str)
                     return (True, datetime_value)
@@ -267,8 +267,9 @@ class OkaneController:
             category_list = self.categoryDAO.getAll()
             for category in category_list:
                 row_data = (category.id, category.name)
-                row_text = bcolors.OKBLUE + 'Id:' + bcolors.ENDC + ' %s\t' + \
-                           bcolors.OKBLUE + 'Category:' + bcolors.ENDC + ' %s'
+                # row_text = bcolors.OKBLUE + 'Id:' + bcolors.ENDC + ' %s\t' + \
+                #            bcolors.OKBLUE + 'Category:' + bcolors.ENDC + ' %s'
+                row_text = 'Id: %s\tCategory: %s'
                 print(row_text % row_data )
 
     def update_category(self, args, extra_args):
@@ -297,8 +298,10 @@ class OkaneController:
             account_list = self.accountDAO.getAll()
             for account in account_list:
                 row_data = (account.id, account.name)
-                row_text = bcolors.OKBLUE + 'Id:' + bcolors.ENDC + ' %s\t' + \
-                           bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
+                # row_text = bcolors.OKBLUE + 'Id:' + bcolors.ENDC + ' %s\t' + \
+                #            bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
+                row_text = 'Id: %s\tAccount: %s'
+                # row_text = 'Id: %s\tAccount: %s'
                 print(row_text % row_data )
 
     def update_account(self, args, extra_args):

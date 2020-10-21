@@ -1,6 +1,7 @@
-from moneyregister import MoneyRegister
-from category import Category
-from account import Account
+from okane.entity.moneyregister import MoneyRegister
+from okane.entity.category import Category
+from okane.entity.account import Account
+
 
 class EntityFactory:
     def createMoneyRegister(self,args):

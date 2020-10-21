@@ -6,7 +6,7 @@ import utils
 import codecs
 import locale
 
-from okanecontroller import OkaneController
+from okane.okanecontroller import OkaneController
 
 # Open Connection
 okane_directory = os.environ['OKANE_DIR']

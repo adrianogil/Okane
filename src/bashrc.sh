@@ -1,22 +1,18 @@
-function set-okane-python-path()
-{
-    if [ -z "$OKANE_PYTHON_PATH" ]
-    then
-        export OKANE_PYTHON_PATH=$OKANE_DIR/src
-        export PYTHONPATH=$OKANE_PYTHON_PATH:$PYTHONPATH
-    fi
-}
+
+if [ -z "$OKANE_PYTHON_PATH" ]
+then
+    export OKANE_PYTHON_PATH=$OKANE_DIR/python
+    export PYTHONPATH=$OKANE_PYTHON_PATH:$PYTHONPATH
+fi
 
 function okane()
 {
-    set-okane-python-path
-
-    python3 $OKANE_DIR/okane.py $*
+    python3 -m okane $*
 }
 
 function okanes()
 {
     set-okane-python-path
 
-    python3 $OKANE_DIR//okane.py $* --porcelain | less
+    python3 -m okane $* --porcelain | less
 }

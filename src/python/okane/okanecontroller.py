@@ -1,25 +1,23 @@
-import sys, sqlite3, os, datetime
+from okane.dao.moneyregisterdao import MoneyRegisterDAO
+from okane.dao.categorydao import CategoryDAO
+from okane.dao.accountdao import AccountDAO
+
+from okane.entity.entityfactory import EntityFactory
+
+import okane.commands.showregisters as showregisters
+import okane.commands.importcsv
+import okane.commands.exportcsv
+import okane.commands.xlsloading
+
+import okane.utils as utils
+
 from dateutil.parser import parse as dtparse
 
-import utils, importutils
-
+import sys, sqlite3, os, datetime
 import csv
-
 import json
 
-importutils.addpath(__file__, 'dao')
-from dao.moneyregisterdao import MoneyRegisterDAO
-from dao.categorydao import CategoryDAO
-from dao.accountdao import AccountDAO
 
-importutils.addpath(__file__, 'entity')
-from entity.entityfactory import EntityFactory
-
-importutils.addpath(__file__, 'commands')
-import commands.showregisters as showregisters
-import commands.importcsv
-import commands.exportcsv
-import commands.xlsloading
 
 class ARGS:
     account     = '-ac'

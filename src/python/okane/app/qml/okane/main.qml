@@ -9,4 +9,11 @@ ApplicationWindow {
     width: 800
     height: 600
 
+
+    OkaneApplication {
+
+        anchors.fill: parent
+
+    }
+
 }

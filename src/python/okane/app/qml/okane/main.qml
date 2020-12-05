@@ -8,6 +8,7 @@ ApplicationWindow {
     visible: true
     width: 800
     height: 600
+    title: "Okane"
 
 
     OkaneApplication {

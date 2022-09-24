@@ -9,7 +9,12 @@ import locale
 from okane.okanecontroller import OkaneController
 
 # Open Connection
-okane_directory = os.environ['OKANE_DIR']
+okane_directory = os.environ.get('OKANE_DIR', '')
+
+if not okane_directory:
+    # Let's assume we are running directly from the repo folder
+    okane_directory = os.getcwd().replace('src/python', 'src')
+
 controller = OkaneController(okane_directory)
 
 

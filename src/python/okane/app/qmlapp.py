@@ -19,12 +19,15 @@ class QMLApp(QObject):
         self.app = QApplication(sys.argv)
         # Create a QML engine.
         self.qml_engine = QQmlApplicationEngine()
-        self.qml_engine.rootContext().setContextProperty("pyappview", self)
+        self.qml_engine.rootContext().setContextProperty("pyapp", self)
 
         self.main_qml = None
 
-
     def execute(self):
+        """
+            Executes main loop of QT
+            Main entry point of Qt/QML code
+        """
         self.qml_engine.load(self.main_qml)
         self.qml_engine.quit.connect(self.app.quit)
         sys.exit(self.app.exec_())

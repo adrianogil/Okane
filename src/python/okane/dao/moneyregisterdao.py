@@ -2,6 +2,7 @@ from dateutil.parser import parse as dtparse
 
 import datetime
 
+
 class MoneyRegisterDAO:
     def __init__(self, conn, cursor, entityFactory, categoryDAO, accountDAO):
         self.conn = conn

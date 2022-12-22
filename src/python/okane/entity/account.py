@@ -16,3 +16,4 @@ class Account:
                 }
             }
         )
+        self.name = name

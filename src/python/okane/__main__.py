@@ -7,6 +7,12 @@ import codecs
 import locale
 
 from okane.okanecontroller import OkaneController
+import okane.utils.logsystem as logsystem
+
+
+if '--debug' in sys.argv:
+    print("Debug mode activated")
+    logsystem.printlog.debug_mode = True
 
 # Open Connection
 okane_directory = os.environ.get('OKANE_DIR', '')

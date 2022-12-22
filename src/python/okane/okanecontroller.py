@@ -9,7 +9,7 @@ import okane.commands.importcsv
 import okane.commands.exportcsv
 import okane.commands.xlsloading
 
-import okane.utils as utils
+from okane.utils import utils as utils
 
 from dateutil.parser import parse as dtparse
 

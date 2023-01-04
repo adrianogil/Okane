@@ -5,6 +5,7 @@ from okane.dao.accountdao import AccountDAO
 from okane.entity.entityfactory import EntityFactory
 
 from okane.commands.listaccounts import execute as listaccounts
+from okane.commands.saveaccounts import execute as saveaccounts
 import okane.commands.showregisters as showregisters
 import okane.commands.importcsv
 import okane.commands.exportcsv
@@ -380,7 +381,7 @@ class OkaneController:
         commands_parse = {
             '-csv': self.import_csv,
             '-xls': self.load_from_xls,
-            '-sa' : self.save_account,
+            '-sa' : saveaccounts,
             '-la' : listaccounts,
             '-ua' : self.update_account,
             '-da' : self.delete_account,

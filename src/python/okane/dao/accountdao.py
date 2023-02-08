@@ -18,6 +18,7 @@ class AccountDAO:
         ''')
         self.defaultAccount = self.getAccount(AccountDAO.DEFAULT_Account)
         if self.defaultAccount is None:
+            print("Creating an 'IN CASH' account")
             self.saveAccount(AccountDAO.DEFAULT_Account)
             self.defaultAccount = self.getAccount(AccountDAO.DEFAULT_Account)
         # print('No Category with id: ' + str(self.noCategory.id))

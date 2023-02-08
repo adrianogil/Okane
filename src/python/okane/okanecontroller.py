@@ -4,9 +4,10 @@ from okane.dao.accountdao import AccountDAO
 
 from okane.entity.entityfactory import EntityFactory
 
-from okane.commands.listaccounts import execute as listaccounts
-from okane.commands.saveaccounts import execute as saveaccounts
-import okane.commands.showregisters as showregisters
+from okane.commands.listaccounts import execute as command_listaccounts
+from okane.commands.saveaccounts import execute as command_saveaccounts
+from okane.commands.updateaccounts import execute as command_updateaccounts
+import okane.commands.showregisters as command_showregisters
 import okane.commands.importcsv
 import okane.commands.exportcsv
 import okane.commands.xlsloading
@@ -182,7 +183,7 @@ class OkaneController:
             self.moneyDAO.update(moneyRegister)
 
     def show_registers(self, args, extra_args):
-        showregisters.execute(args, extra_args, self)
+        command_showregisters.execute(args, extra_args, self)
 
     def show_balance(self, args, extra_args):
         if len(args) == 0:
@@ -306,15 +307,6 @@ class OkaneController:
                 # row_text = 'Id: %s\tAccount: %s'
                 print(row_text % row_data )
 
-    def update_account(self, args, extra_args):
-        if len(args) == 2:
-            cat_id = int(args[0])
-            account = self.accountDAO.getAccountFromId(cat_id)
-            if account is None or account.id < 0:
-                print("It couldn't find account with the given id: " + str(cat_id))
-            account.name = args[1]
-            self.accountDAO.update(account)
-
     def delete_account(self, args, extra_args):
         if len(args) == 1:
             if utils.is_int(args[0]):
@@ -381,9 +373,9 @@ class OkaneController:
         commands_parse = {
             '-csv': self.import_csv,
             '-xls': self.load_from_xls,
-            '-sa' : saveaccounts,
-            '-la' : listaccounts,
-            '-ua' : self.update_account,
+            '-sa' : command_saveaccounts,
+            '-la' : command_listaccounts,
+            '-ua' : command_updateaccounts,
             '-da' : self.delete_account,
             '-lc' : self.list_categories,
             '-uc' : self.update_category,

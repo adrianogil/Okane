@@ -7,4 +7,4 @@ def execute(args, extra_args, controller):
             row_data = (account.id, account.name)
             row_text = 'Id: %s\tAccount: %s'
             # row_text = 'Id: %s\tAccount: %s'
-            print(row_text % row_data )
+            print(row_text % row_data)

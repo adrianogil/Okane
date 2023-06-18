@@ -7,7 +7,7 @@ from okane.entity.entityfactory import EntityFactory
 from okane.commands.listaccounts import execute as command_listaccounts
 from okane.commands.saveaccounts import execute as command_saveaccounts
 from okane.commands.updateaccounts import execute as command_updateaccounts
-import okane.commands.showregisters as command_showregisters
+from okane.commands.showregisters import execute as command_showregisters
 import okane.commands.importcsv
 import okane.commands.exportcsv
 import okane.commands.xlsloading
@@ -181,9 +181,6 @@ class OkaneController:
                 moneyRegister.register_dt = new_dt[1]
             # print('Trying to update register: ' + str(moneyRegister) )
             self.moneyDAO.update(moneyRegister)
-
-    def show_registers(self, args, extra_args):
-        command_showregisters.execute(args, extra_args, self)
 
     def show_balance(self, args, extra_args):
         if len(args) == 0:
@@ -385,10 +382,11 @@ class OkaneController:
             '-bc' : self.show_balance_per_category,
             '-t'  : self.transfer_operation,
             '-s'  : self.save_register,
-            '-l'  : self.show_registers,
+            '-l'  : command_showregisters,
             '-e'  : self.export_csv,
             '-d'  : self.delete_register,
             '-u'  : self.update_register,
-            '-b'  : self.show_balance
+            '-b'  : self.show_balance,
+            '--list': command_showregisters,
         }
         return commands_parse

@@ -9,6 +9,8 @@ from okane.commands.saveaccounts import execute as command_saveaccounts
 from okane.commands.updateaccounts import execute as command_updateaccounts
 
 import okane.commands.showregisters as command_showregisters
+import okane.commands.help as command_help
+
 import okane.commands.importcsv
 import okane.commands.exportcsv
 import okane.commands.xlsloading
@@ -369,7 +371,8 @@ class OkaneController:
 
     def define_commands(self):
         self.available_commands = [
-            command_showregisters
+            command_showregisters,
+            command_help
         ]
     
     # def get_commands(self):

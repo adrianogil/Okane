@@ -21,9 +21,9 @@ def get_cmd_flags():
     return ["-l", "--list"]
 
 
-def get_help_usage_str(application_name="okane"):
-    help_usage_str = f"\t{application_name} -e <repo-id> -nc <new-category-to-add> -rc <category-to-remove>: edit a repo\n"
-    help_usage_str += f"\t{application_name} -e -c <category> -nc <new-category-to-add> -rc <category-to-remove>: edit all repos that contains a category\n"
+def get_help_usage_str(application_cmd="okane"):
+    help_usage_str = f"\t{application_cmd} -l: list all registers\n"
+    help_usage_str += f"\t{application_cmd} --list: list all registers\n"
     return help_usage_str
 
 

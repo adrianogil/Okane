@@ -7,7 +7,8 @@ from okane.entity.entityfactory import EntityFactory
 from okane.commands.listaccounts import execute as command_listaccounts
 from okane.commands.saveaccounts import execute as command_saveaccounts
 from okane.commands.updateaccounts import execute as command_updateaccounts
-from okane.commands.showregisters import execute as command_showregisters
+
+import okane.commands.showregisters as command_showregisters
 import okane.commands.importcsv
 import okane.commands.exportcsv
 import okane.commands.xlsloading
@@ -366,27 +367,46 @@ class OkaneController:
     def import_csv(self, args, extra_args):
         importcsv.execute(args, extra_args, self)
 
+    def define_commands(self):
+        self.available_commands = [
+            command_showregisters
+        ]
+    
+    # def get_commands(self):
+    #     commands_parse = {
+    #         '-csv': self.import_csv,
+    #         '-xls': self.load_from_xls,
+    #         '-sa' : command_saveaccounts,
+    #         '-la' : command_listaccounts,
+    #         '-ua' : command_updateaccounts,
+    #         '-da' : self.delete_account,
+    #         '-lc' : self.list_categories,
+    #         '-uc' : self.update_category,
+    #         '-dc' : self.delete_category,
+    #         '-sc' : self.save_category,
+    #         '-ba' : self.show_balance_per_account,
+    #         '-bc' : self.show_balance_per_category,
+    #         '-t'  : self.transfer_operation,
+    #         '-s'  : self.save_register,
+    #         '-l'  : command_showregisters,
+    #         '-e'  : self.export_csv,
+    #         '-d'  : self.delete_register,
+    #         '-u'  : self.update_register,
+    #         '-b'  : self.show_balance,
+    #         '--list': command_showregisters,
+    #     }
+    #     return commands_parse
+    
     def get_commands(self):
         commands_parse = {
-            '-csv': self.import_csv,
-            '-xls': self.load_from_xls,
-            '-sa' : command_saveaccounts,
-            '-la' : command_listaccounts,
-            '-ua' : command_updateaccounts,
-            '-da' : self.delete_account,
-            '-lc' : self.list_categories,
-            '-uc' : self.update_category,
-            '-dc' : self.delete_category,
-            '-sc' : self.save_category,
-            '-ba' : self.show_balance_per_account,
-            '-bc' : self.show_balance_per_category,
-            '-t'  : self.transfer_operation,
-            '-s'  : self.save_register,
-            '-l'  : command_showregisters,
-            '-e'  : self.export_csv,
-            '-d'  : self.delete_register,
-            '-u'  : self.update_register,
-            '-b'  : self.show_balance,
-            '--list': command_showregisters,
+            # 'no-args'      : self.handle_no_args,
         }
+        self.define_commands()
+
+        for cmd in self.available_commands:
+            cmd_flags = cmd.get_cmd_flags()
+            for flag in cmd_flags:
+                commands_parse[flag] = cmd.execute
+
         return commands_parse
+    

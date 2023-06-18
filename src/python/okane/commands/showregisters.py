@@ -17,6 +17,16 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+def get_cmd_flags():
+    return ["-l", "--list"]
+
+
+def get_help_usage_str(application_name="okane"):
+    help_usage_str = f"\t{application_name} -e <repo-id> -nc <new-category-to-add> -rc <category-to-remove>: edit a repo\n"
+    help_usage_str += f"\t{application_name} -e -c <category> -nc <new-category-to-add> -rc <category-to-remove>: edit all repos that contains a category\n"
+    return help_usage_str
+
+
 def execute(args, extra_args, controller):
     dao_args = extra_args.copy()
 

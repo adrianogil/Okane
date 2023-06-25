@@ -4,10 +4,9 @@ from okane.dao.accountdao import AccountDAO
 
 from okane.entity.entityfactory import EntityFactory
 
-from okane.commands.listaccounts import execute as command_listaccounts
-from okane.commands.saveaccounts import execute as command_saveaccounts
-from okane.commands.updateaccounts import execute as command_updateaccounts
-
+import okane.commands.updateaccounts as command_updateaccounts
+import okane.commands.saveaccounts as command_saveaccounts
+import okane.commands.listaccounts as command_listaccounts
 import okane.commands.showregisters as command_showregisters
 import okane.commands.help as command_help
 
@@ -372,6 +371,9 @@ class OkaneController:
     def define_commands(self):
         self.available_commands = [
             command_showregisters,
+            command_listaccounts,
+            command_saveaccounts,
+            command_updateaccounts,
             command_help
         ]
     
@@ -402,7 +404,7 @@ class OkaneController:
     
     def get_commands(self):
         commands_parse = {
-            # 'no-args'      : self.handle_no_args,
+            'no-args'      : self.handle_no_args,
         }
         self.define_commands()
 
@@ -412,4 +414,7 @@ class OkaneController:
                 commands_parse[flag] = cmd.execute
 
         return commands_parse
+
+    def handle_no_args(self):
+        print("TODO: implement support for no args")
     

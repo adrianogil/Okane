@@ -1,4 +1,13 @@
 
+def get_cmd_flags():
+    return ["-la", "--list-accounts"]
+
+
+def get_help_usage_str(application_cmd="okane"):
+    help_usage_str = f"\t{application_cmd} -la: list all accounts\n"
+    help_usage_str += f"\t{application_cmd} --list-accounts: list all accounts\n"
+    return help_usage_str
+
 
 def execute(args, extra_args, controller):
     if len(args) == 0:

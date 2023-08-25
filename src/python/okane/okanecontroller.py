@@ -8,6 +8,7 @@ import okane.commands.updateaccounts as command_updateaccounts
 import okane.commands.saveaccounts as command_saveaccounts
 import okane.commands.listaccounts as command_listaccounts
 import okane.commands.showregisters as command_showregisters
+import okane.commands.listcategories as command_listcategories
 import okane.commands.help as command_help
 
 import okane.commands.importcsv
@@ -263,17 +264,6 @@ class OkaneController:
         if len(args) == 1:
             self.categoryDAO.saveCategory(args[0])
 
-
-    def list_categories(self, args, extra_args):
-        if len(args) == 0:
-            category_list = self.categoryDAO.getAll()
-            for category in category_list:
-                row_data = (category.id, category.name)
-                # row_text = bcolors.OKBLUE + 'Id:' + bcolors.ENDC + ' %s\t' + \
-                #            bcolors.OKBLUE + 'Category:' + bcolors.ENDC + ' %s'
-                row_text = 'Id: %s\tCategory: %s'
-                print(row_text % row_data )
-
     def update_category(self, args, extra_args):
         if len(args) == 2:
             cat_id = int(args[0])
@@ -374,6 +364,7 @@ class OkaneController:
             command_listaccounts,
             command_saveaccounts,
             command_updateaccounts,
+            command_listcategories,
             command_help
         ]
     

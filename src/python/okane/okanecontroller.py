@@ -9,6 +9,7 @@ import okane.commands.saveaccounts as command_saveaccounts
 import okane.commands.listaccounts as command_listaccounts
 import okane.commands.showregisters as command_showregisters
 import okane.commands.listcategories as command_listcategories
+import okane.commands.savecategory as command_savecategory
 import okane.commands.help as command_help
 
 import okane.commands.importcsv
@@ -365,6 +366,7 @@ class OkaneController:
             command_saveaccounts,
             command_updateaccounts,
             command_listcategories,
+            command_savecategory,
             command_help
         ]
     

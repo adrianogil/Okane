@@ -7,6 +7,7 @@ from okane.entity.entityfactory import EntityFactory
 import okane.commands.updateaccounts as command_updateaccounts
 import okane.commands.saveaccounts as command_saveaccounts
 import okane.commands.listaccounts as command_listaccounts
+import okane.commands.deleteaccount as command_deleteaccount
 import okane.commands.showregisters as command_showregisters
 import okane.commands.listcategories as command_listcategories
 import okane.commands.savecategory as command_savecategory
@@ -297,20 +298,6 @@ class OkaneController:
                 # row_text = 'Id: %s\tAccount: %s'
                 print(row_text % row_data )
 
-    def delete_account(self, args, extra_args):
-        if len(args) == 1:
-            if utils.is_int(args[0]):
-                cat_id = int(args[0])
-                account = self.accountDAO.getAccountFromId(cat_id)
-            else:
-                account_name = args[0]
-                account = self.accountDAO.getAccount(account_name)
-            if account is None or account.id < 0:
-                print("It couldn't find account with the given parameter: " + args[0])
-                return
-
-            self.accountDAO.delete(account)
-
     def transfer_operation(self, args, extra_args):
         if len(args) == 3:
             amount = float(args[0])
@@ -365,6 +352,7 @@ class OkaneController:
             command_listaccounts,
             command_saveaccounts,
             command_updateaccounts,
+            command_deleteaccount,
             command_listcategories,
             command_savecategory,
             command_help
@@ -377,7 +365,6 @@ class OkaneController:
     #         '-sa' : command_saveaccounts,
     #         '-la' : command_listaccounts,
     #         '-ua' : command_updateaccounts,
-    #         '-da' : self.delete_account,
     #         '-lc' : self.list_categories,
     #         '-uc' : self.update_category,
     #         '-dc' : self.delete_category,

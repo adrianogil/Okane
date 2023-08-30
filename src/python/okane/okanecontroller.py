@@ -11,6 +11,7 @@ import okane.commands.deleteaccount as command_deleteaccount
 import okane.commands.showregisters as command_showregisters
 import okane.commands.listcategories as command_listcategories
 import okane.commands.savecategory as command_savecategory
+import okane.commands.deletecategory as command_deletecategory
 import okane.commands.help as command_help
 
 import okane.commands.importcsv
@@ -275,14 +276,6 @@ class OkaneController:
             category.name = args[1]
             self.categoryDAO.updateCategory(category)
 
-    def delete_category(self, args, extra_args):
-        if len(args) == 1:
-            cat_id = int(args[0])
-            category = self.categoryDAO.getCategoryFromId(cat_id)
-            if category is None or category.id < 0:
-                print("It couldn't find category with the given id: " + str(cat_id))
-            self.categoryDAO.delete(category)
-
     def save_account(self, args, extra_args):
         if len(args) == 1:
             self.accountDAO.saveAccount(args[0])
@@ -355,6 +348,7 @@ class OkaneController:
             command_deleteaccount,
             command_listcategories,
             command_savecategory,
+            command_deletecategory,
             command_help
         ]
     

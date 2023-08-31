@@ -13,6 +13,7 @@ import okane.commands.updatecategory as command_updatecategory
 import okane.commands.listcategories as command_listcategories
 import okane.commands.savecategory as command_savecategory
 import okane.commands.deletecategory as command_deletecategory
+import okane.commands.saveregister as command_saveregister
 import okane.commands.help as command_help
 
 import okane.commands.importcsv
@@ -129,29 +130,6 @@ class OkaneController:
                 except:
                     pass
         return (False, datetime.datetime.now())
-
-    def save_register(self, args, extra_args):
-        # print('DEBUG: save_register with args: ' + str(args) + ' and extra_args: ' + str(extra_args))
-        if len(args) >= 2:
-            moneyArgs = {
-                'register_dt' : get_datetime_from(extra_args)[1],
-                'category'    : get_category_from(extra_args)[1],
-                'account'     : get_account_from(extra_args)[1],
-            }
-            for i in range(0, 2):
-                if utils.is_float(args[i]):
-                    moneyArgs['amount'] = float(args[i])
-                else:
-                    moneyArgs['description'] = args[i]
-            moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
-            self.moneyDAO.save(moneyRegister)
-            if len(args) > 2:
-                for i in range(2, len(args)):
-                    if utils.is_float(args[i]):
-                        moneyArgs['amount'] = float(args[i])
-                        moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
-                        self.moneyDAO.save(moneyRegister)
-
 
     def delete_register(self, args, extra_args):
         if len(args) == 1:
@@ -314,6 +292,7 @@ class OkaneController:
 
     def define_commands(self):
         self.available_commands = [
+            command_saveregister,
             command_showregisters,
             command_listaccounts,
             command_saveaccounts,
@@ -330,17 +309,13 @@ class OkaneController:
     #     commands_parse = {
     #         '-csv': self.import_csv,
     #         '-xls': self.load_from_xls,
-    #         '-sc' : self.save_category,
     #         '-ba' : self.show_balance_per_account,
     #         '-bc' : self.show_balance_per_category,
     #         '-t'  : self.transfer_operation,
-    #         '-s'  : self.save_register,
-    #         '-l'  : command_showregisters,
     #         '-e'  : self.export_csv,
     #         '-d'  : self.delete_register,
     #         '-u'  : self.update_register,
     #         '-b'  : self.show_balance,
-    #         '--list': command_showregisters,
     #     }
     #     return commands_parse
     

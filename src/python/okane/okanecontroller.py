@@ -9,6 +9,7 @@ import okane.commands.saveaccounts as command_saveaccounts
 import okane.commands.listaccounts as command_listaccounts
 import okane.commands.deleteaccount as command_deleteaccount
 import okane.commands.showregisters as command_showregisters
+import okane.commands.updatecategory as command_updatecategory
 import okane.commands.listcategories as command_listcategories
 import okane.commands.savecategory as command_savecategory
 import okane.commands.deletecategory as command_deletecategory
@@ -263,34 +264,6 @@ class OkaneController:
                 print('Outcome: %10.2f' % (outcome[category.name]))
                 print('Balance: %10.2f' % (balance[category.name]))
 
-    def save_category(self, args, extra_args):
-        if len(args) == 1:
-            self.categoryDAO.saveCategory(args[0])
-
-    def update_category(self, args, extra_args):
-        if len(args) == 2:
-            cat_id = int(args[0])
-            category = self.categoryDAO.getCategoryFromId(cat_id)
-            if category is None or category.id < 0:
-                print("It couldn't find category with the given id: " + str(cat_id))
-            category.name = args[1]
-            self.categoryDAO.updateCategory(category)
-
-    def save_account(self, args, extra_args):
-        if len(args) == 1:
-            self.accountDAO.saveAccount(args[0])
-
-    def list_accounts(self, args, extra_args):
-        if len(args) == 0:
-            account_list = self.accountDAO.getAll()
-            for account in account_list:
-                row_data = (account.id, account.name)
-                # row_text = bcolors.OKBLUE + 'Id:' + bcolors.ENDC + ' %s\t' + \
-                #            bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
-                row_text = 'Id: %s\tAccount: %s'
-                # row_text = 'Id: %s\tAccount: %s'
-                print(row_text % row_data )
-
     def transfer_operation(self, args, extra_args):
         if len(args) == 3:
             amount = float(args[0])
@@ -346,6 +319,7 @@ class OkaneController:
             command_saveaccounts,
             command_updateaccounts,
             command_deleteaccount,
+            command_updatecategory,
             command_listcategories,
             command_savecategory,
             command_deletecategory,
@@ -356,12 +330,6 @@ class OkaneController:
     #     commands_parse = {
     #         '-csv': self.import_csv,
     #         '-xls': self.load_from_xls,
-    #         '-sa' : command_saveaccounts,
-    #         '-la' : command_listaccounts,
-    #         '-ua' : command_updateaccounts,
-    #         '-lc' : self.list_categories,
-    #         '-uc' : self.update_category,
-    #         '-dc' : self.delete_category,
     #         '-sc' : self.save_category,
     #         '-ba' : self.show_balance_per_account,
     #         '-bc' : self.show_balance_per_category,

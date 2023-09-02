@@ -14,6 +14,7 @@ import okane.commands.listcategories as command_listcategories
 import okane.commands.savecategory as command_savecategory
 import okane.commands.deletecategory as command_deletecategory
 import okane.commands.saveregister as command_saveregister
+import okane.commands.showbalanceperaccount as command_showbalanceperaccount
 import okane.commands.help as command_help
 
 import okane.commands.importcsv
@@ -21,6 +22,7 @@ import okane.commands.exportcsv
 import okane.commands.xlsloading
 
 from okane.utils import utils as utils
+from okane.args import ARGS, bcolors
 
 from dateutil.parser import parse as dtparse
 
@@ -28,24 +30,6 @@ import sys, sqlite3, os, datetime
 import csv
 import json
 
-
-
-class ARGS:
-    account     = '-ac'
-    category    = '-cs'
-    datetime    = '-dt'
-    porcelain   = '--porcelain'
-    oneline     = '-oneline'
-
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
 
 class OkaneController:
     def __init__(self, okane_directory):
@@ -184,39 +168,6 @@ class OkaneController:
             print('Outcome: %10.2f' % (outcome))
             print('Balance: %10.2f' % (balance))
 
-    def show_balance_per_account(self, args, extra_args):
-        if len(args) == 0:
-            account_list = self.accountDAO.getAll()
-            register_list = self.moneyDAO.getAll(extra_args)
-
-            income = {}
-            outcome = {}
-            balance = {}
-
-            for account in account_list:
-                income[account.name] = 0
-                outcome[account.name] = 0
-                balance[account.name] = 0
-            for money in register_list:
-                if money.amount >= 0:
-                    income[money.account.name] = income[money.account.name] + money.amount
-                else:
-                    outcome[money.account.name] = outcome[money.account.name] + (-1) * money.amount
-                balance[money.account.name] = balance[money.account.name] + money.amount
-            for account in account_list:
-                if ARGS.oneline in extra_args:
-                    balance_data = (account.name, \
-                                    balance[account.name],\
-                                    income[account.name], \
-                                    outcome[account.name],\
-                                    )
-                    print('%s\t%10.2f [IN]%10.2f [OUT]%10.2f' % balance_data)
-                else:
-                    print('\nBalance account: %s\n' % (account.name,))
-                    print('Income: %10.2f' % (income[account.name]))
-                    print('Outcome: %10.2f' % (outcome[account.name]))
-                    print('Balance: %10.2f' % (balance[account.name]))
-
     def show_balance_per_category(self, args, extra_args):
         if len(args) == 0:
             category_list = self.categoryDAO.getAll()
@@ -302,6 +253,7 @@ class OkaneController:
             command_listcategories,
             command_savecategory,
             command_deletecategory,
+            command_showbalanceperaccount,
             command_help
         ]
     
@@ -309,7 +261,6 @@ class OkaneController:
     #     commands_parse = {
     #         '-csv': self.import_csv,
     #         '-xls': self.load_from_xls,
-    #         '-ba' : self.show_balance_per_account,
     #         '-bc' : self.show_balance_per_category,
     #         '-t'  : self.transfer_operation,
     #         '-e'  : self.export_csv,

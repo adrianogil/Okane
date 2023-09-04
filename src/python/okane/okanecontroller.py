@@ -14,6 +14,7 @@ import okane.commands.listcategories as command_listcategories
 import okane.commands.savecategory as command_savecategory
 import okane.commands.deletecategory as command_deletecategory
 import okane.commands.saveregister as command_saveregister
+import okane.commands.deleteregister as command_deleteregister
 import okane.commands.showbalanceperaccount as command_showbalanceperaccount
 import okane.commands.help as command_help
 
@@ -114,16 +115,6 @@ class OkaneController:
                 except:
                     pass
         return (False, datetime.datetime.now())
-
-    def delete_register(self, args, extra_args):
-        if len(args) == 1:
-            money_id = int(args[0])
-            moneyRegister = self.moneyDAO.getFromId(money_id)
-            if moneyRegister is None or moneyRegister.id < 0:
-                print("It couldn't find a financial register with given id.")
-                return
-            self.moneyDAO.delete(moneyRegister)
-            print('Register deleted!')
 
     def update_register(self, args, extra_args):
         if len(args) >= 1:
@@ -253,6 +244,7 @@ class OkaneController:
             command_listcategories,
             command_savecategory,
             command_deletecategory,
+            command_deleteregister,
             command_showbalanceperaccount,
             command_help
         ]
@@ -264,7 +256,6 @@ class OkaneController:
     #         '-bc' : self.show_balance_per_category,
     #         '-t'  : self.transfer_operation,
     #         '-e'  : self.export_csv,
-    #         '-d'  : self.delete_register,
     #         '-u'  : self.update_register,
     #         '-b'  : self.show_balance,
     #     }

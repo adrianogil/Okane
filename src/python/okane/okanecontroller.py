@@ -15,6 +15,7 @@ import okane.commands.savecategory as command_savecategory
 import okane.commands.deletecategory as command_deletecategory
 import okane.commands.saveregister as command_saveregister
 import okane.commands.deleteregister as command_deleteregister
+import okane.commands.updateregister as command_updateregister
 import okane.commands.showbalanceperaccount as command_showbalanceperaccount
 import okane.commands.help as command_help
 
@@ -115,32 +116,6 @@ class OkaneController:
                 except:
                     pass
         return (False, datetime.datetime.now())
-
-    def update_register(self, args, extra_args):
-        if len(args) >= 1:
-            money_id = int(args[0])
-            moneyRegister = self.moneyDAO.getFromId(money_id)
-            if moneyRegister is None or moneyRegister.id < 0:
-                print("It couldn't find a financial register with given id.")
-                return
-            for i in range(1, len(args)):
-                if utils.is_float(args[i]):
-                    moneyRegister.amount = float(args[i])
-                else:
-                    moneyRegister.description = args[i]
-            new_cat = get_category_from(extra_args)
-            if new_cat[0]:
-                moneyRegister.category = new_cat[1]
-
-            new_account = get_account_from(extra_args)
-            if new_account[0]:
-                moneyRegister.account = new_account[1]
-
-            new_dt = get_datetime_from(extra_args)
-            if new_dt[0]:
-                moneyRegister.register_dt = new_dt[1]
-            # print('Trying to update register: ' + str(moneyRegister) )
-            self.moneyDAO.update(moneyRegister)
 
     def show_balance(self, args, extra_args):
         if len(args) == 0:
@@ -245,6 +220,7 @@ class OkaneController:
             command_savecategory,
             command_deletecategory,
             command_deleteregister,
+            command_updateregister,
             command_showbalanceperaccount,
             command_help
         ]
@@ -256,7 +232,6 @@ class OkaneController:
     #         '-bc' : self.show_balance_per_category,
     #         '-t'  : self.transfer_operation,
     #         '-e'  : self.export_csv,
-    #         '-u'  : self.update_register,
     #         '-b'  : self.show_balance,
     #     }
     #     return commands_parse

@@ -16,6 +16,7 @@ import okane.commands.deletecategory as command_deletecategory
 import okane.commands.saveregister as command_saveregister
 import okane.commands.deleteregister as command_deleteregister
 import okane.commands.updateregister as command_updateregister
+import okane.commands.showbalance as command_showbalance
 import okane.commands.showbalanceperaccount as command_showbalanceperaccount
 import okane.commands.help as command_help
 
@@ -117,23 +118,6 @@ class OkaneController:
                     pass
         return (False, datetime.datetime.now())
 
-    def show_balance(self, args, extra_args):
-        if len(args) == 0:
-            register_list = self.moneyDAO.getAll(extra_args)
-            income = 0
-            outcome = 0
-            balance = 0
-            for money in register_list:
-                if not money.category.name == 'Transfer':
-                    if money.amount >= 0:
-                        income = income + money.amount
-                    else:
-                        outcome = outcome + (-1) * money.amount
-                    balance = balance + money.amount
-            print('Income: %10.2f' % (income))
-            print('Outcome: %10.2f' % (outcome))
-            print('Balance: %10.2f' % (balance))
-
     def show_balance_per_category(self, args, extra_args):
         if len(args) == 0:
             category_list = self.categoryDAO.getAll()
@@ -221,6 +205,7 @@ class OkaneController:
             command_deletecategory,
             command_deleteregister,
             command_updateregister,
+            command_showbalance,
             command_showbalanceperaccount,
             command_help
         ]

@@ -18,6 +18,7 @@ import okane.commands.deleteregister as command_deleteregister
 import okane.commands.updateregister as command_updateregister
 import okane.commands.showbalance as command_showbalance
 import okane.commands.showbalanceperaccount as command_showbalanceperaccount
+import okane.commands.showbalancepercategory as command_showbalancepercategory
 import okane.commands.help as command_help
 
 import okane.commands.importcsv
@@ -118,31 +119,6 @@ class OkaneController:
                     pass
         return (False, datetime.datetime.now())
 
-    def show_balance_per_category(self, args, extra_args):
-        if len(args) == 0:
-            category_list = self.categoryDAO.getAll()
-            register_list = self.moneyDAO.getAll(extra_args)
-
-            income = {}
-            outcome = {}
-            balance = {}
-
-            for category in category_list:
-                income[category.name] = 0
-                outcome[category.name] = 0
-                balance[category.name] = 0
-            for money in register_list:
-                if money.amount >= 0:
-                    income[money.category.name] = income[money.category.name] + money.amount
-                else:
-                    outcome[money.category.name] = outcome[money.category.name] + (-1) * money.amount
-                balance[money.category.name] = balance[money.category.name] + money.amount
-            for category in category_list:
-                print('\nBalance category: %s\n' % (category.name,))
-                print('Income: %10.2f' % (income[category.name]))
-                print('Outcome: %10.2f' % (outcome[category.name]))
-                print('Balance: %10.2f' % (balance[category.name]))
-
     def transfer_operation(self, args, extra_args):
         if len(args) == 3:
             amount = float(args[0])
@@ -207,6 +183,7 @@ class OkaneController:
             command_updateregister,
             command_showbalance,
             command_showbalanceperaccount,
+            command_showbalancepercategory,
             command_help
         ]
     
@@ -217,7 +194,6 @@ class OkaneController:
     #         '-bc' : self.show_balance_per_category,
     #         '-t'  : self.transfer_operation,
     #         '-e'  : self.export_csv,
-    #         '-b'  : self.show_balance,
     #     }
     #     return commands_parse
     

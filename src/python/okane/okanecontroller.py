@@ -20,10 +20,10 @@ import okane.commands.showbalance as command_showbalance
 import okane.commands.showbalanceperaccount as command_showbalanceperaccount
 import okane.commands.showbalancepercategory as command_showbalancepercategory
 import okane.commands.transferoperation as command_transferoperation
+import okane.commands.importcsv as command_importcsv
+import okane.commands.exportcsv  as command_exportcsv
 import okane.commands.help as command_help
 
-import okane.commands.importcsv
-import okane.commands.exportcsv
 import okane.commands.xlsloading
 
 from okane.utils import utils as utils
@@ -127,9 +127,6 @@ class OkaneController:
     def export_csv(self, args, extra_args):
         exportcsv.execute(args, extra_args, self)
 
-    def import_csv(self, args, extra_args):
-        importcsv.execute(args, extra_args, self)
-
     def define_commands(self):
         self.available_commands = [
             command_saveregister,
@@ -148,14 +145,14 @@ class OkaneController:
             command_showbalanceperaccount,
             command_showbalancepercategory,
             command_transferoperation,
+            command_importcsv,
+            command_exportcsv,
             command_help
         ]
     
     # def get_commands(self):
     #     commands_parse = {
-    #         '-csv': self.import_csv,
     #         '-xls': self.load_from_xls,
-    #         '-e'  : self.export_csv,
     #     }
     #     return commands_parse
     

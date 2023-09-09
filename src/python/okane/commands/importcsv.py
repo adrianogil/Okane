@@ -1,4 +1,17 @@
+from okane.args import ARGS, bcolors
+
 import csv
+
+
+def get_cmd_flags():
+    return ["-csv", "--import-csv"]
+
+
+def get_help_usage_str(application_cmd="okane"):
+    help_usage_str = f"\t{application_cmd} -csv <path-csv-to-be-loaded>: import a csv file\n"
+    help_usage_str += f"\t{application_cmd} --import-csv <path-csv-to-be-loaded>: import a csv file\n"
+    return help_usage_str
+
 
 def execute(args, extra_args, controller):
     if len(args) > 0:
@@ -17,5 +30,5 @@ def execute(args, extra_args, controller):
                 'amount'      : float(row['Amount']),
                 'description' : row['Description']
             }
-            moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
+            moneyRegister = controller.entityFactory.createMoneyRegister(moneyArgs)
             controller.moneyDAO.save(moneyRegister)

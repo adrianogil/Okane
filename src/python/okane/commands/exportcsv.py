@@ -1,21 +1,14 @@
+from okane.args import ARGS, bcolors
+
 import csv
 
-class ARGS:
-    account     = '-ac'
-    category    = '-cs'
-    datetime    = '-dt'
-    porcelain   = '--porcelain'
-    oneline     = '-oneline'
+def get_cmd_flags():
+    return ["-e", "--export-csv"]
 
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+def get_help_usage_str(application_cmd="okane"):
+    help_usage_str = f"\t{application_cmd} -e <path-csv-to-be-saved>: export a csv file\n"
+    help_usage_str += f"\t{application_cmd} --export-csv <path-csv-to-be-saved>: export a csv file\n"
+    return help_usage_str
 
 def execute(args, extra_args, controller):
     if len(args) > 0:
@@ -38,22 +31,25 @@ def execute(args, extra_args, controller):
         for c in extra_args[ARGS.category]:
             category_conditions.append(controller.get_category_from({ARGS.category : [c]})[1])
         dao_args['categories'] = category_conditions
+
     register_list = controller.moneyDAO.getAll(dao_args)
 
-    writer = csv.writer(open(filename, 'w'))
-    fields_names = ['MoneyId', \
-                    'Date',\
-                    'Amount',\
-                    'Description',\
-                    'Category',\
-                    'Account'\
-    ]
-    writer.writerow([unicode(s).encode("utf-8") for s in fields_names])
-    for money in register_list:
-        row_data = [money.id, \
-                    money.register_dt, \
-                    money.amount, \
-                    money.description, \
-                    money.category.name,\
-                    money.account.name]
-        writer.writerow([unicode(s).encode("utf-8") for s in row_data])
+    # Open the file with utf-8 encoding
+    with open(filename, 'w', encoding="utf-8") as csvfile:
+        writer = csv.writer(csvfile)
+        fields_names = ['MoneyId', \
+                        'Date',\
+                        'Amount',\
+                        'Description',\
+                        'Category',\
+                        'Account'\
+        ]
+        writer.writerow([str(s) for s in fields_names])
+        for money in register_list:
+            row_data = [money.id, \
+                        money.register_dt, \
+                        money.amount, \
+                        money.description, \
+                        money.category.name,\
+                        money.account.name]
+            writer.writerow([str(s) for s in row_data])

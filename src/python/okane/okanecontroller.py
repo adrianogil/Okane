@@ -19,6 +19,7 @@ import okane.commands.updateregister as command_updateregister
 import okane.commands.showbalance as command_showbalance
 import okane.commands.showbalanceperaccount as command_showbalanceperaccount
 import okane.commands.showbalancepercategory as command_showbalancepercategory
+import okane.commands.transferoperation as command_transferoperation
 import okane.commands.help as command_help
 
 import okane.commands.importcsv
@@ -119,44 +120,6 @@ class OkaneController:
                     pass
         return (False, datetime.datetime.now())
 
-    def transfer_operation(self, args, extra_args):
-        if len(args) == 3:
-            amount = float(args[0])
-            account1_name = args[1]
-            account2_name = args[2]
-
-            account1_result = get_account_from({ARGS.account : [account1_name]})
-            if account1_result[0]:
-                account1 = account1_result[1]
-            else:
-                return
-            account2_result = get_account_from({ARGS.account : [account2_name]})
-            if account2_result[0]:
-                account2 = account2_result[1]
-            else:
-                return
-
-            moneyArgs = {
-                'register_dt' : get_datetime_from(extra_args)[1],
-                'category'    : get_category_from({ARGS.category:["Transfer"]})[1],
-                'account'     : account1,
-                'amount'      : -amount,
-                'description' : "Transferido para a conta '" + account2.name + "'"
-            }
-            moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
-            self.moneyDAO.save(moneyRegister)
-
-            moneyArgs = {
-                'register_dt' : get_datetime_from(extra_args)[1],
-                'category'    : get_category_from({ARGS.category:["Transfer"]})[1],
-                'account'     : account2,
-                'amount'      : amount,
-                'description' : "Transferido da conta '" + account1.name + "'"
-            }
-            moneyRegister = entityFactory.createMoneyRegister(moneyArgs)
-            self.moneyDAO.save(moneyRegister)
-
-
 
     def load_from_xls(self, args, extra_args):
         xlsloading.execute(args, extra_args, self)
@@ -184,6 +147,7 @@ class OkaneController:
             command_showbalance,
             command_showbalanceperaccount,
             command_showbalancepercategory,
+            command_transferoperation,
             command_help
         ]
     
@@ -191,7 +155,6 @@ class OkaneController:
     #     commands_parse = {
     #         '-csv': self.import_csv,
     #         '-xls': self.load_from_xls,
-    #         '-t'  : self.transfer_operation,
     #         '-e'  : self.export_csv,
     #     }
     #     return commands_parse

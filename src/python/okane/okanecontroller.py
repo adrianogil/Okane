@@ -191,7 +191,6 @@ class OkaneController:
     #     commands_parse = {
     #         '-csv': self.import_csv,
     #         '-xls': self.load_from_xls,
-    #         '-bc' : self.show_balance_per_category,
     #         '-t'  : self.transfer_operation,
     #         '-e'  : self.export_csv,
     #     }

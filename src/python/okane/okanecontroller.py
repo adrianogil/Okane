@@ -8,7 +8,7 @@ import okane.commands.updateaccounts as command_updateaccounts
 import okane.commands.saveaccounts as command_saveaccounts
 import okane.commands.listaccounts as command_listaccounts
 import okane.commands.deleteaccount as command_deleteaccount
-import okane.commands.showregisters as command_showregisters
+import okane.commands.listregisters as command_listregisters
 import okane.commands.updatecategory as command_updatecategory
 import okane.commands.listcategories as command_listcategories
 import okane.commands.savecategory as command_savecategory
@@ -133,7 +133,7 @@ class OkaneController:
     def define_commands(self):
         self.available_commands = [
             command_saveregister,
-            command_showregisters,
+            command_listregisters,
             command_listaccounts,
             command_saveaccounts,
             command_updateaccounts,

@@ -1,4 +1,12 @@
+from okane.args import ARGS
 
+def get_cmd_flags():
+    return ["-xlsl", "--import-xlsl"]
+
+def get_help_usage_str(application_cmd="okane"):
+    help_usage_str = f"\t{application_cmd} -xlsl <path-xlsl-to-be-loaded>: import a xlsl file\n"
+    help_usage_str += f"\t{application_cmd} --import-xlsl <path-xlsl-to-be-loaded>: import a xlsl file\n"
+    return help_usage_str
 
 def execute(args, extra_args, controller):
     import pandas as pd

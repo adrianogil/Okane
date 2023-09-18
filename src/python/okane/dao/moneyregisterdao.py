@@ -4,9 +4,9 @@ import datetime
 
 
 class MoneyRegisterDAO:
-    def __init__(self, conn, cursor, entityFactory, categoryDAO, accountDAO):
-        self.conn = conn
-        self.cursor = cursor
+    def __init__(self, db_controller, entityFactory, categoryDAO, accountDAO):
+        self.conn = db_controller.conn
+        self.cursor = db_controller.cursor
         self.entityFactory = entityFactory
         self.categoryDAO = categoryDAO
         self.accountDAO = accountDAO

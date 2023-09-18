@@ -2,9 +2,9 @@
 class AccountDAO:
     DEFAULT_Account = 'In Cash'
 
-    def __init__(self, conn, cursor, entityFactory):
-        self.conn = conn
-        self.cursor = cursor
+    def __init__(self, db_controller, entityFactory):
+        self.conn = db_controller.conn
+        self.cursor = db_controller.cursor
         self.entityFactory = entityFactory
         self.noCategory = None
 

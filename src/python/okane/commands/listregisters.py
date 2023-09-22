@@ -1,22 +1,6 @@
 from okane.args import ARGS, bcolors
 from okane.utils import utils
 
-class ARGS:
-    account     = '-ac'
-    category    = '-cs'
-    datetime    = '-dt'
-    porcelain   = '--porcelain'
-    oneline     = '-oneline'
-
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
 
 def get_cmd_flags():
     return ["-l", "--list"]
@@ -30,6 +14,11 @@ def get_help_usage_str(application_cmd="okane"):
 
 def execute(args, extra_args, controller):
     dao_args = extra_args.copy()
+    if '--format' in extra_args or '-f' in extra_args:
+        if '--format' in extra_args:
+            format_args = extra_args['--format']
+        else:
+            format_args = extra_args['-f']
 
     for a in args:
         if utils.is_int(a):
@@ -90,11 +79,8 @@ def execute(args, extra_args, controller):
                        bcolors.OKBLUE + '\nCategory:' + bcolors.ENDC + ' %s\t' + \
                        bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
         print(row_text % row_data )
+        if 'bl' in format_args:
+            print('\nBalance:\t%s' % (total_amount,))
     if '--format' in extra_args or '-f' in extra_args:
-        if '--format' in extra_args:
-            format_args = extra_args['--format']
-        else:
-            format_args = extra_args['-f']
-
         if 'b' in format_args:
             print('\nBalance:\t%s' % (total_amount,))

@@ -1,8 +1,17 @@
-# Okane
-お金: Personal finance manager via command line
+# Okane (お金)
+> Personal Finance Manager via Command Line.
 
+Manage your personal finance using a simple and effective command line interface.
 
-# Command line options
+## Table of Contents
+
+- [Command Line Options](#command-line-options)
+- [Installation](#how-to-install)
+- [Planned Features](#planned-features)
+- [Contributing](#contributing)
+- [Development Status](#development-status)
+
+## Command Line Options
 
 Save a register
 
@@ -143,9 +152,9 @@ okane -t <value> <account1> <account2> -dt <date>
 ```
 
 ## Planned features
-- List all registers that are in given accounts
-- List all registers in a specific time interval
-- Plot charts
+- List all registers that are in given accounts.
+- List all registers in a specific time interval.
+- Capability to plot charts.
 
 # How to Install
 
@@ -162,8 +171,8 @@ source $OKANE_DIR/src/bashrc.sh
 
 ## Contributing
 
-Feel free to submit PRs. I will do my best to review and merge them if I consider them essential.
+Contributions are welcome! Please submit your PRs. They will be reviewed, and if they align with the project's goals, they will be merged.
 
-## Development status
+## Development Status
 
-This is a very alpha software. The code was written with no consideration of coding standards and architecture. A refactoring would do it good...
+This is currently in its alpha stage. The code was written without strict adherence to coding standards and architecture. Refactoring is in consideration.

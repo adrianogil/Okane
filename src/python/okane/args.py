@@ -2,6 +2,8 @@ class ARGS:
     account     = '-ac'
     category    = '-cs'
     datetime    = '-dt'
+    min_datetime    = '-since'
+    max_datetime    = '-until'
     porcelain   = '--porcelain'
     oneline     = '-oneline'
 

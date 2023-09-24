@@ -9,11 +9,13 @@ def get_cmd_flags():
 def get_help_usage_str(application_cmd="okane"):
     help_usage_str = f"\t{application_cmd} -l: list all registers\n"
     help_usage_str += f"\t{application_cmd} --list: list all registers\n"
+    help_usage_str = f"\t{application_cmd} -l -since <dt1> -until <dt2> : list all registers since <dt1> until <dt2>\n"
     return help_usage_str
 
 
 def execute(args, extra_args, controller):
     dao_args = extra_args.copy()
+    format_args = None
     if '--format' in extra_args or '-f' in extra_args:
         if '--format' in extra_args:
             format_args = extra_args['--format']
@@ -38,6 +40,7 @@ def execute(args, extra_args, controller):
         for c in extra_args[ARGS.account]:
             account_conditions.append(controller.get_account_from({ARGS.account : [c]})[1])
         dao_args['accounts'] = account_conditions
+
     if len(args) > 0:
         dao_args['description'] = args[0]
     register_list = controller.moneyDAO.getAll(dao_args)
@@ -79,8 +82,8 @@ def execute(args, extra_args, controller):
                        bcolors.OKBLUE + '\nCategory:' + bcolors.ENDC + ' %s\t' + \
                        bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
         print(row_text % row_data )
-        if 'bl' in format_args:
-            print('\nBalance:\t%s' % (total_amount,))
+        if format_args and 'bl' in format_args:
+                print('\nBalance:\t%s' % (total_amount,))
     if '--format' in extra_args or '-f' in extra_args:
         if 'b' in format_args:
             print('\nBalance:\t%s' % (total_amount,))

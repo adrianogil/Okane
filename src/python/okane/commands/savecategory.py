@@ -4,8 +4,8 @@ def get_cmd_flags():
 
 
 def get_help_usage_str(application_cmd="okane"):
-    help_usage_str = f"\t{application_cmd} -sc <new-account-to-be-created>: save a category\n"
-    help_usage_str += f"\t{application_cmd} --save-category <new-account-to-be-created>: save a category\n"
+    help_usage_str = f"\t{application_cmd} -sc <new-category-to-be-created>: save a category\n"
+    help_usage_str += f"\t{application_cmd} --save-category <new-category-to-be-created>: save a category\n"
     return help_usage_str
 
 

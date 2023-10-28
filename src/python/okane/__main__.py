@@ -48,6 +48,7 @@ def parse_commands(args):
     for a in args:
         if a in commands_parse:
             commands_parse[a](args[a], args, controller)
+            break
 
 controller.create_tables()
 args = parse_arguments()

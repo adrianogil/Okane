@@ -3,9 +3,6 @@ import sys, os
 
 import utils
 
-import codecs
-import locale
-
 from okane.okanecontroller import OkaneController
 import okane.utils.logsystem as logsystem
 

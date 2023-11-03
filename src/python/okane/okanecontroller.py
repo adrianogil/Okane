@@ -97,4 +97,17 @@ class OkaneController:
 
     def handle_no_args(self):
         print("TODO: implement support for no args")
-    
+
+    def run_cli(self):
+        from pyutils.cli.flags import get_parsed_flags
+        self.create_tables()
+        args = get_parsed_flags()
+        self.parse_commands(args)
+
+    def parse_commands(self, args):
+        # print('DEBUG: Parsing args: ' + str(args))
+        commands_parse = self.get_commands()
+        for a in args:
+            if a in commands_parse:
+                commands_parse[a](args[a], args, self)
+                break

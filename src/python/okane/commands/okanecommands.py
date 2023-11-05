@@ -24,6 +24,7 @@ def get_commands():
     return [
             command_saveregister,
             command_listregisters,
+            command_updateregister,
             command_listaccounts,
             command_saveaccounts,
             command_updateaccounts,
@@ -33,7 +34,6 @@ def get_commands():
             command_savecategory,
             command_deletecategory,
             command_deleteregister,
-            command_updateregister,
             command_showbalance,
             command_showbalanceperaccount,
             command_showbalancepercategory,

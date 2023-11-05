@@ -22,3 +22,9 @@ function okane-add-fuzzy-account()
     python3 -m okane $* -ac ${target_account_id}
 }
 alias ok-ac="okane-add-fuzzy-account"
+
+function okane-update-register()
+{
+    target_register_id=$(okane -l --oneline $* | default-fuzzy-finder | tr '(' ' ' | tr ')' ' ' | awk '{print $1}')
+    okane -u ${target_register_id}
+}

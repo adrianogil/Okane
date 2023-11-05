@@ -5,7 +5,7 @@ class ARGS:
     min_datetime    = '-since'
     max_datetime    = '-until'
     porcelain   = '--porcelain'
-    oneline     = '-oneline'
+    oneline     = '--oneline'
 
 class bcolors:
     HEADER = '\033[95m'

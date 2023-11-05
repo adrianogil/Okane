@@ -83,7 +83,8 @@ def execute(args, extra_args, controller):
                        bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
         print(row_text % row_data )
         if format_args and 'bl' in format_args:
-                print('\nBalance:\t%s' % (total_amount,))
+            print('\nBalance:\t%s' % (total_amount,))
+
     if '--format' in extra_args or '-f' in extra_args:
         if 'b' in format_args:
             print('\nBalance:\t%s' % (total_amount,))

@@ -22,8 +22,12 @@ class MoneyRegister:
                 'register_dt': {
                     'default_value': datetime.now()
                 },
-                'category': {},
-                'account': {}
+                'category': {
+                    'default_value': None
+                },
+                'account': {
+                    'default_value': None
+                }
             }
         )
         self.set_properties(args)

@@ -30,7 +30,7 @@ def execute(args, extra_args, controller):
         return
     
     if interactive_mode:
-
+        print("Edit Register:\n")
         new_description = input(f"Description ({moneyRegister.description}): ").strip()
         if new_description:
             moneyRegister.description = new_description
@@ -54,7 +54,7 @@ def execute(args, extra_args, controller):
         current_dt_str = moneyRegister.register_dt.strftime("%Y-%m-%d")
         new_dt = input(f"Date ({current_dt_str}): ").strip()
         if new_dt:
-            moneyRegister.register_dt = datetime.strftime("%Y-%m-%d", new_dt)
+            moneyRegister.register_dt = datetime.strptime(new_dt, "%Y-%m-%d")
     else:
         for i in range(1, len(args)):
             if utils.is_float(args[i]):

@@ -1,6 +1,7 @@
 from okane.args import ARGS, bcolors
 from okane.utils import utils
 
+import json
 
 def get_cmd_flags():
     return ["-l", "--list"]
@@ -44,46 +45,58 @@ def execute(args, extra_args, controller):
     if len(args) > 0:
         dao_args['description'] = args[0]
     register_list = controller.moneyDAO.getAll(dao_args)
-    print('Found %s registers' % (len(register_list),))
-    total_amount = 0
-    for money in register_list:
-        row_data = (money.id, \
-                    money.register_dt, \
-                    money.amount, \
-                    money.description, \
-                    money.category.name,\
-                    money.account.name)
-        total_amount = total_amount + money.amount
-        if ARGS.porcelain in extra_args:
-            row_text =  '\nId:' +  ' %s\t' + \
-                    'Date:' +  ' %s\t' + \
-                    'Amount:' +  ' %10.2f\t' + \
-                    '\nDescription:' +  ' %s\t' + \
-                    '\nCategory:' +  ' %s\t' + \
-                    'Account:' +  ' %s'
-        elif ARGS.oneline in extra_args:
-            row_text =  '(%s) ' + \
-                    '[%s] ' + \
-                    ' %7.2f: ' + \
-                    '%s: ' + \
-                    '[Cat] %s ' + \
-                    '[Acc] %s '
+    
+
+    if ARGS.json_output in extra_args:
+        # Print output as json
+        money_data_list = []
+        for money in register_list:
+            money_data_list.append(money.get_data())
+        list_data = {
+            'list': money_data_list
+        }
+        print(json.dumps(list_data, indent=4))
+    else:
+        print('Found %s registers' % (len(register_list),))
+        total_amount = 0
+        for money in register_list:
             row_data = (money.id, \
-                    money.register_dt.strftime("%Y-%m-%d"), \
-                    money.amount, \
-                    money.description, \
-                    money.category.name,\
-                    money.account.name)
-        else:
-            row_text = bcolors.OKBLUE + '\nId:' + bcolors.ENDC + ' %s\t' + \
-                       bcolors.OKBLUE + 'Date:' + bcolors.ENDC + ' %s\t' + \
-                       bcolors.OKBLUE + 'Amount:' + bcolors.ENDC + ' %10.2f\t' + \
-                       bcolors.OKBLUE + '\nDescription:' + bcolors.ENDC + ' %s\t' + \
-                       bcolors.OKBLUE + '\nCategory:' + bcolors.ENDC + ' %s\t' + \
-                       bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
-        print(row_text % row_data )
-        if format_args and 'bl' in format_args:
-            print('\nBalance:\t%s' % (total_amount,))
+                        money.register_dt, \
+                        money.amount, \
+                        money.description, \
+                        money.category.name,\
+                        money.account.name)
+            total_amount = total_amount + money.amount
+            if ARGS.porcelain in extra_args:
+                row_text =  '\nId:' +  ' %s\t' + \
+                        'Date:' +  ' %s\t' + \
+                        'Amount:' +  ' %10.2f\t' + \
+                        '\nDescription:' +  ' %s\t' + \
+                        '\nCategory:' +  ' %s\t' + \
+                        'Account:' +  ' %s'
+            elif ARGS.oneline in extra_args:
+                row_text =  '(%s) ' + \
+                        '[%s] ' + \
+                        ' %7.2f: ' + \
+                        '%s: ' + \
+                        '[Cat] %s ' + \
+                        '[Acc] %s '
+                row_data = (money.id, \
+                        money.register_dt.strftime("%Y-%m-%d"), \
+                        money.amount, \
+                        money.description, \
+                        money.category.name,\
+                        money.account.name)
+            else:
+                row_text = bcolors.OKBLUE + '\nId:' + bcolors.ENDC + ' %s\t' + \
+                        bcolors.OKBLUE + 'Date:' + bcolors.ENDC + ' %s\t' + \
+                        bcolors.OKBLUE + 'Amount:' + bcolors.ENDC + ' %10.2f\t' + \
+                        bcolors.OKBLUE + '\nDescription:' + bcolors.ENDC + ' %s\t' + \
+                        bcolors.OKBLUE + '\nCategory:' + bcolors.ENDC + ' %s\t' + \
+                        bcolors.OKBLUE + 'Account:' + bcolors.ENDC + ' %s'
+            print(row_text % row_data )
+            if format_args and 'bl' in format_args:
+                print('\nBalance:\t%s' % (total_amount,))
 
     if '--format' in extra_args or '-f' in extra_args:
         if 'b' in format_args:

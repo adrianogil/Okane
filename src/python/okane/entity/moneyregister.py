@@ -11,10 +11,6 @@ class MoneyRegister:
                     'prop_type': int,
                     'default_value': -1
                 },
-                'name': {
-                    'prop_type': str,
-                    'default_value': ''
-                },
                 'amount': {
                     'prop_type': float,
                     'default_value': 0.0

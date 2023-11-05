@@ -6,6 +6,7 @@ class ARGS:
     max_datetime    = '-until'
     porcelain   = '--porcelain'
     oneline     = '--oneline'
+    json_output = '--json'
 
 class bcolors:
     HEADER = '\033[95m'

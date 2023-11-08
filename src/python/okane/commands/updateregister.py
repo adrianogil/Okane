@@ -20,7 +20,7 @@ def execute(args, extra_args, controller):
         print(get_help_usage_str())
         return
     
-    interactive_mode = len(args) == 1
+    interactive_mode = len(args) == 1 and len(extra_args) == 1
 
     money_id = int(args[0])
     moneyRegister = controller.moneyDAO.getFromId(money_id)
@@ -47,14 +47,14 @@ def execute(args, extra_args, controller):
 
         new_account_name  = input(f"Account ({moneyRegister.account.name}): ").strip()
         if new_account_name:
-            new_account = controller.get_category_from({ARGS.account: new_account_name})
+            new_account = controller.get_account_from({ARGS.account: new_account_name})
             if new_account[0]:
-                moneyRegister.category = new_account[1]
+                moneyRegister.account = new_account[1]
 
-        current_dt_str = moneyRegister.register_dt.strftime("%Y-%m-%d")
+        current_dt_str = moneyRegister.register_dt.strftime("%Y.%m.%d")
         new_dt = input(f"Date ({current_dt_str}): ").strip()
         if new_dt:
-            moneyRegister.register_dt = datetime.strptime(new_dt, "%Y-%m-%d")
+            moneyRegister.register_dt = datetime.strptime(new_dt, "%Y.%m.%d")
     else:
         for i in range(1, len(args)):
             if utils.is_float(args[i]):

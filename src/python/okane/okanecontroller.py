@@ -49,7 +49,7 @@ class OkaneController:
     def get_account_from(self, extra_args):
         if ARGS.account in extra_args and len(extra_args[ARGS.account]) > 0:
             account_value = extra_args[ARGS.account][0]
-            # print('DEBUG get_account_from ' + account_name)
+            # print('DEBUG get_account_from ' + account_value)
             if account_value != '':
                 if utils.is_int(account_value):
                     account_id = int(account_value)
@@ -63,6 +63,7 @@ class OkaneController:
                 if account is not None and account.id > -1:
                     return (True, account)
                 else:
+                    account_name = account_value
                     self.accountDAO.saveAccount(account_name)
                     account = self.accountDAO.getAccount(account_name)
                     return (True, account)

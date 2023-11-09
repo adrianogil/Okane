@@ -41,7 +41,7 @@ class MoneyRegisterDAO:
                                                              " amount = ?," + \
                                                         " register_dt = ?," + \
                                                         " id_category = ?, " + \
-                                                        " id_account  = ? " + \
+                                                        " id_account  = ?, " + \
                                                         " confirmed  = ? " + \
                                             " WHERE id_register = ?"
         update_data = moneyRegister.get_data_tuple() + (moneyRegister.id,)

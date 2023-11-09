@@ -26,7 +26,7 @@ def execute(args, extra_args, controller):
             moneyArgs = {
                 'register_dt' : controller.get_datetime_from({ARGS.datetime:[row['Date']]})[1],
                 'category'    : controller.get_category_from({ARGS.category:[row['Category']]})[1],
-                'account'     : controller.get_account_from({ARGS.category:[row['Account']]})[1],
+                'account'     : controller.get_account_from({ARGS.account:[row['Account']]})[1],
                 'amount'      : float(row['Amount']),
                 'description' : row['Description']
             }

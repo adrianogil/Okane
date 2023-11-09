@@ -27,6 +27,10 @@ class MoneyRegister:
                 },
                 'account': {
                     'default_value': None
+                },
+                'confirmed': {
+                    'prop_type': bool,
+                    'default_value': True
                 }
             }
         )
@@ -44,11 +48,12 @@ class MoneyRegister:
         return self.register_dt.strftime("%Y-%m-%d")
 
     def get_data_tuple(self):
-        return  (self.description, \
-                     self.amount, \
-                     self.get_register_dt(),\
-                     self.category.id,\
-                     self.account.id)
+        return  (self.description,
+                     self.amount,
+                     self.get_register_dt(),
+                     self.category.id,
+                     self.account.id,
+                     self.confirmed)
     
     def get_data(self):
         properties_data = self.get_properties()

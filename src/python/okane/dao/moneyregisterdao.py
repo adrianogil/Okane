@@ -20,6 +20,7 @@ class MoneyRegisterDAO:
                 register_dt TEXT,
                 id_category INTEGER,
                 id_account INTEGER,
+                confirmed BOOLEAN,
                 FOREIGN KEY (id_category) REFERENCES Categories (id_category)
                 FOREIGN KEY (id_account) REFERENCES Accounts (id_account)
                 PRIMARY KEY (id_register)
@@ -28,8 +29,8 @@ class MoneyRegisterDAO:
 
     def save(self, moneyRegister):
         # Save current register
-        sql_query_save = "INSERT INTO FinancialRegisters (description, amount, register_dt, id_category, id_account)" + \
-                        " VALUES (:description,:amount,:register_dt,:id_category,:id_account)"
+        sql_query_save = "INSERT INTO FinancialRegisters (description, amount, register_dt, id_category, id_account, confirmed)" + \
+                        " VALUES (:description,:amount,:register_dt,:id_category,:id_account,:confirmed)"
         save_data = moneyRegister.get_data_tuple()
         print(str(save_data))
         self.cursor.execute(sql_query_save, save_data)
@@ -40,8 +41,9 @@ class MoneyRegisterDAO:
                                                              " amount = ?," + \
                                                         " register_dt = ?," + \
                                                         " id_category = ?, " + \
-                                                        " id_account = ? " + \
-                                              " WHERE id_register = ?"
+                                                        " id_account  = ? " + \
+                                                        " confirmed  = ? " + \
+                                            " WHERE id_register = ?"
         update_data = moneyRegister.get_data_tuple() + (moneyRegister.id,)
         self.cursor.execute(sql_query_update, update_data)
         self.conn.commit()

@@ -1,5 +1,7 @@
 from okane.args import ARGS, bcolors
 
+from okane.utils import utils
+
 import csv
 
 def get_cmd_flags():

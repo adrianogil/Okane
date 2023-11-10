@@ -1,4 +1,4 @@
-from okane.args import ARGS, bcolors
+from okane.args import ARGS
 
 from okane.utils import utils
 
@@ -39,19 +39,24 @@ def execute(args, extra_args, controller):
     # Open the file with utf-8 encoding
     with open(filename, 'w', encoding="utf-8") as csvfile:
         writer = csv.writer(csvfile)
-        fields_names = ['MoneyId', \
-                        'Date',\
-                        'Amount',\
-                        'Description',\
-                        'Category',\
-                        'Account'\
+        fields_names = [
+            'MoneyId', 
+            'Date',
+            'Amount',
+            'Description',
+            'Category',
+            'Account',
+            'Confirmed'
         ]
         writer.writerow([str(s) for s in fields_names])
         for money in register_list:
-            row_data = [money.id, \
-                        money.register_dt, \
-                        money.amount, \
-                        money.description, \
-                        money.category.name,\
-                        money.account.name]
+            row_data = [
+                money.id,
+                money.register_dt,
+                money.amount,
+                money.description,
+                money.category.name,
+                money.account.name,
+                money.confirmed
+            ]
             writer.writerow([str(s) for s in row_data])

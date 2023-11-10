@@ -30,5 +30,7 @@ def execute(args, extra_args, controller):
                 'amount'      : float(row['Amount']),
                 'description' : row['Description']
             }
+            if "Confirmed" in row:
+                moneyArgs["confirmed"] = row["Confirmed"]
             moneyRegister = controller.entityFactory.createMoneyRegister(moneyArgs)
             controller.moneyDAO.save(moneyRegister)

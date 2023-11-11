@@ -31,8 +31,14 @@ class CategoryDAO:
         row = self.cursor.fetchone()
         if row is None:
             return None
-        category = self.entityFactory.createCategory(row[1])
-        category.id = int(row[0])
+        parent_category=None
+        if row[2] and int(row[2]):
+            parent_category = self.getCategoryFromId(int(row[1]))
+        category = self.entityFactory.createCategory(
+            name=row[1], 
+            id=int(row[0]),
+            parent=parent_category
+        )
 
         return category
 
@@ -75,10 +81,10 @@ class CategoryDAO:
 
         return category
 
-    def saveCategory(self, name):
-        sql_query_save = "INSERT INTO Categories (category_name)" + \
-                        " VALUES (:category_name)"
-        save_data = (name, )
+    def saveCategory(self, name, parent_id=None):
+        sql_query_save = "INSERT INTO Categories (category_name, parent_id)" + \
+                        " VALUES (?, ?)"
+        save_data = (name, parent_id)
         self.cursor.execute(sql_query_save, save_data)
         self.conn.commit()
 

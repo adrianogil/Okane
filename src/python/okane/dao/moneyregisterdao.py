@@ -84,11 +84,14 @@ class MoneyRegisterDAO:
         elif '-o' in extra_args:
             conditions = self.addToConditions(conditions, "amount < 0")
             # print('Debug: moneyregisterdao - added since ' + dt)
+        if '-dt' in extra_args:
+            conditions = self.addToConditions(conditions, "register_dt LIKE ?")
+            dt = dtparse(extra_args['-dt'][0]).strftime("%Y-%m-%d")
+            conditions_data = conditions_data + (dt + "%" ,)
         if '-today' in extra_args:
             conditions = self.addToConditions(conditions, "register_dt LIKE ?")
             dt = datetime.datetime.now().strftime("%Y-%m-%d")
             conditions_data = conditions_data + (dt + "%" ,)
-            # print('Debug: moneyregisterdao - added since ' + dt)
         if '-since' in extra_args:
             conditions = self.addToConditions(conditions, "date(register_dt) >= date( ? )")
             dt = dtparse(extra_args['-since'][0]).strftime("%Y-%m-%d")

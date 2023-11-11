@@ -88,13 +88,13 @@ class MoneyRegisterDAO:
             conditions_data = conditions_data + (dt + "%" ,)
             # print('Debug: moneyregisterdao - added since ' + dt)
         if '-since' in extra_args:
-            conditions = self.addToConditions(conditions, "date(register_dt) > date( ? )")
-            dt = dtparse(extra_args['-since'][0]).strftime("%Y-%m-%d %H:%M:%S")
+            conditions = self.addToConditions(conditions, "date(register_dt) >= date( ? )")
+            dt = dtparse(extra_args['-since'][0]).strftime("%Y-%m-%d")
             conditions_data = conditions_data + (dt,)
             # print('Debug: moneyregisterdao - added since ' + dt)
         if '-until' in extra_args:
-            conditions = self.addToConditions(conditions, "date(register_dt) < date( ? )")
-            dt = dtparse(extra_args['-until'][0]).strftime("%Y-%m-%d %H:%M:%S")
+            conditions = self.addToConditions(conditions, "date(register_dt) <= date( ? )")
+            dt = dtparse(extra_args['-until'][0]).strftime("%Y-%m-%d")
             conditions_data = conditions_data + (dt,)
         if 'categories' in extra_args:
             category_conditions = ''

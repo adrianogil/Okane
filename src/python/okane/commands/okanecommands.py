@@ -16,6 +16,7 @@ import okane.commands.showbalancepercategory as command_showbalancepercategory
 import okane.commands.transferoperation as command_transferoperation
 import okane.commands.importcsv as command_importcsv
 import okane.commands.exportcsv  as command_exportcsv
+import okane.commands.exportjson  as command_exportjson
 import okane.commands.xlsloading as command_xlsloading
 import okane.commands.help as command_help
 
@@ -40,6 +41,7 @@ def get_commands():
             command_transferoperation,
             command_importcsv,
             command_exportcsv,
+            command_exportjson,
             command_xlsloading,
             command_help
         ]

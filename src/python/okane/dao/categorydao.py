@@ -33,7 +33,7 @@ class CategoryDAO:
             return None
         parent_category=None
         if row[2] and int(row[2]):
-            parent_category = self.getCategoryFromId(int(row[1]))
+            parent_category = self.getCategoryFromId(int(row[2]))
         category = self.entityFactory.createCategory(
             name=row[1], 
             id=int(row[0]),

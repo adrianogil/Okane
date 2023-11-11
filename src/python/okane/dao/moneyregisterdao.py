@@ -35,6 +35,8 @@ class MoneyRegisterDAO:
         print(str(save_data))
         self.cursor.execute(sql_query_save, save_data)
         self.conn.commit()
+        
+        return self.cursor.lastrowid
 
     def update(self, moneyRegister):
         sql_query_update = "UPDATE FinancialRegisters SET description = ?," + \

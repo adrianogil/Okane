@@ -23,8 +23,8 @@ def execute(args, extra_args, controller):
             return
 
         controller.categoryDAO.delete(category)
-        print("Account deleted!")
+        print("Category deleted!")
         category.print_properties()
     else:
         print("Missing category name")
-        print("Usage: python -m okane -da <new-category-to-be-deleted>")
+        print("Usage: python -m okane -dc <new-category-to-be-deleted>")

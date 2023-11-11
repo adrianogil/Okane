@@ -41,6 +41,25 @@ class CategoryDAO:
         )
 
         return category
+    
+    def getChildrenCategories(self, parent_id, recursive=True):
+        sql_query_get = "SELECT * from Categories WHERE parent_id = ?"
+        sql_data = (parent_id,)
+        self.cursor.execute(sql_query_get, sql_data)
+        rows = self.cursor.fetchall()
+
+        children_categories = []
+        for row in rows:
+            category = self.entityFactory.createCategory(
+                name=row[1], 
+                id=int(row[0]),
+                parent=self.getCategoryFromId(int(row[2])) if row[2] else None
+            )
+            children_categories.append(category)
+            if category.parent and recursive:
+                children_categories.extend(self.getChildrenCategories(category.id))
+
+        return children_categories
 
     def getAll(self):
         sql_query_get = "SELECT * from Categories ORDER BY id_category"

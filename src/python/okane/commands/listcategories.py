@@ -10,11 +10,19 @@ def get_help_usage_str(application_cmd="okane"):
 
 
 def execute(args, extra_args, controller):
-    if len(args) == 0:
-        category_list = controller.categoryDAO.getAll()
-        for category in category_list:
-            row_data = (category.id, category.name)
-            # row_text = bcolors.OKBLUE + 'Id:' + bcolors.ENDC + ' %s\t' + \
-            #            bcolors.OKBLUE + 'Category:' + bcolors.ENDC + ' %s'
-            row_text = 'Id: %s\tCategory: %s'
-            print(row_text % row_data )
+    categories = controller.categoryDAO.getAll()
+    category_dict = {category.id: (category.name, []) for category in categories}
+
+    for category in categories:
+        if category.parent is not None:
+            category_dict[category.parent.id][1].append(category.id)
+
+    def print_tree(category_id, indent=0):
+        name, children = category_dict[category_id]
+        print(' ' * indent + '- [%s] %s' % (category_id, name))
+        for child_id in children:
+            print_tree(child_id, indent + 2)
+
+    root_categories = [category.id for category in categories if category.parent is None]
+    for root in root_categories:
+        print_tree(root)

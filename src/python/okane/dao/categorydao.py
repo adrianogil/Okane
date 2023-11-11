@@ -13,6 +13,7 @@ class CategoryDAO:
             CREATE TABLE IF NOT EXISTS Categories (
                 id_category INTEGER,
                 category_name TEXT,
+                parent_id INTEGER,
                 PRIMARY KEY (id_category)
             )
         ''')
@@ -38,12 +39,27 @@ class CategoryDAO:
     def getAll(self):
         sql_query_get = "SELECT * from Categories ORDER BY id_category"
         self.cursor.execute(sql_query_get)
+        
         category_list = []
-        for row in self.cursor:
-            category = self.entityFactory.createCategory(row[1])
-            category.id = int(row[0])
+        categories_by_id = {}
+        parent_by_id = {}
 
+        for row in self.cursor:
+            category_data = {
+                "id": int(row[0]),
+                "name": row[1],
+                "parent": row[2]
+            }
+            category = self.entityFactory.createCategory(**{k: category_data[k] for k in ["id", "name"]})
+            categories_by_id[category.id] = category
+            parent_by_id[category.id] = category_data["parent"]
             category_list.append(category)
+        
+        for category_id in parent_by_id:
+            target_parent = parent_by_id[category_id]
+            if target_parent:
+                parent_category = categories_by_id[target_parent]
+                categories_by_id[category_id].parent = parent_category    
 
         return category_list
 

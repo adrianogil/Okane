@@ -8,8 +8,8 @@ class EntityFactory:
     def createMoneyRegister(self, args):
         return MoneyRegister(args)
 
-    def createCategory(self, name):
-        return Category(name)
+    def createCategory(self, name, id=-1, parent=None):
+        return Category(name, id, parent)
 
     def createAccount(self, name):
         return Account(name)

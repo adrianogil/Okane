@@ -2,7 +2,7 @@ from pyutils.code.props.classproperties import declare_props
 
 
 class Category:
-    def __init__(self, name):
+    def __init__(self, name, id=-1, parent=None):
         declare_props(
             self,
             props={
@@ -13,7 +13,12 @@ class Category:
                 'name': {
                     'prop_type': str,
                     'default_value': ''
+                },
+                'parent': {
+                    'default_value': None
                 }
             }
         )
+        self.id = id
         self.name = name
+        self.parent = parent

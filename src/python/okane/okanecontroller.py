@@ -34,16 +34,20 @@ class OkaneController:
 
     def get_category_from(self, extra_args):
         if ARGS.category in extra_args and len(extra_args[ARGS.category]) > 0:
-            category_name = extra_args[ARGS.category][0]
-            # print('DEBUG get_category_from ' + category_name)
-            if category_name != '':
-                category = self.categoryDAO.getCategory(category_name)
+            category_value = extra_args[ARGS.category][0]
+            # print('DEBUG get_category_from ' + category_value)
+            if category_value != '':
+                if utils.is_int(category_value):
+                    category_id = int(category_value)
+                    category = self.categoryDAO.getCategoryFromId(category_id)
+                else:
+                    category_name = category_value
+                    category = self.categoryDAO.getCategory(category_name)
                 if category is not None and category.id > -1:
                     return (True, category)
                 else:
-                    self.categoryDAO.saveCategory(category_name)
-                    category = self.categoryDAO.getCategory(category_name)
-                    return (True, category)
+                    print("No category found")
+                    exit()
         return (False, self.categoryDAO.noCategory)
 
     def get_account_from(self, extra_args):

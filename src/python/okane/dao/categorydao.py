@@ -181,6 +181,10 @@ class CategoryDAO:
         :param category: The Category object to delete.
         :type category: Category
         """
+        children_categories = self.getChildrenCategories(category.id)
+        for child in children_categories:
+            child.parent = None
+            self.updateCategory(child)
         sql_query_delete = "DELETE FROM Categories WHERE id_category = ?"
         delete_data = (category.id,)
         self.cursor.execute(sql_query_delete, delete_data)

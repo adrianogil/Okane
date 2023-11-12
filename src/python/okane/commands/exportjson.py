@@ -53,8 +53,20 @@ def execute(args, extra_args, controller):
         }
         money_registers.append(row_data)
 
+    categories = []
+
+    category_list = controller.categoryDAO.getAll()
+    for category in category_list:
+        row_data = {
+            'CategoryId': category.id,
+            'CategoryName': category.name,
+            'ParentCategory': category.parent.name if category.parent is not None else None
+        }
+        categories.append(row_data)
+
     okane_data["OkaneData"] = {
-        "MoneyRegisters": money_registers
+        "MoneyRegisters": money_registers,
+        "Categories": categories
     }
 
     write_to_file(filename, okane_data)

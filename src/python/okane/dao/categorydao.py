@@ -1,14 +1,31 @@
 
 class CategoryDAO:
+    """
+    This class represents a Data Access Object for Categories in the Okane application.
+    It provides methods to interact with the Categories table in the database.
+    """
+
     NO_CATEGORY = 'No Category'
 
     def __init__(self, db_controller, entityFactory):
+        """
+        Constructor for CategoryDAO.
+
+        :param db_controller: The database controller object.
+        :type db_controller: DBController
+        :param entityFactory: The entity factory object.
+        :type entityFactory: EntityFactory
+        """
         self.conn = db_controller.conn
         self.cursor = db_controller.cursor
         self.entityFactory = entityFactory
         self.noCategory = None
 
     def createTables(self):
+        """
+        Creates the Categories table in the database if it doesn't exist.
+        Also creates the 'No Category' category if it doesn't exist.
+        """
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS Categories (
                 id_category INTEGER,
@@ -21,10 +38,16 @@ class CategoryDAO:
         if self.noCategory is None:
             self.saveCategory(CategoryDAO.NO_CATEGORY)
             self.noCategory = self.getCategory(CategoryDAO.NO_CATEGORY)
-        # print('No Category with id: ' + str(self.noCategory.id))
 
     def getCategory(self, name):
-        # print('DEBUG: categoryDAO - trying to get category from name: ' + name)
+        """
+        Retrieves a category from the database by its name.
+
+        :param name: The name of the category to retrieve.
+        :type name: str
+        :return: The Category object if found, None otherwise.
+        :rtype: Category
+        """
         sql_query_get = "SELECT * from Categories WHERE category_name LIKE ?"
         sql_data = (name,)
         self.cursor.execute(sql_query_get, sql_data)
@@ -43,6 +66,16 @@ class CategoryDAO:
         return category
     
     def getChildrenCategories(self, parent_id, recursive=True):
+        """
+        Retrieves all the children categories of a given category.
+
+        :param parent_id: The id of the parent category.
+        :type parent_id: int
+        :param recursive: Whether to retrieve all the children categories recursively.
+        :type recursive: bool
+        :return: A list of Category objects representing the children categories.
+        :rtype: list[Category]
+        """
         sql_query_get = "SELECT * from Categories WHERE parent_id = ?"
         sql_data = (parent_id,)
         self.cursor.execute(sql_query_get, sql_data)
@@ -62,6 +95,12 @@ class CategoryDAO:
         return children_categories
 
     def getAll(self):
+        """
+        Retrieves all the categories from the database.
+
+        :return: A list of Category objects representing all the categories.
+        :rtype: list[Category]
+        """
         sql_query_get = "SELECT * from Categories ORDER BY id_category"
         self.cursor.execute(sql_query_get)
         
@@ -89,6 +128,14 @@ class CategoryDAO:
         return category_list
 
     def getCategoryFromId(self, id):
+        """
+        Retrieves a category from the database by its id.
+
+        :param id: The id of the category to retrieve.
+        :type id: int
+        :return: The Category object if found, None otherwise.
+        :rtype: Category
+        """
         sql_query_get = "SELECT * from Categories WHERE id_category LIKE ?"
         sql_data = (id,)
         self.cursor.execute(sql_query_get, sql_data)
@@ -101,6 +148,14 @@ class CategoryDAO:
         return category
 
     def saveCategory(self, name, parent_id=None):
+        """
+        Saves a new category to the database.
+
+        :param name: The name of the category to save.
+        :type name: str
+        :param parent_id: The id of the parent category, if any.
+        :type parent_id: int
+        """
         sql_query_save = "INSERT INTO Categories (category_name, parent_id)" + \
                         " VALUES (?, ?)"
         save_data = (name, parent_id)
@@ -108,14 +163,25 @@ class CategoryDAO:
         self.conn.commit()
 
     def updateCategory(self, category):
+        """
+        Updates an existing category in the database.
+
+        :param category: The Category object to update.
+        :type category: Category
+        """
         sql_query_update = "UPDATE Categories SET category_name = ?, parent_id = ? WHERE id_category = ?"
         update_data = (category.name, category.parent.id if category.parent else None, category.id)
         self.cursor.execute(sql_query_update, update_data)
         self.conn.commit()
 
     def delete(self, category):
+        """
+        Deletes a category from the database.
+
+        :param category: The Category object to delete.
+        :type category: Category
+        """
         sql_query_delete = "DELETE FROM Categories WHERE id_category = ?"
         delete_data = (category.id,)
         self.cursor.execute(sql_query_delete, delete_data)
         self.conn.commit()
-

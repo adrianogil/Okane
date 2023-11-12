@@ -10,6 +10,17 @@ def get_help_usage_str(application_cmd="okane"):
 
 
 def execute(args, extra_args, controller):
+    """
+    Executes the 'listcategories' command, which retrieves all categories from the database and prints them in a tree-like structure.
+
+    Args:
+        args: A list of command-line arguments.
+        extra_args: A dictionary of extra arguments.
+        controller: The controller object that handles interactions with the database.
+
+    Returns:
+        None
+    """
     categories = controller.categoryDAO.getAll()
     category_dict = {category.id: (category.name, []) for category in categories}
 

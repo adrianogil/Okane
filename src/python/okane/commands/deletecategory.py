@@ -11,6 +11,17 @@ def get_help_usage_str(application_cmd="okane"):
 
 
 def execute(args, extra_args, controller):
+    """
+    Deletes a category from the database.
+
+    Args:
+        args (list): A list of arguments passed to the command.
+        extra_args (list): A list of extra arguments passed to the command.
+        controller (Controller): An instance of the Controller class.
+
+    Returns:
+        None
+    """
     if len(args) == 1:
         if utils.is_int(args[0]):
             cat_id = int(args[0])

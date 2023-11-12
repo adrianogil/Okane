@@ -10,6 +10,19 @@ def get_help_usage_str(application_cmd="okane"):
 
 
 def execute(args, extra_args, controller):
+    """
+    Updates a category with the given ID, optionally changing its name and/or parent category.
+
+    Args:
+        args (list): A list of arguments passed to the command. The first argument should be the ID of the category to update.
+                      If the command is run in interactive mode, the name and parent category can be entered as additional arguments.
+                      If the command is run in non-interactive mode, the new name and parent category can be entered as the second and third arguments, respectively.
+        extra_args (list): A list of additional arguments passed to the command.
+        controller (Controller): The Okane controller instance.
+
+    Returns:
+        None
+    """
     if len(args) == 0:
         print("Missing parameters")
         print(get_help_usage_str())

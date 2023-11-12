@@ -22,20 +22,21 @@ def execute(args, extra_args, controller):
     Returns:
         None
     """
-    if len(args) == 1:
-        if utils.is_int(args[0]):
-            cat_id = int(args[0])
-            category = controller.categoryDAO.getCategoryFromId(cat_id)
-        else:
-            category_name = args[0]
-            category = controller.categoryDAO.getCategory(category_name)
-        if category is None or category.id < 0:
-            print("It couldn't find category with the given parameter: " + args[0])
-            return
+    if len(args) > 0:
+        for arg in args:
+            if utils.is_int(arg):
+                cat_id = int(arg)
+                category = controller.categoryDAO.getCategoryFromId(cat_id)
+            else:
+                category_name = arg
+                category = controller.categoryDAO.getCategory(category_name)
+            if category is None or category.id < 0:
+                print("It couldn't find category with the given parameter: " + arg)
+                return
 
-        controller.categoryDAO.delete(category)
-        print("Category deleted!")
-        category.print_properties()
+            controller.categoryDAO.delete(category)
+            print("Category deleted!")
+            category.print_properties()
     else:
         print("Missing category name")
         print("Usage: python -m okane -dc <new-category-to-be-deleted>")

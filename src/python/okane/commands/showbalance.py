@@ -16,7 +16,9 @@ def execute(args, extra_args, controller):
     if ARGS.category in extra_args:
         category_conditions = []
         for c in extra_args[ARGS.category]:
-            category_conditions.append(controller.get_category_from({ARGS.category : [c]})[1])
+            category = controller.get_category_from({ARGS.category : [c]})[1]
+            category_conditions.append(category)
+            category_conditions.extend(controller.categoryDAO.getChildrenCategories(category.id))
         dao_args['categories'] = category_conditions
     if ARGS.account in extra_args:
         account_conditions = []

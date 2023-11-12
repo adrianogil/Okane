@@ -108,8 +108,8 @@ class CategoryDAO:
         self.conn.commit()
 
     def updateCategory(self, category):
-        sql_query_update = "UPDATE Categories SET category_name = ? WHERE id_category = ?"
-        update_data = (category.name, category.id)
+        sql_query_update = "UPDATE Categories SET category_name = ?, parent_id = ? WHERE id_category = ?"
+        update_data = (category.name, category.parent.id if category.parent else None, category.id)
         self.cursor.execute(sql_query_update, update_data)
         self.conn.commit()
 

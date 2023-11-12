@@ -28,3 +28,9 @@ function okane-update-register()
     target_register_id=$(okane -l --oneline $* | default-fuzzy-finder | tr '(' ' ' | tr ')' ' ' | awk '{print $1}')
     okane -u ${target_register_id}
 }
+
+function okane-update-category()
+{
+    target_category_id=$(okane -lc --oneline $* | default-fuzzy-finder | tr '-' ' ' | tr '[' ' ' | tr ']' ' ' | awk '{print $1}')
+    okane -uc ${target_category_id}
+}

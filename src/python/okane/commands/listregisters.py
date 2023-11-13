@@ -63,7 +63,7 @@ def execute(args, extra_args, controller):
         total_amount = 0
         for money in register_list:
             row_data = (money.id, \
-                        money.register_dt, \
+                        money.register_dt.strftime("%Y.%m.%d"), \
                         money.amount, \
                         money.description, \
                         money.category.name,\
@@ -84,7 +84,7 @@ def execute(args, extra_args, controller):
                         '[Cat] %s ' + \
                         '[Acc] %s '
                 row_data = (money.id, \
-                        money.register_dt.strftime("%Y-%m-%d"), \
+                        money.register_dt.strftime("%Y.%m.%d"), \
                         money.amount, \
                         money.description, \
                         money.category.name,\

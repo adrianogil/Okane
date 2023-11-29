@@ -13,6 +13,7 @@ import okane.commands.updateregister as command_updateregister
 import okane.commands.showbalance as command_showbalance
 import okane.commands.showbalanceperaccount as command_showbalanceperaccount
 import okane.commands.showbalancepercategory as command_showbalancepercategory
+import okane.commands.showbalancethroughtime as command_showbalancethroughtime
 import okane.commands.transferoperation as command_transferoperation
 import okane.commands.importcsv as command_importcsv
 import okane.commands.exportcsv  as command_exportcsv
@@ -38,6 +39,7 @@ def get_commands():
             command_showbalance,
             command_showbalanceperaccount,
             command_showbalancepercategory,
+            command_showbalancethroughtime,
             command_transferoperation,
             command_importcsv,
             command_exportcsv,

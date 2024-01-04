@@ -1,3 +1,4 @@
+from okane.dao.recurrentregisterdao import MoneyRecurrentRegisterDAO
 from okane.dao.moneyregisterdao import MoneyRegisterDAO
 from okane.dao.categorydao import CategoryDAO
 from okane.dao.accountdao import AccountDAO
@@ -25,12 +26,15 @@ class OkaneController:
         self.categoryDAO = CategoryDAO(self.db_controller, self.entityFactory)
         self.moneyDAO = MoneyRegisterDAO(self.db_controller, self.entityFactory, \
                 self.categoryDAO, self.accountDAO)
+        self.recurrentMoneyDAO = MoneyRecurrentRegisterDAO(self.db_controller, self.entityFactory, \
+                self.categoryDAO, self.accountDAO)
 
     def create_tables(self):
         # Create table
         self.accountDAO.createTables()
         self.categoryDAO.createTables()
         self.moneyDAO.createTables()
+        self.recurrentMoneyDAO.createTables()
 
     def get_category_from(self, extra_args):
         if ARGS.category in extra_args and len(extra_args[ARGS.category]) > 0:
@@ -86,7 +90,7 @@ class OkaneController:
 
     def define_commands(self):
         self.available_commands = okanecommands.get_commands()
-    
+
     def get_commands(self):
         commands_parse = {
             'no-args'      : self.handle_no_args,

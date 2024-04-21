@@ -88,6 +88,13 @@ class OkaneController:
                     pass
         return (False, datetime.datetime.now())
 
+    def get_register_data_from(self, extra_args):
+        moneyArgs = {}
+        moneyArgs['register_dt'] = self.get_datetime_from(extra_args)[1]
+        moneyArgs['category'] = self.get_category_from(extra_args)[1]
+        moneyArgs['account'] = self.get_account_from(extra_args)[1]
+        return moneyArgs
+
     def define_commands(self):
         self.available_commands = okanecommands.get_commands()
 

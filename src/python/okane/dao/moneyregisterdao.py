@@ -35,7 +35,7 @@ class MoneyRegisterDAO:
         print(str(save_data))
         self.cursor.execute(sql_query_save, save_data)
         self.conn.commit()
-        
+
         return self.cursor.lastrowid
 
     def update(self, moneyRegister):
@@ -73,7 +73,13 @@ class MoneyRegisterDAO:
         else:
             return conditions + ' AND ' + added_term
 
-    def getAll(self, extra_args):
+    def getAll(self, extra_args=None):
+        print(extra_args)
+        if extra_args is None:
+            extra_args = {
+                '-l': []
+            }
+
         sql_query_get = "SELECT * from FinancialRegisters "
         order_by = " ORDER BY date(register_dt)"
         conditions_data = ()

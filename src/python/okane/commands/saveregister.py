@@ -40,6 +40,7 @@ def execute(args, extra_args, controller):
 
         prompt_session = PromptSession()
 
+        moneyArgs = {}
         process_args = {}
 
         description = prompt_session.prompt("Description: ")
@@ -47,26 +48,25 @@ def execute(args, extra_args, controller):
         amount = prompt_session.prompt("Amount: ")
         amount = float(amount)
 
-        process_args[ARGS.datetime] = prompt_session.prompt("Date: ")
+        datetime_str = prompt_session.prompt("Date: ")
+        moneyArgs["register_dt"] = controller.get_datetime_from(datetime_str)
 
-        process_args[ARGS.category] = prompt_session.prompt("Category: ")
-        if not process_args[ARGS.category]:
+        moneyArgs["category"] = prompt_session.prompt("Category: ")
+        if not moneyArgs["category"]:
             categories = controller.categoryDAO.getAll()
             all_categories_names = [category.name for category in categories]
-            process_args[ARGS.category] = fzf_wrapper.prompt(all_categories_names)[0]
-        process_args[ARGS.category] = [process_args[ARGS.category]]
+            moneyArgs["category"] = fzf_wrapper.prompt(all_categories_names)[0]
 
-        process_args[ARGS.account] = prompt_session.prompt("Account: ")
-        if not process_args[ARGS.account]:
+        moneyArgs["account"] = prompt_session.prompt("Account: ")
+        if not moneyArgs["account"]:
             accounts = controller.accountDAO.getAll()
             all_accounts_names = [account.name for account in accounts]
-            process_args[ARGS.account] = fzf_wrapper.prompt(all_accounts_names)[0]
-        process_args[ARGS.account] = [process_args[ARGS.account]]
+            moneyArgs["account"] = fzf_wrapper.prompt(all_accounts_names)[0]
 
-        print(process_args)
-        moneyArgs = controller.get_register_data_from(process_args)
         moneyArgs['description'] = description
         moneyArgs['amount'] = amount
 
     moneyRegister = controller.entityFactory.createMoneyRegister(moneyArgs)
-    controller.moneyDAO.save(moneyRegister)
+    moneyRegister.id = controller.moneyDAO.save(moneyRegister)
+    print("Registed saved!")
+    print(moneyRegister)

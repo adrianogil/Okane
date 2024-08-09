@@ -37,55 +37,71 @@ class OkaneController:
         self.recurrentMoneyDAO.createTables()
 
     def get_category_from(self, extra_args):
-        if ARGS.category in extra_args and len(extra_args[ARGS.category]) > 0:
-            category_value = extra_args[ARGS.category][0]
-            # print('DEBUG get_category_from ' + category_value)
-            if category_value != '':
-                if utils.is_int(category_value):
-                    category_id = int(category_value)
-                    category = self.categoryDAO.getCategoryFromId(category_id)
-                else:
-                    category_name = category_value
-                    category = self.categoryDAO.getCategory(category_name)
-                if category is not None and category.id > -1:
-                    return (True, category)
-                else:
-                    print("No category found")
-                    exit()
+        category_value = extra_args
+        if isinstance(extra_args, dict):
+            if ARGS.category in extra_args and len(extra_args[ARGS.category]) > 0:
+                category_value = extra_args[ARGS.category][0]
+            else:
+                print("No category found")
+                exit()
+        if category_value != '':
+            if utils.is_int(category_value):
+                category_id = int(category_value)
+                category = self.categoryDAO.getCategoryFromId(category_id)
+            else:
+                category_name = category_value
+                category = self.categoryDAO.getCategory(category_name)
+            if category is not None and category.id > -1:
+                return (True, category)
+            else:
+                print("No category found")
+                exit()
         return (False, self.categoryDAO.noCategory)
 
     def get_account_from(self, extra_args):
-        if ARGS.account in extra_args and len(extra_args[ARGS.account]) > 0:
-            account_value = extra_args[ARGS.account][0]
-            # print('DEBUG get_account_from ' + account_value)
-            if account_value != '':
-                if utils.is_int(account_value):
-                    account_id = int(account_value)
-                    account = self.accountDAO.getAccountFromId(account_id)
-                    if not account:
-                        print("Wrong account id")
-                        exit()
-                else:
-                    account_name = account_value
-                    account = self.accountDAO.getAccount(account_name)
-                if account is not None and account.id > -1:
-                    return (True, account)
-                else:
-                    account_name = account_value
-                    self.accountDAO.saveAccount(account_name)
-                    account = self.accountDAO.getAccount(account_name)
-                    return (True, account)
+        account_value = extra_args
+        if isinstance(extra_args, dict):
+            if ARGS.account in extra_args and len(extra_args[ARGS.account]) > 0:
+                account_value = extra_args[ARGS.account][0]
+            else:
+                print("No account found")
+                exit()
+        # print('DEBUG get_account_from ' + account_value)
+        if account_value != '':
+            if utils.is_int(account_value):
+                account_id = int(account_value)
+                account = self.accountDAO.getAccountFromId(account_id)
+                if not account:
+                    print("Wrong account id")
+                    exit()
+            else:
+                account_name = account_value
+                account = self.accountDAO.getAccount(account_name)
+            if account is not None and account.id > -1:
+                return (True, account)
+            else:
+                account_name = account_value
+                self.accountDAO.saveAccount(account_name)
+                account = self.accountDAO.getAccount(account_name)
+                return (True, account)
         return (False, self.accountDAO.defaultAccount)
 
     def get_datetime_from(self, extra_args):
-        if ARGS.datetime in extra_args and len(extra_args[ARGS.datetime]) > 0:
-            datetime_str = extra_args[ARGS.datetime][0]
-            if datetime_str != '':
-                try:
-                    datetime_value = dtparse(datetime_str)
-                    return (True, datetime_value)
-                except:
-                    pass
+        datetime_str = extra_args
+        if isinstance(extra_args, dict):
+            if ARGS.datetime in extra_args and len(extra_args[ARGS.datetime]) > 0:
+                datetime_str = extra_args[ARGS.datetime][0]
+            else:
+                return (False, datetime.datetime.now())
+
+        if datetime_str != '':
+            try:
+                datetime_value = dtparse(datetime_str)
+                return (True, datetime_value)
+            except:
+                from dategpt import dategpt
+                datetime_value  = dategpt.parse_date(datetime_str)
+                return (True, datetime_value)
         return (False, datetime.datetime.now())
 
     def get_register_data_from(self, extra_args):

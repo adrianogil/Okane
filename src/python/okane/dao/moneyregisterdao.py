@@ -32,7 +32,7 @@ class MoneyRegisterDAO:
         sql_query_save = "INSERT INTO FinancialRegisters (description, amount, register_dt, id_category, id_account, confirmed)" + \
                         " VALUES (:description,:amount,:register_dt,:id_category,:id_account,:confirmed)"
         save_data = moneyRegister.get_data_tuple()
-        print(str(save_data))
+        # print(str(save_data))
         self.cursor.execute(sql_query_save, save_data)
         self.conn.commit()
 

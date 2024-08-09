@@ -19,16 +19,16 @@ def execute(args, extra_args, controller):
         print("Wrong usage! Check arguments:\n")
         print(get_help_usage_str())
         return
-    
+
     interactive_mode = len(args) == 1 and len(extra_args) == 1
 
     money_id = int(args[0])
     moneyRegister = controller.moneyDAO.getFromId(money_id)
-        
+
     if moneyRegister is None or moneyRegister.id < 0:
         print("It couldn't find a financial register with given id.")
         return
-    
+
     if interactive_mode:
         print("Edit Register:\n")
         new_description = input(f"Description ({moneyRegister.description}): ").strip()
@@ -41,13 +41,13 @@ def execute(args, extra_args, controller):
 
         new_cat_name = input(f"Category ({moneyRegister.category.name}): ").strip()
         if new_cat_name:
-            new_cat = controller.get_category_from({ARGS.category: new_cat_name})
+            new_cat = controller.get_category_from(new_cat_name)
             if new_cat[0]:
                 moneyRegister.category = new_cat[1]
 
         new_account_name  = input(f"Account ({moneyRegister.account.name}): ").strip()
         if new_account_name:
-            new_account = controller.get_account_from({ARGS.account: new_account_name})
+            new_account = controller.get_account_from(new_account_name)
             if new_account[0]:
                 moneyRegister.account = new_account[1]
 

@@ -12,94 +12,42 @@ def get_help_usage_str(application_cmd="okane"):
 
 
 def execute(args, extra_args, controller):
-    if len(args) >= 3:
-        amount = float(args[0])
-        account1_name = args[1]
-        account2_name = args[2]
+    if len(args) < 3:
+        return
 
-        account1_result = controller.get_account_from({ARGS.account : [account1_name]})
-        if account1_result[0]:
-            account1 = account1_result[1]
-        else:
-            return
-        account2_result = controller.get_account_from({ARGS.account : [account2_name]})
-        if account2_result[0]:
-            account2 = account2_result[1]
-        else:
+    amount = float(args[0])
+    account_names = args[1:len(args)]
+    previous_account = None
+
+    for i in range(len(account_names)):
+        account_name = account_names[i]
+        account_result = controller.get_account_from({ARGS.account: [account_name]})
+
+        if not account_result[0]:
             return
 
-        moneyArgs = {
-            'register_dt' : controller.get_datetime_from(extra_args)[1],
-            'category'    : controller.get_category_from({ARGS.category:["Transfer"]})[1],
-            'account'     : account1,
-            'amount'      : -amount,
-            'description' : "Transferido para a conta '" + account2.name + "'"
-        }
-        moneyRegister = controller.entityFactory.createMoneyRegister(moneyArgs)
-        controller.moneyDAO.save(moneyRegister)
+        account = account_result[1]
 
-        moneyArgs = {
-            'register_dt' : controller.get_datetime_from(extra_args)[1],
-            'category'    : controller.get_category_from({ARGS.category:["Transfer"]})[1],
-            'account'     : account2,
-            'amount'      : amount,
-            'description' : "Transferido da conta '" + account1.name + "'"
-        }
-        moneyRegister = controller.entityFactory.createMoneyRegister(moneyArgs)
-        controller.moneyDAO.save(moneyRegister)
-
-        if len(args) >= 4:
-            account3_name = args[3]
-            account3_result = controller.get_account_from({ARGS.account : [account3_name]})
-            if account3_result[0]:
-                account3 = account3_result[1]
-            else:
-                return
-
+        if previous_account is not None:
+            # Transfer from previous account to the current account
             moneyArgs = {
-                'register_dt' : controller.get_datetime_from(extra_args)[1],
-                'category'    : controller.get_category_from({ARGS.category:["Transfer"]})[1],
-                'account'     : account2,
-                'amount'      : -amount,
-                'description' : "Transferido para a conta '" + account3.name + "'"
+                'register_dt': controller.get_datetime_from(extra_args)[1],
+                'category': controller.get_category_from({ARGS.category: ["Transfer"]})[1],
+                'account': previous_account,
+                'amount': -amount,
+                'description': f"Transferido para a conta '{account.name}'"
             }
             moneyRegister = controller.entityFactory.createMoneyRegister(moneyArgs)
             controller.moneyDAO.save(moneyRegister)
 
             moneyArgs = {
-                'register_dt' : controller.get_datetime_from(extra_args)[1],
-                'category'    : controller.get_category_from({ARGS.category:["Transfer"]})[1],
-                'account'     : account3,
-                'amount'      : amount,
-                'description' : "Transferido da conta '" + account2.name + "'"
-        }
-        moneyRegister = controller.entityFactory.createMoneyRegister(moneyArgs)
-        controller.moneyDAO.save(moneyRegister)
+                'register_dt': controller.get_datetime_from(extra_args)[1],
+                'category': controller.get_category_from({ARGS.category: ["Transfer"]})[1],
+                'account': account,
+                'amount': amount,
+                'description': f"Transferido da conta '{previous_account.name}'"
+            }
+            moneyRegister = controller.entityFactory.createMoneyRegister(moneyArgs)
+            controller.moneyDAO.save(moneyRegister)
 
-    if len(args) >= 5:
-        account4_name = args[4]
-        account4_result = controller.get_account_from({ARGS.account : [account4_name]})
-        if account4_result[0]:
-            account4 = account4_result[1]
-        else:
-            return
-
-        moneyArgs = {
-            'register_dt' : controller.get_datetime_from(extra_args)[1],
-            'category'    : controller.get_category_from({ARGS.category:["Transfer"]})[1],
-            'account'     : account3,
-            'amount'      : -amount,
-            'description' : "Transferido para a conta '" + account4.name + "'"
-        }
-        moneyRegister = controller.entityFactory.createMoneyRegister(moneyArgs)
-        controller.moneyDAO.save(moneyRegister)
-
-        moneyArgs = {
-            'register_dt' : controller.get_datetime_from(extra_args)[1],
-            'category'    : controller.get_category_from({ARGS.category:["Transfer"]})[1],
-            'account'     : account4,
-            'amount'      : amount,
-            'description' : "Transferido da conta '" + account3.name + "'"
-        }
-        moneyRegister = controller.entityFactory.createMoneyRegister(moneyArgs)
-        controller.moneyDAO.save(moneyRegister)
+        previous_account = account

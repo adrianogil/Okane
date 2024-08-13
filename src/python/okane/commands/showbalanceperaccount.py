@@ -30,15 +30,18 @@ def execute(args, extra_args, controller):
             outcome[money.account.name] = outcome[money.account.name] + (-1) * money.amount
         balance[money.account.name] = balance[money.account.name] + money.amount
     for account in account_list:
-        if ARGS.oneline in extra_args:
-            balance_data = (account.name, \
-                            balance[account.name],\
-                            income[account.name], \
-                            outcome[account.name],\
-                            )
-            print('%s\t%10.2f [IN]%10.2f [OUT]%10.2f' % balance_data)
+        if "--full" in extra_args:
+            if ARGS.oneline in extra_args:
+                balance_data = (account.name + ":" + (" " * (15 - len(account.name))), \
+                                balance[account.name],\
+                                income[account.name], \
+                                outcome[account.name],\
+                                )
+                print('%s\t%10.2f [IN%10.2f] [OUT%10.2f]' % balance_data)
+            else:
+                print('\nBalance account: %s\n' % (account.name,))
+                print('Income: %10.2f' % (income[account.name]))
+                print('Outcome: %10.2f' % (outcome[account.name]))
+                print('Balance: %10.2f' % (balance[account.name]))
         else:
-            print('\nBalance account: %s\n' % (account.name,))
-            print('Income: %10.2f' % (income[account.name]))
-            print('Outcome: %10.2f' % (outcome[account.name]))
-            print('Balance: %10.2f' % (balance[account.name]))
+            print('%s\t%10.2f' % (account.name + ":" + (" " * (15 - len(account.name))), balance[account.name]))

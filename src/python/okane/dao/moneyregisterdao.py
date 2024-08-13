@@ -1,4 +1,4 @@
-from dateutil.parser import parse as dtparse
+from okane.utils.dateutils import get_date as dtparse
 
 import datetime
 

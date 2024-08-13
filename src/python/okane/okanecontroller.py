@@ -7,12 +7,13 @@ from okane.entity.entityfactory import EntityFactory
 
 from okane.commands import okanecommands
 
+from okane.utils.dateutils import get_date
 from okane.utils import utils as utils
 from okane.args import ARGS
 
 from .dbcontroller import DbController
 
-from dateutil.parser import parse as dtparse
+
 
 import datetime
 
@@ -93,15 +94,11 @@ class OkaneController:
                 datetime_str = extra_args[ARGS.datetime][0]
             else:
                 return (False, datetime.datetime.now())
-
         if datetime_str != '':
             try:
-                datetime_value = dtparse(datetime_str)
-                return (True, datetime_value)
+                return (True, get_date(datetime_str))
             except:
-                from dategpt import dategpt
-                datetime_value  = dategpt.parse_date(datetime_str)
-                return (True, datetime_value)
+                pass
         return (False, datetime.datetime.now())
 
     def get_register_data_from(self, extra_args):

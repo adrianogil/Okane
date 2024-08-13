@@ -21,11 +21,20 @@ class CategorySuggestionController:
         self.model = None
         self.vectorizer = None
 
+        self.model_path = os.path.join(
+            db_controller.okane_directory,
+            'expense_category_model.pkl'
+        )
+        self.vectorizer_path = os.path.join(
+            db_controller.okane_directory,
+            'vectorizer.pkl'
+        )
+
     def load_model(self):
         try:
-            with open('expense_category_model.pkl', 'rb') as model_file:
+            with open(self.model_path, 'rb') as model_file:
                 self.model = pickle.load(model_file)
-            with open('vectorizer.pkl', 'rb') as vectorizer_file:
+            with open(self.vectorizer_path, 'rb') as vectorizer_file:
                 self.vectorizer = pickle.load(vectorizer_file)
         except FileNotFoundError:
             print("Model not found. Try to train a new model.")
@@ -48,9 +57,9 @@ class CategorySuggestionController:
         self.model = RandomForestClassifier()
         self.model.fit(X, y)
 
-        with open('expense_category_model.pkl', 'wb') as model_file:
+        with open(self.model_path, 'wb') as model_file:
             pickle.dump(self.model, model_file)
-        with open('vectorizer.pkl', 'wb') as vectorizer_file:
+        with open(self.vectorizer_path, 'wb') as vectorizer_file:
             pickle.dump(self.vectorizer, vectorizer_file)
 
     def suggest_category(self, description):
@@ -58,7 +67,7 @@ class CategorySuggestionController:
             self.train_model()
         X_new = self.vectorizer.transform([description])
         predicted_category = self.model.predict(X_new)
-        return predicted_category[0]
+        return str(predicted_category[0])
 
 if __name__ == '__main__':
     from okane.dbcontroller import DbController

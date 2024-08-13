@@ -74,7 +74,7 @@ class MoneyRegisterDAO:
             return conditions + ' AND ' + added_term
 
     def getAll(self, extra_args=None):
-        print(extra_args)
+        # print(extra_args)
         if extra_args is None:
             extra_args = {
                 '-l': []
@@ -162,3 +162,16 @@ class MoneyRegisterDAO:
         moneyRegister.account = self.accountDAO.getAccountFromId(int(row[5]))
 
         return moneyRegister
+
+    def load_all_registers_into_dataframe(self, extra_args=None):
+        import pandas as pd
+        # Get all money registers using the existing getAll method
+        register_list = self.getAll(extra_args)
+
+        # Convert each MoneyRegister object to a dictionary
+        data = [register.get_data() for register in register_list]
+
+        # Create a DataFrame from the list of dictionaries
+        df = pd.DataFrame(data)
+
+        return df

@@ -33,4 +33,4 @@ def execute(args, extra_args, controller):
             if "Confirmed" in row:
                 moneyArgs["confirmed"] = row["Confirmed"]
             moneyRegister = controller.entityFactory.createMoneyRegister(moneyArgs)
-            controller.moneyDAO.save(moneyRegister)
+            controller.moneyDAO.save(moneyRegister, force_id=int(row['MoneyId']))

@@ -28,11 +28,15 @@ class MoneyRegisterDAO:
             )
         ''')
 
-    def save(self, moneyRegister):
+    def save(self, moneyRegister, force_id=None):
         # Save current register
         sql_query_save = "INSERT INTO FinancialRegisters (description, amount, register_dt, id_category, id_account, confirmed)" + \
                         " VALUES (:description,:amount,:register_dt,:id_category,:id_account,:confirmed)"
         save_data = moneyRegister.get_data_tuple()
+        if force_id is not None:
+            sql_query_save = "INSERT INTO FinancialRegisters (id_register, description, amount, register_dt, id_category, id_account, confirmed)" + \
+                        " VALUES (:id_register, :description,:amount,:register_dt,:id_category,:id_account,:confirmed)"
+            save_data = (force_id,) + save_data
         # print(str(save_data))
         self.cursor.execute(sql_query_save, save_data)
         self.conn.commit()

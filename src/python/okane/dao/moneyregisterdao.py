@@ -14,17 +14,18 @@ class MoneyRegisterDAO:
     def createTables(self):
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS FinancialRegisters (
-                id_register INTEGER,
+                id_register INTEGER PRIMARY KEY,
                 description TEXT,
                 amount REAL,
                 register_dt TEXT,
                 id_category INTEGER,
                 id_account INTEGER,
                 confirmed BOOLEAN,
-                FOREIGN KEY (id_category) REFERENCES Categories (id_category)
-                FOREIGN KEY (id_account) REFERENCES Accounts (id_account)
-                PRIMARY KEY (id_register)
-                )
+                id_recurrent_register INTEGER,
+                FOREIGN KEY (id_category) REFERENCES Categories (id_category),
+                FOREIGN KEY (id_account) REFERENCES Accounts (id_account),
+                FOREIGN KEY (id_recurrent_register) REFERENCES FinancialRecurrentRegisters (id_recurrent_register)
+            )
         ''')
 
     def save(self, moneyRegister):

@@ -31,6 +31,9 @@ class MoneyRegister:
                 'confirmed': {
                     'prop_type': bool,
                     'default_value': True
+                },
+                'recurrent_register': {
+                    'default_value': None
                 }
             }
         )
@@ -54,7 +57,7 @@ class MoneyRegister:
                      self.category.id,
                      self.account.id,
                      self.confirmed)
-    
+
     def get_data(self):
         properties_data = self.get_properties()
         properties_data['category'] = properties_data['category'].name

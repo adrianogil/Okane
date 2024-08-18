@@ -40,13 +40,14 @@ def execute(args, extra_args, controller):
     with open(filename, 'w', encoding="utf-8") as csvfile:
         writer = csv.writer(csvfile)
         fields_names = [
-            'MoneyId', 
+            'MoneyId',
             'Date',
             'Amount',
             'Description',
             'Category',
             'Account',
-            'Confirmed'
+            'Confirmed',
+            'RecurrentRegisterId'
         ]
         writer.writerow([str(s) for s in fields_names])
         for money in register_list:
@@ -57,6 +58,7 @@ def execute(args, extra_args, controller):
                 money.description,
                 money.category.name,
                 money.account.name,
-                money.confirmed
+                money.confirmed,
+                money.recurrent_register.id if money.recurrent_register else None
             ]
             writer.writerow([str(s) for s in row_data])

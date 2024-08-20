@@ -3,7 +3,7 @@
 from okane.args import ARGS
 from okane.utils import utils
 
-from dateutil.parser import parse as dtparse
+from pyutils.cli.flags import verify_flag, get_flag
 
 def get_cmd_flags():
     return ["-s", "--save"]
@@ -17,6 +17,8 @@ def get_help_usage_str(application_cmd="okane"):
 
 def execute(args, extra_args, controller):
     moneyArgs = {}
+
+    recurrent_mode = verify_flag(["-r", "--recurrent"])
 
     if len(args) >= 2:
         moneyArgs = controller.get_register_data_from(extra_args)
@@ -67,6 +69,12 @@ def execute(args, extra_args, controller):
         moneyArgs['amount'] = amount
 
     moneyRegister = controller.entityFactory.createMoneyRegister(moneyArgs)
-    moneyRegister.id = controller.moneyDAO.save(moneyRegister)
+    if recurrent_mode:
+        from okane.entity.recurrentregister import MoneyRecurrentRegister
+        moneyRecurrentRegister = MoneyRecurrentRegister(moneyArgs, moneyRegister)
+        moneyRecurrentRegister.recurrence = get_flag(["-r", "--recurrent"], default_value="monthly")
+        controller.recurrentMoneyDAO.save(moneyRecurrentRegister)
+    else:
+        moneyRegister.id = controller.moneyDAO.save(moneyRegister)
     print("Registed saved!")
     print(moneyRegister)

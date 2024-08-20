@@ -19,12 +19,12 @@ class MoneyRecurrentRegisterDAO:
                 end_dt TEXT,
                 id_category INTEGER,
                 id_account INTEGER,
-                recurrence TEXT,
+                recurrence TEXT CHECK(recurrence IN ('daily', 'weekly', 'monthly', 'yearly', 'custom')),
                 recurrence_number INTEGER,
-                FOREIGN KEY (id_category) REFERENCES Categories (id_category)
-                FOREIGN KEY (id_account) REFERENCES Accounts (id_account)
+                FOREIGN KEY (id_category) REFERENCES Categories (id_category),
+                FOREIGN KEY (id_account) REFERENCES Accounts (id_account),
                 PRIMARY KEY (id_recurrent_register)
-                )
+            )
         ''')
 
     def save(self, moneyRecurrentRegister):

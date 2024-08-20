@@ -3,7 +3,7 @@ from pyutils.code.props.classproperties import declare_props
 from datetime import datetime
 
 class MoneyRecurrentRegister:
-    def __init__(self, args):
+    def __init__(self, args, moneyRegister=None):
 
 
         declare_props(
@@ -46,3 +46,11 @@ class MoneyRecurrentRegister:
             }
         )
         self.set_properties(args)
+
+        if moneyRegister is not None:
+            self.id = moneyRegister.id
+            self.amount = moneyRegister.amount
+            self.description = moneyRegister.description
+            self.start_dt = moneyRegister.register_dt
+            self.category = moneyRegister.category
+            self.account = moneyRegister.account

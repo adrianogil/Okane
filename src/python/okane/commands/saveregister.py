@@ -73,8 +73,9 @@ def execute(args, extra_args, controller):
         from okane.entity.recurrentregister import MoneyRecurrentRegister
         moneyRecurrentRegister = MoneyRecurrentRegister(moneyArgs, moneyRegister)
         moneyRecurrentRegister.recurrence = get_flag(["-r", "--recurrent"], default_value="monthly")
-        controller.recurrentMoneyDAO.save(moneyRecurrentRegister)
-    else:
-        moneyRegister.id = controller.moneyDAO.save(moneyRegister)
+        moneyRecurrentRegister.id = controller.recurrentMoneyDAO.save(moneyRecurrentRegister)
+        moneyRegister.recurrent_register = moneyRecurrentRegister
+
+    moneyRegister.id = controller.moneyDAO.save(moneyRegister)
     print("Registed saved!")
     print(moneyRegister)

@@ -1,3 +1,4 @@
+from okane.entity.recurrentregister import MoneyRecurrentRegister
 from okane.entity.moneyregister import MoneyRegister
 from okane.entity.category import Category
 from okane.entity.account import Account
@@ -13,3 +14,6 @@ class EntityFactory:
 
     def createAccount(self, name):
         return Account(name)
+
+    def createRecurrentMoneyRegister(self, args, moneyRegister=None):
+        return MoneyRecurrentRegister(args, moneyRegister)

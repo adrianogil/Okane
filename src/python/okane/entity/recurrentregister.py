@@ -54,3 +54,15 @@ class MoneyRecurrentRegister:
             self.start_dt = moneyRegister.register_dt
             self.category = moneyRegister.category
             self.account = moneyRegister.account
+
+    def get_data_tuple(self):
+        return (
+            self.description,
+            self.amount,
+            self.start_dt,
+            self.end_dt,
+            self.category.id,
+            self.account.id,
+            self.recurrence,
+            self.recurrence_number
+        )

@@ -75,6 +75,7 @@ def execute(args, extra_args, controller):
         moneyRecurrentRegister.recurrence = get_flag(["-r", "--recurrent"], default_value="monthly")
         moneyRecurrentRegister.id = controller.recurrentMoneyDAO.save(moneyRecurrentRegister)
         moneyRegister.recurrent_register = moneyRecurrentRegister
+        print("Recurrent register saved!")
 
     moneyRegister.id = controller.moneyDAO.save(moneyRegister)
     print("Registed saved!")

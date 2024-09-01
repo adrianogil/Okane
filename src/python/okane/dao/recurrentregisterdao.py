@@ -1,3 +1,4 @@
+from okane.utils.dateutils import get_date as dtparse
 
 
 class MoneyRecurrentRegisterDAO:
@@ -63,7 +64,7 @@ class MoneyRecurrentRegisterDAO:
 
         self.cursor.execute(sql_query_get, get_data)
         row = self.cursor.fetchone()
-        return self.entityFactory.createMoneyRecurrentRegister(row)
+        return self.parseRegisterFromRow(row)
 
     def getFromIdList(self, id_list):
         sql_query_get = "SELECT * from FinancialRecurrentRegisters WHERE id_recurrent_register IN ({})".format(','.join('?' * len(id_list)))
@@ -71,4 +72,33 @@ class MoneyRecurrentRegisterDAO:
 
         self.cursor.execute(sql_query_get, get_data)
         rows = self.cursor.fetchall()
-        return [self.entityFactory.createMoneyRecurrentRegister(row) for row in rows]
+        return [self.parseRegisterFromRow(row) for row in rows]
+
+    def getAll(self, dao_args):
+        sql_query_get = "SELECT * from FinancialRecurrentRegisters"
+        get_data = ()
+
+        if 'limit' in dao_args:
+            sql_query_get += " LIMIT ?"
+            get_data += (dao_args['limit'],)
+        if 'offset' in dao_args:
+            sql_query_get += " OFFSET ?"
+            get_data += (dao_args['offset'],)
+
+        self.cursor.execute(sql_query_get, get_data)
+        rows = self.cursor.fetchall()
+        return [self.parseRegisterFromRow(row) for row in rows]
+
+    def parseRegisterFromRow(self, row):
+        recurrentMoneyRegister = self.entityFactory.createRecurrentMoneyRegister({})
+        recurrentMoneyRegister.id = row[0]
+        recurrentMoneyRegister.description = row[1]
+        recurrentMoneyRegister.amount = row[2]
+        recurrentMoneyRegister.start_dt = dtparse(str(row[3]))
+        recurrentMoneyRegister.end_dt = row[4]
+        recurrentMoneyRegister.category = self.categoryDAO.getCategoryFromId(row[5])
+        recurrentMoneyRegister.account = self.accountDAO.getAccountFromId(row[6])
+        recurrentMoneyRegister.recurrence = row[7]
+        recurrentMoneyRegister.recurrence_number = row[8]
+
+        return recurrentMoneyRegister

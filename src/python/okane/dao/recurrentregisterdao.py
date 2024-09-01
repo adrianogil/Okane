@@ -1,5 +1,7 @@
 from okane.utils.dateutils import get_date as dtparse
 
+from pyutils.decorators import debug
+
 
 class MoneyRecurrentRegisterDAO:
     def __init__(self, db_controller, entityFactory, categoryDAO, accountDAO):
@@ -90,6 +92,9 @@ class MoneyRecurrentRegisterDAO:
         return [self.parseRegisterFromRow(row) for row in rows]
 
     def parseRegisterFromRow(self, row):
+        if row is None:
+            return None
+
         recurrentMoneyRegister = self.entityFactory.createRecurrentMoneyRegister({})
         recurrentMoneyRegister.id = row[0]
         recurrentMoneyRegister.description = row[1]

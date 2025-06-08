@@ -1,12 +1,14 @@
 # Repo Guidelines
 
+All source code is on src directory.
+
 ## Coding style
 - Use 4 spaces for indentation in Python.
 - Keep line length under 100 characters.
 - Document new functions and classes with docstrings.
 
 ## Testing
-- Run `pytest` from the repository root before each commit.
+- Run `pytest` from the src directory before each commit.
 
 ## Commit messages
 - Use concise commit summaries under 72 characters.
